@@ -1,0 +1,38 @@
+{
+    "name": "arcanedev/laravel-html",
+    "description": "HTML and Form Builders for the Laravel Framework",
+    "keywords": ["laravel", "html", "form", "arcanesoft"],
+    "homepage": "https://github.com/ARCANEDEV/LaravelHtml",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "ARCANEDEV",
+            "email": "arcanedev.maroc@gmail.com",
+            "homepage": "https://github.com/ARCANEDEV"
+        }
+    ],
+    "require": {
+        "php": ">=5.5.9",
+        "arcanedev/support": "~2.0",
+        "illuminate/http": "~5.1.0",
+        "illuminate/routing": "~5.1.0",
+        "illuminate/session": "~5.1.0"
+    },
+    "require-dev": {
+        "orchestra/testbench": "~3.1.0",
+        "phpunit/phpunit": "~4.0",
+        "phpunit/phpcov": "~2.0",
+        "mockery/mockery": "~0.9"
+    },
+    "autoload": {
+        "psr-4": {
+            "Arcanedev\\LaravelHtml\\": "src/"
+        },
+        "files": ["helpers.php"]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Arcanedev\\LaravelHtml\\Tests\\": "tests/"
+        }
+    }
+}
