@@ -4,8 +4,10 @@ use Arcanedev\LaravelHtml\Tests\Stubs\FormBuilderModelStub;
 use Arcanedev\LaravelHtml\Tests\TestCase;
 use Carbon\Carbon;
 use Illuminate\Session\Store as Session;
+use Illuminate\Support\Collection;
 use Mockery as m;
 use Arcanedev\LaravelHtml\Builders\FormBuilder;
+use StdClass;
 
 /**
  * Class FormBuilderTest
@@ -388,7 +390,7 @@ class FormBuilderTest extends TestCase
      * @param  mixed  $value
      * @param  array  $options
      */
-    public function testFormTel($expected, $name, $value, $options)
+    public function it_can_make_tel_inputs($expected, $name, $value, $options)
     {
         $this->assertEquals($expected, $this->form->tel($name, $value, $options));
     }
@@ -850,6 +852,46 @@ class FormBuilderTest extends TestCase
         $this->assertEquals(
             '<input checked="checked" name="foo" type="checkbox" value="foobar">',
             $this->form->checkbox('foo', 'foobar', true)
+        );
+    }
+
+    /** @test */
+    public function it_can_make_checkbox_with_model_relation()
+    {
+        $session = $this->mockSession();
+        $session->shouldReceive('getOldInput')->withNoArgs()->andReturn([]);
+        $session->shouldReceive('getOldInput')->with('items')->andReturn(null);
+
+        $models = [];
+
+        foreach(range(2, 3) as $id) {
+            $model     = new StdClass;
+            $model->id = $id;
+            $models[]  = $model;
+        }
+
+        $this->setModel([
+            'items' => new Collection($models)
+        ]);
+
+        $this->assertEquals(
+            '<input name="items[]" type="checkbox" value="1">',
+            $this->form->checkbox('items[]', 1)
+        );
+
+        $this->assertEquals(
+            '<input checked="checked" name="items[]" type="checkbox" value="2">',
+            $this->form->checkbox('items[]', 2)
+        );
+
+        $this->assertEquals(
+            '<input name="items[]" type="checkbox" value="3">',
+            $this->form->checkbox('items[]', 3, false)
+        );
+
+        $this->assertEquals(
+            '<input checked="checked" name="items[]" type="checkbox" value="4">',
+            $this->form->checkbox('items[]', 4, true)
         );
     }
 

@@ -4,6 +4,7 @@ use Arcanedev\LaravelHtml\Contracts\FormBuilderInterface;
 use DateTime;
 use Illuminate\Routing\UrlGenerator;
 use Illuminate\Session\Store as Session;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Traits\Macroable;
 
 /**
@@ -809,13 +810,13 @@ class FormBuilder implements FormBuilderInterface
             return $checked;
         }
 
-        $posted = $this->getValueAttribute($name);
+        $posted = $this->getValueAttribute($name, $checked);
 
         if (is_array($posted)) {
             return in_array($value, $posted);
         }
 
-        if ($posted instanceof \Illuminate\Database\Eloquent\Collection) {
+        if ($posted instanceof Collection) {
             return $posted->contains('id', $value);
         }
 
