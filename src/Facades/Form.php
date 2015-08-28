@@ -3,14 +3,15 @@
 use Illuminate\Support\Facades\Facade;
 
 /**
- * Class HtmlFacade
+ * Class Form
  * @package Arcanedev\LaravelHtml\Facades
  */
-class HtmlFacade extends Facade {
+class Form extends Facade {
+
     /**
      * Get the registered name of the component.
      *
      * @return string
      */
-    protected static function getFacadeAccessor() { return 'html'; }
+    protected static function getFacadeAccessor() { return 'form'; }
 }
