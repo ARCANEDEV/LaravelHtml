@@ -1,16 +1,17 @@
 <?php namespace Arcanedev\LaravelHtml\Tests;
 
 use Arcanedev\LaravelHtml\Builders\HtmlBuilder;
+use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
 use Illuminate\Routing\RouteCollection;
 use Illuminate\Routing\UrlGenerator;
-use PHPUnit_Framework_TestCase;
+use Orchestra\Testbench\TestCase as BaseTestCase;
 
 /**
  * Class TestCase
  * @package Arcanedev\LaravelHtml\Tests
  */
-abstract class TestCase extends PHPUnit_Framework_TestCase
+abstract class TestCase extends BaseTestCase
 {
     /* ------------------------------------------------------------------------------------------------
      |  Constants
@@ -36,7 +37,7 @@ abstract class TestCase extends PHPUnit_Framework_TestCase
      |  Main Functions
      | ------------------------------------------------------------------------------------------------
      */
-    protected function setUp()
+    public function setUp()
     {
         parent::setUp();
 
@@ -46,12 +47,45 @@ abstract class TestCase extends PHPUnit_Framework_TestCase
         $this->urlGenerator->forceRootUrl(self::BASE_URL);
     }
 
-    protected function tearDown()
+    public function tearDown()
     {
         parent::tearDown();
 
         unset($this->urlGenerator);
         unset($this->htmlBuilder);
+    }
+
+    /* ------------------------------------------------------------------------------------------------
+     |  Laravel Functions
+     | ------------------------------------------------------------------------------------------------
+     */
+    /**
+     * Get package providers.
+     *
+     * @param  Application  $app
+     *
+     * @return array
+     */
+    protected function getPackageProviders($app)
+    {
+        return [
+            \Arcanedev\LaravelHtml\HtmlServiceProvider::class
+        ];
+    }
+
+    /**
+     * Get package aliases.
+     *
+     * @param  Application  $app
+     *
+     * @return array
+     */
+    protected function getPackageAliases($app)
+    {
+        return [
+            'Form'  => \Arcanedev\LaravelHtml\Facades\Form::class,
+            'Html'  => \Arcanedev\LaravelHtml\Facades\Html::class
+        ];
     }
 
     /* ------------------------------------------------------------------------------------------------
