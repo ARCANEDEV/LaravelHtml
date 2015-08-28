@@ -1,6 +1,7 @@
-<?php namespace Arcanedev\LaravelHtml\Tests;
+<?php namespace Arcanedev\LaravelHtml\Tests\Builders;
 
 use Arcanedev\LaravelHtml\Tests\Stubs\FormBuilderModelStub;
+use Arcanedev\LaravelHtml\Tests\TestCase;
 use Carbon\Carbon;
 use Illuminate\Session\Store as Session;
 use Mockery as m;
