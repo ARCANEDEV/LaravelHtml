@@ -67,8 +67,8 @@ class FormBuilderTest extends TestCase
      *
      * @dataProvider provideOpeningForms
      *
-     * @param  string $expected
-     * @param  array  $options
+     * @param  string  $expected
+     * @param  array   $options
      */
     public function it_can_open_form($expected, $options)
     {
@@ -86,10 +86,10 @@ class FormBuilderTest extends TestCase
      *
      * @dataProvider provideLabels
      *
-     * @param string $expected
-     * @param string $name
-     * @param string $value
-     * @param array  $options
+     * @param  string  $expected
+     * @param  string  $name
+     * @param  string  $value
+     * @param  array   $options
      */
     public function it_can_make_label($expected, $name, $value, $options)
     {
@@ -104,11 +104,11 @@ class FormBuilderTest extends TestCase
      *
      * @dataProvider provideInputs
      *
-     * @param  string $expected
-     * @param  string $type
-     * @param  string $name
-     * @param  mixed  $value
-     * @param  array  $options
+     * @param  string  $expected
+     * @param  string  $type
+     * @param  string  $name
+     * @param  mixed   $value
+     * @param  array   $options
      */
     public function it_can_make_form_inputs($expected, $type, $name, $value, $options)
     {
@@ -151,9 +151,9 @@ class FormBuilderTest extends TestCase
      *
      * @dataProvider providePassword
      *
-     * @param  string $expected
-     * @param  string $name
-     * @param  array  $options
+     * @param  string  $expected
+     * @param  string  $name
+     * @param  array   $options
      */
     public function it_can_make_password_inputs($expected, $name, $options)
     {
@@ -207,10 +207,10 @@ class FormBuilderTest extends TestCase
      *
      * @dataProvider provideTextInputs
      *
-     * @param  string $expected
-     * @param  string $name
-     * @param  mixed  $value
-     * @param  array  $options
+     * @param  string  $expected
+     * @param  string  $name
+     * @param  mixed   $value
+     * @param  array   $options
      */
     public function it_can_make_text_inputs($expected, $name, $value, $options)
     {
@@ -334,10 +334,10 @@ class FormBuilderTest extends TestCase
      *
      * @dataProvider provideHiddenData
      *
-     * @param  string $expected
-     * @param  string $name
-     * @param  mixed  $value
-     * @param  array  $options
+     * @param  string  $expected
+     * @param  string  $name
+     * @param  mixed   $value
+     * @param  array   $options
      */
     public function it_can_make_hidden_inputs($expected, $name, $value, $options)
     {
@@ -357,10 +357,10 @@ class FormBuilderTest extends TestCase
      *
      * @dataProvider provideEmailData
      *
-     * @param  string $expected
-     * @param  string $name
-     * @param  mixed  $value
-     * @param  array  $options
+     * @param  string  $expected
+     * @param  string  $name
+     * @param  mixed   $value
+     * @param  array   $options
      */
     public function it_can_make_email_inputs($expected, $name, $value, $options)
     {
@@ -385,10 +385,10 @@ class FormBuilderTest extends TestCase
      *
      * @dataProvider provideTelInputs
      *
-     * @param  string $expected
-     * @param  string $name
-     * @param  mixed  $value
-     * @param  array  $options
+     * @param  string  $expected
+     * @param  string  $name
+     * @param  mixed   $value
+     * @param  array   $options
      */
     public function it_can_make_tel_inputs($expected, $name, $value, $options)
     {
@@ -408,10 +408,10 @@ class FormBuilderTest extends TestCase
      *
      * @dataProvider provideNumberInputs
      *
-     * @param  string $expected
-     * @param  string $name
-     * @param  mixed  $value
-     * @param  array  $options
+     * @param  string  $expected
+     * @param  string  $name
+     * @param  mixed   $value
+     * @param  array   $options
      */
     public function it_can_make_number_inputs($expected, $name, $value, $options)
     {
@@ -431,10 +431,10 @@ class FormBuilderTest extends TestCase
      *
      * @dataProvider provideDateInputs
      *
-     * @param  string $expected
-     * @param  string $name
-     * @param  mixed  $value
-     * @param  array  $options
+     * @param  string  $expected
+     * @param  string  $name
+     * @param  mixed   $value
+     * @param  array   $options
      */
     public function it_can_make_date_inputs($expected, $name, $value, $options)
     {
@@ -461,10 +461,10 @@ class FormBuilderTest extends TestCase
      *
      * @dataProvider provideTimeInputs
      *
-     * @param  string $expected
-     * @param  string $name
-     * @param  mixed  $value
-     * @param  array  $options
+     * @param  string  $expected
+     * @param  string  $name
+     * @param  mixed   $value
+     * @param  array   $options
      */
     public function it_can_make_time_inputs($expected, $name, $value, $options)
     {
@@ -484,9 +484,9 @@ class FormBuilderTest extends TestCase
      *
      * @dataProvider provideFileInputs
      *
-     * @param  string $expected
-     * @param  string $name
-     * @param  array  $options
+     * @param  string  $expected
+     * @param  string  $name
+     * @param  array   $options
      */
     public function it_can_make_files_inputs($expected, $name, $options)
     {
@@ -516,10 +516,10 @@ class FormBuilderTest extends TestCase
      *
      * @dataProvider provideTextAreaInputs
      *
-     * @param  string $expected
-     * @param  string $name
-     * @param  mixed  $value
-     * @param  array  $options
+     * @param  string  $expected
+     * @param  string  $name
+     * @param  mixed   $value
+     * @param  array   $options
      */
     public function it_can_make_textarea_inputs($expected, $name, $value, $options)
     {
@@ -548,37 +548,95 @@ class FormBuilderTest extends TestCase
         ];
     }
 
-    /** @test */
-    public function it_can_make_select_inputs()
+    /**
+     * @test
+     *
+     * @dataProvider provideSelectData
+     *
+     * @param  string  $expected
+     * @param  string  $name
+     * @param  array   $list
+     * @param  mixed   $selected
+     * @param  array   $options
+     */
+    public function it_can_make_select_inputs($expected, $name, $list, $selected, $options)
     {
         $this->assertEquals(
-            '<select name="size"><option value="L">Large</option><option value="S">Small</option></select>',
-            $this->form->select(
-                'size',
-                ['L' => 'Large', 'S' => 'Small']
-            )
+            $expected,
+            $this->form->select($name, $list, $selected, $options)
         );
+    }
 
+    /**
+     * Provide form select data
+     *
+     * @return array
+     */
+    public function provideSelectData()
+    {
+        $list     = [
+            'L' => 'Large',
+            'S' => 'Small',
+        ];
+        $selected = ['L', 'S',];
+        $options  = [
+            'name'     => 'sizes[]',
+            'id'       => 'select-id',
+            'multiple' => 'multiple',
+            'class'    => 'class-name',
+        ];
+
+        return [
+            [
+                '<select name="size">'.
+                    '<option value="L">Large</option>'.
+                    '<option value="S">Small</option>'.
+                '</select>',
+                'size', $list, null, []
+            ],[
+                '<select name="size">'.
+                    '<option value="L" selected="selected">Large</option>'.
+                    '<option value="S">Small</option>'.
+                '</select>',
+                'size', $list, 'L', []
+            ],[
+                '<select id="select-id" class="class-name" name="size">'.
+                    '<option value="L">Large</option>'.
+                    '<option value="S">Small</option>'.
+                '</select>',
+                'size', $list, null, ['id' => 'select-id', 'class' => 'class-name']
+            ],[
+                '<select name="sizes[]" id="select-id" multiple="multiple" class="class-name">'.
+                    '<option value="L" selected="selected">Large</option>'.
+                    '<option value="S" selected="selected">Small</option>'.
+                '</select>',
+                'sizes', $list, $selected, $options
+            ],[
+                // Test select with a option Collection
+                '<select name="sizes[]" id="select-id" multiple="multiple" class="class-name">'.
+                    '<option value="L" selected="selected">Large</option>'.
+                    '<option value="S" selected="selected">Small</option>'.
+                '</select>',
+                'sizes', new Collection($list), $selected, $options
+            ],[
+                // Test selects with a selected Collection
+                '<select name="sizes[]" id="select-id" multiple="multiple" class="class-name">'.
+                    '<option value="L" selected="selected">Large</option>'.
+                    '<option value="S" selected="selected">Small</option>'.
+                '</select>',
+                'sizes', $list, new Collection($selected), $options
+            ]
+        ];
+    }
+
+    /** @test */
+    public function it_can_make_select_input_with_label()
+    {
         $this->assertEquals(
-            '<select name="size"><option value="L" selected="selected">Large</option><option value="S">Small</option></select>',
-            $this->form->select(
-                'size',
-                ['L' => 'Large', 'S' => 'Small'],
-                'L'
-            )
+            '<label for="select-name-id">Select-name-id</label>',
+            $this->form->label('select-name-id')
         );
 
-        $this->assertEquals(
-            '<select class="class-name" id="select-id" name="size"><option value="L">Large</option><option value="S">Small</option></select>',
-            $this->form->select(
-                'size',
-                ['L' => 'Large', 'S' => 'Small'],
-                null,
-                ['class' => 'class-name', 'id' => 'select-id']
-            )
-        );
-
-        $this->form->label('select-name-id');
         $this->assertEquals(
             '<select name="select-name" id="select-name-id"></select>',
             $this->form->select(
@@ -1067,8 +1125,8 @@ class FormBuilderTest extends TestCase
     /**
      * Set model to form
      *
-     * @param array     $data
-     * @param bool|true $object
+     * @param  array  $data
+     * @param  bool   $object
      */
     protected function setModel(array $data, $object = true)
     {

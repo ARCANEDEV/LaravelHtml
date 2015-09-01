@@ -529,6 +529,11 @@ class FormBuilder implements FormBuilderInterface
         // so we will use that when checking the model or session for a value which
         // should provide a convenient method of re-populating the forms on post.
         $selected      = $this->getValueAttribute($name, $selected);
+        // Transform to array if it is a collection
+        if ($selected instanceof Collection) {
+            $selected = $selected->all();
+        }
+
         $options['id'] = $this->getIdAttribute($name, $options);
 
         if ( ! isset($options['name'])) {
@@ -779,6 +784,7 @@ class FormBuilder implements FormBuilderInterface
         switch($type) {
             case 'checkbox':
                 return $this->getCheckboxCheckedState($name, $value, $checked);
+
             case 'radio':
                 return $this->getRadioCheckedState($name, $value, $checked);
 
@@ -1047,7 +1053,7 @@ class FormBuilder implements FormBuilderInterface
      * Get the value that should be assigned to the field.
      *
      * @param  string  $name
-     * @param  string  $value
+     * @param  mixed   $value
      *
      * @return mixed
      */
@@ -1061,8 +1067,9 @@ class FormBuilder implements FormBuilderInterface
             return $this->old($name);
         }
 
-        if ( ! is_null($value))
+        if ( ! is_null($value)) {
             return $value;
+        }
 
         if (isset($this->model)) {
             return $this->getModelValueAttribute($name);
