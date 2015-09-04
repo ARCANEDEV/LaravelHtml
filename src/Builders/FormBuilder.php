@@ -671,10 +671,7 @@ class FormBuilder implements FormBuilderInterface
     protected function option($display, $value, $selected)
     {
         $selected = $this->getSelectedValue($value, $selected);
-        $options  = [
-            'value'    => e($value),
-            'selected' => $selected
-        ];
+        $options  = compact('value', 'selected');
 
         return '<option' . $this->html->attributes($options) . '>' . e($display) . '</option>';
     }
