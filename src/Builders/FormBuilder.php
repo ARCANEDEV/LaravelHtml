@@ -93,9 +93,9 @@ class FormBuilder implements FormBuilderInterface
     /**
     * Create a new form builder instance.
     *
-    * @param  UrlGenerator $url
-    * @param  HtmlBuilder  $html
-    * @param  string       $csrfToken
+    * @param  UrlGenerator  $url
+    * @param  HtmlBuilder   $html
+    * @param  string        $csrfToken
     */
     public function __construct(HtmlBuilder $html, UrlGenerator $url, $csrfToken)
     {

@@ -61,6 +61,7 @@ class HtmlBuilder implements HtmlBuilderInterface
      * Convert entities to HTML characters.
      *
      * @param  string  $value
+     *
      * @return string
      */
     public function decode($value)
@@ -252,6 +253,7 @@ class HtmlBuilder implements HtmlBuilderInterface
      * @param  string  $email
      * @param  string  $title
      * @param  array   $attributes
+     *
      * @return string
      */
     public function mailto($email, $title = null, $attributes = [])
@@ -278,8 +280,8 @@ class HtmlBuilder implements HtmlBuilderInterface
     /**
      * Generate an ordered list of items.
      *
-     * @param  array   $list
-     * @param  array   $attributes
+     * @param  array  $list
+     * @param  array  $attributes
      *
      * @return string
      */
@@ -291,8 +293,8 @@ class HtmlBuilder implements HtmlBuilderInterface
     /**
      * Generate an un-ordered list of items.
      *
-     * @param  array   $list
-     * @param  array   $attributes
+     * @param  array  $list
+     * @param  array  $attributes
      *
      * @return string
      */
@@ -304,8 +306,8 @@ class HtmlBuilder implements HtmlBuilderInterface
     /**
      * Generate a description list of items.
      *
-     * @param  array   $list
-     * @param  array   $attributes
+     * @param  array  $list
+     * @param  array  $attributes
      *
      * @return string
      */
@@ -436,9 +438,9 @@ class HtmlBuilder implements HtmlBuilderInterface
     /**
      * Create the HTML for a listing element.
      *
-     * @param  mixed    $key
+     * @param  mixed   $key
      * @param  string  $type
-     * @param  string  $value
+     * @param  mixed   $value
      *
      * @return string
      */
@@ -454,7 +456,7 @@ class HtmlBuilder implements HtmlBuilderInterface
      *
      * @param  mixed   $key
      * @param  string  $type
-     * @param  string  $value
+     * @param  mixed   $value
      *
      * @return string
      */

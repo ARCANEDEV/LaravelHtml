@@ -73,5 +73,4 @@ class HtmlServiceProvider extends ServiceProvider
             FormBuilder::class
         ];
     }
-
 }
