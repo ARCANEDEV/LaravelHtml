@@ -3,8 +3,10 @@
 use Illuminate\Session\Store as Session;
 
 /**
- * Class FormBuilder
- * @package Arcanedev\LaravelHtml
+ * Interface  FormBuilderInterface
+ *
+ * @package   Arcanedev\LaravelHtml\Contracts
+ * @author    ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 interface FormBuilderInterface
 {

@@ -2,11 +2,13 @@
 
 use Arcanedev\LaravelHtml\Builders\FormBuilder;
 use Arcanedev\LaravelHtml\Builders\HtmlBuilder;
-use Illuminate\Support\ServiceProvider;
+use Arcanedev\Support\Laravel\ServiceProvider;
 
 /**
- * Class HtmlServiceProvider
- * @package Arcanedev\LaravelHtml
+ * Class     HtmlServiceProvider
+ *
+ * @package  Arcanedev\LaravelHtml
+ * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 class HtmlServiceProvider extends ServiceProvider
 {
@@ -53,9 +55,18 @@ class HtmlServiceProvider extends ServiceProvider
     protected function registerFormBuilder()
     {
         $this->app->bind('form', function($app) {
-            $form = new FormBuilder($app['html'], $app['url'], $app['session.store']->getToken());
+            /**
+             * @var Builders\HtmlBuilder             $html
+             * @var \Illuminate\Routing\UrlGenerator $url
+             * @var \Illuminate\Session\Store        $session
+             */
+            $html    = $app['html'];
+            $url     = $app['url'];
+            $session = $app['session.store'];
 
-            return $form->setSessionStore($app['session.store']);
+            return (new FormBuilder(
+                        $html, $url, $session->getToken()
+                    ))->setSessionStore($session);
         });
     }
 
@@ -67,10 +78,8 @@ class HtmlServiceProvider extends ServiceProvider
     public function provides()
     {
         return [
-            'html',
-            'form',
-            HtmlBuilder::class,
-            FormBuilder::class
+            'html', HtmlBuilder::class,
+            'form', FormBuilder::class
         ];
     }
 }

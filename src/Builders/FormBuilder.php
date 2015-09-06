@@ -8,8 +8,10 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Traits\Macroable;
 
 /**
- * Class FormBuilder
- * @package Arcanedev\LaravelHtml
+ * Class     FormBuilder
+ *
+ * @package  Arcanedev\LaravelHtml\Builders
+ * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 class FormBuilder implements FormBuilderInterface
 {

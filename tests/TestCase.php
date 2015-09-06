@@ -8,8 +8,10 @@ use Illuminate\Routing\UrlGenerator;
 use Orchestra\Testbench\TestCase as BaseTestCase;
 
 /**
- * Class TestCase
- * @package Arcanedev\LaravelHtml\Tests
+ * Class     TestCase
+ *
+ * @package  Arcanedev\LaravelHtml\Tests
+ * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 abstract class TestCase extends BaseTestCase
 {

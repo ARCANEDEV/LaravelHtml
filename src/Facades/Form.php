@@ -3,8 +3,10 @@
 use Illuminate\Support\Facades\Facade;
 
 /**
- * Class Form
- * @package Arcanedev\LaravelHtml\Facades
+ * Class     Form
+ *
+ * @package  Arcanedev\LaravelHtml\Facades
+ * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 class Form extends Facade {
 

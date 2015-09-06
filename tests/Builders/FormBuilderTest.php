@@ -10,8 +10,10 @@ use Arcanedev\LaravelHtml\Builders\FormBuilder;
 use StdClass;
 
 /**
- * Class FormBuilderTest
- * @package Arcanedev\LaravelHtml\Tests
+ * Class     FormBuilderTest
+ *
+ * @package  Arcanedev\LaravelHtml\Tests\Builders
+ * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 class FormBuilderTest extends TestCase
 {

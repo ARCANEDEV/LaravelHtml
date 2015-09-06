@@ -5,8 +5,10 @@ use Arcanedev\LaravelHtml\Tests\TestCase;
 use Mockery as m;
 
 /**
- * Class HtmlBuilderTest
- * @package Arcanedev\LaravelHtml\Tests
+ * Class     HtmlBuilderTest
+ *
+ * @package  Arcanedev\LaravelHtml\Tests\Builders
+ * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 class HtmlBuilderTest extends TestCase
 {

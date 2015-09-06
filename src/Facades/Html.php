@@ -3,8 +3,10 @@
 use Illuminate\Support\Facades\Facade;
 
 /**
- * Class Html
- * @package Arcanedev\LaravelHtml\Facades
+ * Class     Html
+ *
+ * @package  Arcanedev\LaravelHtml\Facades
+ * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 class Html extends Facade {
     /**

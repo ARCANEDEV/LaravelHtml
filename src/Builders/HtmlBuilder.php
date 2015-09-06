@@ -5,8 +5,10 @@ use Illuminate\Routing\UrlGenerator;
 use Illuminate\Support\Traits\Macroable;
 
 /**
- * Class HtmlBuilder
- * @package Arcanedev\LaravelHtml
+ * Class     HtmlBuilder
+ *
+ * @package  Arcanedev\LaravelHtml\Builders
+ * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 class HtmlBuilder implements HtmlBuilderInterface
 {

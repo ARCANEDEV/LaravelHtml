@@ -1,8 +1,10 @@
 <?php namespace Arcanedev\LaravelHtml\Contracts;
 
 /**
- * Class HtmlBuilder
- * @package Arcanedev\LaravelHtml
+ * Interface  HtmlBuilderInterface
+ *
+ * @package   Arcanedev\LaravelHtml\Contracts
+ * @author    ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 interface HtmlBuilderInterface
 {
