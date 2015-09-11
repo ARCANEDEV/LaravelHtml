@@ -44,7 +44,7 @@ class HtmlServiceProvider extends ServiceProvider
      */
     protected function registerHtmlBuilder()
     {
-        $this->app->bind('html', function($app) {
+        $this->app->singleton('html', function($app) {
             return new HtmlBuilder($app['url']);
         });
     }
@@ -54,7 +54,7 @@ class HtmlServiceProvider extends ServiceProvider
      */
     protected function registerFormBuilder()
     {
-        $this->app->bind('form', function($app) {
+        $this->app->singleton('form', function($app) {
             /**
              * @var Builders\HtmlBuilder             $html
              * @var \Illuminate\Routing\UrlGenerator $url
@@ -64,9 +64,11 @@ class HtmlServiceProvider extends ServiceProvider
             $url     = $app['url'];
             $session = $app['session.store'];
 
-            return (new FormBuilder(
-                        $html, $url, $session->getToken()
-                    ))->setSessionStore($session);
+            $form = new FormBuilder($html, $url, $session->getToken());
+
+            $form->setSessionStore($session);
+
+            return $form;
         });
     }
 
