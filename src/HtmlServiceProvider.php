@@ -2,7 +2,7 @@
 
 use Arcanedev\LaravelHtml\Builders\FormBuilder;
 use Arcanedev\LaravelHtml\Builders\HtmlBuilder;
-use Arcanedev\Support\Laravel\ServiceProvider;
+use Arcanedev\Support\ServiceProvider;
 
 /**
  * Class     HtmlServiceProvider
@@ -34,11 +34,25 @@ class HtmlServiceProvider extends ServiceProvider
     {
         $this->registerHtmlBuilder();
         $this->registerFormBuilder();
-
-        $this->app->alias('html', HtmlBuilder::class);
-        $this->app->alias('form', FormBuilder::class);
     }
 
+    /**
+     * Get the services provided by the provider.
+     *
+     * @return array
+     */
+    public function provides()
+    {
+        return [
+            'html', HtmlBuilder::class,
+            'form', FormBuilder::class
+        ];
+    }
+
+    /* ------------------------------------------------------------------------------------------------
+     |  Services Functions
+     | ------------------------------------------------------------------------------------------------
+     */
     /**
      * Register the HTML builder instance.
      */
@@ -47,6 +61,8 @@ class HtmlServiceProvider extends ServiceProvider
         $this->app->singleton('html', function($app) {
             return new HtmlBuilder($app['url']);
         });
+
+        $this->app->alias('html', HtmlBuilder::class);
     }
 
     /**
@@ -70,18 +86,7 @@ class HtmlServiceProvider extends ServiceProvider
 
             return $form;
         });
-    }
 
-    /**
-     * Get the services provided by the provider.
-     *
-     * @return array
-     */
-    public function provides()
-    {
-        return [
-            'html', HtmlBuilder::class,
-            'form', FormBuilder::class
-        ];
+        $this->app->alias('form', FormBuilder::class);
     }
 }
