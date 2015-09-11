@@ -1,12 +1,12 @@
 <?php namespace Arcanedev\LaravelHtml\Tests\Builders;
 
+use Arcanedev\LaravelHtml\Builders\FormBuilder;
 use Arcanedev\LaravelHtml\Tests\Stubs\FormBuilderModelStub;
 use Arcanedev\LaravelHtml\Tests\TestCase;
 use Carbon\Carbon;
 use Illuminate\Session\Store as Session;
 use Illuminate\Support\Collection;
 use Mockery as m;
-use Arcanedev\LaravelHtml\Builders\FormBuilder;
 use StdClass;
 
 /**
@@ -37,7 +37,11 @@ class FormBuilderTest extends TestCase
     {
         parent::setUp();
 
-        $this->form  = new FormBuilder($this->htmlBuilder, $this->urlGenerator, 'abc');
+        $this->form  = new FormBuilder(
+            $this->htmlBuilder,
+            $this->urlGenerator,
+            'abc'
+        );
     }
 
     /**
