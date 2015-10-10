@@ -138,9 +138,10 @@ class HtmlBuilderTest extends TestCase
     public function it_can_make_link_tags_for_assets()
     {
         $file = 'style.min.css';
+        $url  = $this->baseUrl . '/style.min.css';
 
         $this->assertEquals(
-            '<a href="http://localhost.com/style.min.css">http://localhost.com/style.min.css</a>',
+            '<a href="' . $url . '">' . $url . '</a>',
             $this->htmlBuilder->linkAsset($file)
         );
     }

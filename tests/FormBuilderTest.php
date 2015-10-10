@@ -1066,7 +1066,7 @@ class FormBuilderTest extends TestCase
      */
     public function provideOpeningForms()
     {
-        $url = self::BASE_URL . '/foo';
+        $url = $this->baseUrl . '/foo';
 
         return [
             [

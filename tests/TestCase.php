@@ -15,12 +15,6 @@ use Orchestra\Testbench\TestCase as BaseTestCase;
 abstract class TestCase extends BaseTestCase
 {
     /* ------------------------------------------------------------------------------------------------
-     |  Constants
-     | ------------------------------------------------------------------------------------------------
-     */
-    const BASE_URL = 'http://localhost.com';
-
-    /* ------------------------------------------------------------------------------------------------
      |  Properties
      | ------------------------------------------------------------------------------------------------
      */
@@ -44,8 +38,6 @@ abstract class TestCase extends BaseTestCase
 
         $this->urlGenerator = new UrlGenerator(new RouteCollection, Request::create('/foo', 'GET'));
         $this->htmlBuilder  = new HtmlBuilder($this->urlGenerator);
-
-        $this->urlGenerator->forceRootUrl(self::BASE_URL);
     }
 
     public function tearDown()
