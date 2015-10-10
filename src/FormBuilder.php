@@ -166,6 +166,7 @@ class FormBuilder implements FormBuilderInterface
         // We need to extract the proper method from the attributes. If the method is
         // something other than GET or POST we'll use POST since we will spoof the
         // actual method since forms don't support the reserved methods in HTML.
+        $attributes = [];
         $attributes['method']         = $this->getMethod($method);
         $attributes['action']         = $this->getAction($options);
         $attributes['accept-charset'] = 'UTF-8';
@@ -183,8 +184,7 @@ class FormBuilder implements FormBuilderInterface
         // format the array of attributes. We will also add on the appendage which
         // is used to spoof requests for this PUT, PATCH, etc. methods on forms.
         $attributes = array_merge(
-            $attributes,
-            array_except($options, $this->reserved)
+            $attributes, array_except($options, $this->reserved)
         );
 
         // Finally, we will concatenate all of the attributes into a single string so
