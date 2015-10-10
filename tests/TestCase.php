@@ -36,7 +36,8 @@ abstract class TestCase extends BaseTestCase
     {
         parent::setUp();
 
-        $this->urlGenerator = new UrlGenerator(new RouteCollection, Request::create('/foo', 'GET'));
+        $router             = $this->registerRoutes();
+        $this->urlGenerator = new UrlGenerator($router->getRoutes(), Request::create('/foo', 'GET'));
         $this->htmlBuilder  = new HtmlBuilder($this->urlGenerator);
     }
 
@@ -85,6 +86,23 @@ abstract class TestCase extends BaseTestCase
      |  Other Functions
      | ------------------------------------------------------------------------------------------------
      */
+    /**
+     * Register routes for tests.
+     *
+     * @return \Illuminate\Routing\Router
+     */
+    protected function registerRoutes()
+    {
+        /** @var \Illuminate\Routing\Router $router */
+        $router = $this->app['router'];
+
+        $router->get('/', [
+            'as'    => 'home',
+            'uses'  => 'Arcanedev\LaravelHtml\Tests\Stubs\DummyController@index'
+        ]);
+
+        return $router;
+    }
     /**
      * Generate a absolute URL to the given path.
      *
