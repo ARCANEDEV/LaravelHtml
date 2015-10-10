@@ -202,7 +202,7 @@ interface HtmlBuilderInterface
      *
      * @return string
      */
-    public function attributes($attributes);
+    public function attributes(array $attributes);
 
     /**
      * Obfuscate a string to prevent spam-bots from sniffing it.

@@ -136,10 +136,11 @@ class HtmlBuilder implements HtmlBuilderInterface
      */
     public function favicon($url, $attributes = [], $secure = null)
     {
-        $attributes         = $attributes + [
-            'rel'  => 'shortcut icon',
-            'type' => 'image/x-icon'
-        ];
+        $attributes = array_merge($attributes, [
+            'rel'   => 'shortcut icon',
+            'type'  => 'image/x-icon'
+        ]);
+
         $attributes['href'] = $this->url->asset($url, $secure);
 
         return '<link' . $this->attributes($attributes) . '>' . PHP_EOL;
@@ -335,19 +336,9 @@ class HtmlBuilder implements HtmlBuilderInterface
      *
      * @return string
      */
-    public function attributes($attributes)
+    public function attributes(array $attributes)
     {
-        $html = [];
-
-        foreach ((array) $attributes as $key => $value) {
-            $element = $this->attributeElement($key, $value);
-
-            if ( ! is_null($element)) {
-                $html[] = $element;
-            }
-        }
-
-        return (count($html) > 0) ? ' ' . implode(' ', $html) : '';
+        return Helpers\Attributes::make($attributes);
     }
 
     /**
@@ -359,32 +350,7 @@ class HtmlBuilder implements HtmlBuilderInterface
      */
     public function obfuscate($value)
     {
-        $safe = '';
-
-        foreach (str_split($value) as $letter) {
-            if (ord($letter) > 128) {
-                return $letter;
-            }
-
-            // To properly obfuscate the value, we will randomly convert each letter to
-            // its entity or hexadecimal representation, keeping a bot from sniffing
-            // the randomly obfuscated letters out of the string on the responses.
-            switch (rand(1, 3)) {
-                case 1:
-                    $safe .= '&#'.ord($letter).';';
-                    break;
-
-                case 2:
-                    $safe .= '&#x'.dechex(ord($letter)).';';
-                    break;
-
-                case 3:
-                    $safe .= $letter;
-                    // no break
-            }
-        }
-
-        return $safe;
+        return Helpers\Obfuscater::make($value);
     }
 
     /**
@@ -467,29 +433,5 @@ class HtmlBuilder implements HtmlBuilderInterface
         return is_int($key)
             ? $this->listing($type, $value)
             : '<li>' . $key . $this->listing($type, $value) . '</li>';
-    }
-
-    /**
-     * Build a single attribute element.
-     *
-     * @param  string  $key
-     * @param  string  $value
-     *
-     * @return string
-     */
-    protected function attributeElement($key, $value)
-    {
-        if (is_null($value)) {
-            return null;
-        }
-
-        // For numeric keys we will assume that the key and the value are the same
-        // as this will convert HTML attributes such as "required" to a correct
-        // form like required="required" instead of using incorrect numerics.
-        if (is_numeric($key)) {
-            $key = $value;
-        }
-
-        return $key . '="' . e($value) . '"';
     }
 }
