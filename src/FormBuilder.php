@@ -148,6 +148,106 @@ class FormBuilder implements FormBuilderInterface
         return $this;
     }
 
+    /**
+     * Get the ID attribute for a field name.
+     *
+     * @param  string  $name
+     * @param  array   $attributes
+     *
+     * @return string
+     */
+    public function getIdAttribute($name, $attributes)
+    {
+        if (array_key_exists('id', $attributes)) {
+            return $attributes['id'];
+        }
+
+        if (in_array($name, $this->labels)) {
+            return $name;
+        }
+
+        return null;
+    }
+
+    /**
+     * Get the value that should be assigned to the field.
+     *
+     * @param  string  $name
+     * @param  mixed   $value
+     *
+     * @return mixed
+     */
+    public function getValueAttribute($name, $value = null)
+    {
+        if (is_null($name)) {
+            return $value;
+        }
+
+        if ( ! is_null($this->old($name))) {
+            return $this->old($name);
+        }
+
+        if ( ! is_null($value)) {
+            return $value;
+        }
+
+        if (isset($this->model)) {
+            return $this->getModelValueAttribute($name);
+        }
+
+        return null;
+    }
+
+    /**
+     * Get the model value that should be assigned to the field.
+     *
+     * @param  string  $name
+     *
+     * @return mixed
+     */
+    private function getModelValueAttribute($name)
+    {
+        return data_get($this->model, $this->transformKey($name));
+    }
+
+    /**
+     * Get a value from the session's old input.
+     *
+     * @param  string  $name
+     *
+     * @return mixed
+     */
+    public function old($name)
+    {
+        return isset($this->session)
+            ? $this->session->getOldInput($this->transformKey($name))
+            : null;
+    }
+
+    /**
+     * Determine if the old input is empty.
+     *
+     * @return bool
+     */
+    public function oldInputIsEmpty()
+    {
+        return (isset($this->session) && count($this->session->getOldInput()) == 0);
+    }
+
+    /**
+     * Parse the form action method.
+     *
+     * @param  string  $method
+     *
+     * @return string
+     */
+    private function getMethod($method)
+    {
+        $method = strtoupper($method);
+
+        return $method != 'GET' ? 'POST' : $method;
+    }
+
     /* ------------------------------------------------------------------------------------------------
      |  Main Functions
      | ------------------------------------------------------------------------------------------------
@@ -171,11 +271,6 @@ class FormBuilder implements FormBuilderInterface
         $attributes['action']         = $this->getAction($options);
         $attributes['accept-charset'] = 'UTF-8';
 
-        // If the method is PUT, PATCH or DELETE we will need to add a spoofer hidden
-        // field that will instruct the Symfony request to pretend the method is a
-        // different method than it actually is, for convenience from the forms.
-        $append = $this->getAppendage($method);
-
         if (isset($options['files']) && $options['files']) {
             $options['enctype'] = 'multipart/form-data';
         }
@@ -191,6 +286,11 @@ class FormBuilder implements FormBuilderInterface
         // we can build out the final form open statement. We'll also append on an
         // extra value for the hidden _method field if it's needed for the form.
         $attributes = $this->html->attributes($attributes);
+
+        // If the method is PUT, PATCH or DELETE we will need to add a spoofer hidden
+        // field that will instruct the Symfony request to pretend the method is a
+        // different method than it actually is, for convenience from the forms.
+        $append = $this->getAppendage($method);
 
         return '<form' . $attributes . '>' . $append;
     }
@@ -238,35 +338,19 @@ class FormBuilder implements FormBuilderInterface
     }
 
     /**
-    * Create a form label element.
-    *
-    * @param  string  $name
-    * @param  string  $value
-    * @param  array   $options
-    *
-    * @return string
-    */
-    public function label($name, $value = null, $options = [])
-    {
-        $this->labels[] = $name;
-
-        $options = $this->html->attributes($options);
-        $value   = e($this->formatLabel($name, $value));
-
-        return '<label for="' . $name . '"' . $options . '>' . $value . '</label>';
-    }
-
-    /**
-     * Format the label value.
+     * Create a form label element.
      *
-     * @param  string       $name
-     * @param  string|null  $value
+     * @param  string  $name
+     * @param  string  $value
+     * @param  array   $options
      *
      * @return string
      */
-    protected function formatLabel($name, $value)
+    public function label($name, $value = null, array $options = [])
     {
-        return $value ?: ucwords(str_replace('_', ' ', $name));
+        $this->labels[] = $name;
+
+        return Helpers\Label::make($name, $value, $options);
     }
 
     /**
@@ -483,7 +567,7 @@ class FormBuilder implements FormBuilderInterface
      *
      * @return array
      */
-    protected function setTextAreaSize($options)
+    private function setTextAreaSize($options)
     {
         if (isset($options['size'])) {
             return $this->setQuickTextAreaSize($options);
@@ -531,6 +615,7 @@ class FormBuilder implements FormBuilderInterface
         // so we will use that when checking the model or session for a value which
         // should provide a convenient method of re-populating the forms on post.
         $selected      = $this->getValueAttribute($name, $selected);
+
         // Transform to array if it is a collection
         if ($selected instanceof Collection) {
             $selected = $selected->all();
@@ -650,7 +735,7 @@ class FormBuilder implements FormBuilderInterface
      *
      * @return string
      */
-    protected function optionGroup($list, $label, $selected)
+    private function optionGroup($list, $label, $selected)
     {
         $html = [];
 
@@ -670,7 +755,7 @@ class FormBuilder implements FormBuilderInterface
      *
      * @return string
      */
-    protected function option($display, $value, $selected)
+    private function option($display, $value, $selected)
     {
         $selected = $this->getSelectedValue($value, $selected);
         $options  = compact('value', 'selected');
@@ -686,7 +771,7 @@ class FormBuilder implements FormBuilderInterface
      *
      * @return string
      */
-    protected function placeholderOption($display, $selected)
+    private function placeholderOption($display, $selected)
     {
         $selected         = $this->getSelectedValue(null, $selected);
         $options          = compact('selected');
@@ -703,7 +788,7 @@ class FormBuilder implements FormBuilderInterface
      *
      * @return string|null
      */
-    protected function getSelectedValue($value, $selected)
+    private function getSelectedValue($value, $selected)
     {
         if (is_array($selected)) {
             return in_array($value, $selected) ? 'selected' : null;
@@ -778,7 +863,7 @@ class FormBuilder implements FormBuilderInterface
      *
      * @return bool
      */
-    protected function getCheckedState($type, $name, $value, $checked)
+    private function getCheckedState($type, $name, $value, $checked)
     {
         switch($type) {
             case 'checkbox':
@@ -801,7 +886,7 @@ class FormBuilder implements FormBuilderInterface
      *
      * @return bool
      */
-    protected function getCheckboxCheckedState($name, $value, $checked)
+    private function getCheckboxCheckedState($name, $value, $checked)
     {
         if (
             isset($this->session) &&
@@ -837,7 +922,7 @@ class FormBuilder implements FormBuilderInterface
      *
      * @return bool
      */
-    protected function getRadioCheckedState($name, $value, $checked)
+    private function getRadioCheckedState($name, $value, $checked)
     {
         return $this->missingOldAndModel($name)
             ? $checked
@@ -851,7 +936,7 @@ class FormBuilder implements FormBuilderInterface
      *
      * @return bool
      */
-    protected function missingOldAndModel($name)
+    private function missingOldAndModel($name)
     {
         return (is_null($this->old($name)) && is_null($this->getModelValueAttribute($name)));
     }
@@ -916,27 +1001,13 @@ class FormBuilder implements FormBuilderInterface
     }
 
     /**
-     * Parse the form action method.
-     *
-     * @param  string  $method
-     *
-     * @return string
-     */
-    protected function getMethod($method)
-    {
-        $method = strtoupper($method);
-
-        return $method != 'GET' ? 'POST' : $method;
-    }
-
-    /**
      * Get the form action from the options.
      *
      * @param  array  $options
      *
      * @return string
      */
-    protected function getAction(array $options)
+    private function getAction(array $options)
     {
         // We will also check for a "route" or "action" parameter on the array so that
         // developers can easily specify a route or controller action when creating
@@ -964,7 +1035,7 @@ class FormBuilder implements FormBuilderInterface
      *
      * @return string
      */
-    protected function getUrlAction($options)
+    private function getUrlAction($options)
     {
         return is_array($options)
             ? $this->url->to($options[0], array_slice($options, 1))
@@ -978,7 +1049,7 @@ class FormBuilder implements FormBuilderInterface
      *
      * @return string
      */
-    protected function getRouteAction($options)
+    private function getRouteAction($options)
     {
         return is_array($options)
             ? $this->url->route($options[0], array_slice($options, 1))
@@ -992,7 +1063,7 @@ class FormBuilder implements FormBuilderInterface
      *
      * @return string
      */
-    protected function getControllerAction($options)
+    private function getControllerAction($options)
     {
         return is_array($options)
             ? $this->url->action($options[0], array_slice($options, 1))
@@ -1006,7 +1077,7 @@ class FormBuilder implements FormBuilderInterface
      *
      * @return string
      */
-    protected function getAppendage($method)
+    private function getAppendage($method)
     {
         list($method, $appendage) = [strtoupper($method), ''];
 
@@ -1028,99 +1099,13 @@ class FormBuilder implements FormBuilderInterface
     }
 
     /**
-     * Get the ID attribute for a field name.
-     *
-     * @param  string  $name
-     * @param  array   $attributes
-     *
-     * @return string
-     */
-    public function getIdAttribute($name, $attributes)
-    {
-        if (array_key_exists('id', $attributes)) {
-            return $attributes['id'];
-        }
-
-        if (in_array($name, $this->labels)) {
-            return $name;
-        }
-
-        return null;
-    }
-
-    /**
-     * Get the value that should be assigned to the field.
-     *
-     * @param  string  $name
-     * @param  mixed   $value
-     *
-     * @return mixed
-     */
-    public function getValueAttribute($name, $value = null)
-    {
-        if (is_null($name)) {
-            return $value;
-        }
-
-        if ( ! is_null($this->old($name))) {
-            return $this->old($name);
-        }
-
-        if ( ! is_null($value)) {
-            return $value;
-        }
-
-        if (isset($this->model)) {
-            return $this->getModelValueAttribute($name);
-        }
-
-        return null;
-    }
-
-    /**
-     * Get the model value that should be assigned to the field.
-     *
-     * @param  string  $name
-     *
-     * @return mixed
-     */
-    protected function getModelValueAttribute($name)
-    {
-        return data_get($this->model, $this->transformKey($name));
-    }
-
-    /**
-     * Get a value from the session's old input.
-     *
-     * @param  string  $name
-     *
-     * @return mixed
-     */
-    public function old($name)
-    {
-        return isset($this->session)
-            ? $this->session->getOldInput($this->transformKey($name))
-            : null;
-    }
-
-    /**
-     * Determine if the old input is empty.
-     *
-     * @return bool
-     */
-    public function oldInputIsEmpty()
-    {
-        return (isset($this->session) && count($this->session->getOldInput()) == 0);
-    }
-
-    /**
      * Transform key from array to dot syntax.
      *
      * @param  string  $key
      *
      * @return string
      */
-    protected function transformKey($key)
+    private function transformKey($key)
     {
         return str_replace(['.', '[]', '[', ']'], ['_', '', '.', ''], $key);
     }

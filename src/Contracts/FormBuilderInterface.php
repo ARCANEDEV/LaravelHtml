@@ -85,7 +85,7 @@ interface FormBuilderInterface
      *
      * @return string
      */
-    public function label($name, $value = null, $options = []);
+    public function label($name, $value = null, array $options = []);
 
     /**
      * Create a form input field.

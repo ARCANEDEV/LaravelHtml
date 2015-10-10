@@ -487,6 +487,38 @@ class FormBuilderTest extends TestCase
     /**
      * @test
      *
+     * @dataProvider provideUrlInputs
+     *
+     * @param  string  $expected
+     * @param  string  $name
+     * @param  array   $options
+     */
+    public function it_can_make_url_inputs($expected, $name, $options)
+    {
+        $this->assertEquals($expected, $this->form->url($name, null, $options));
+    }
+
+    /**
+     * @return array
+     */
+    public function provideUrlInputs()
+    {
+        return [
+            [
+                '<input name="website" type="url">',
+                'website',
+                []
+            ],[
+                '<input class="form-control" name="website" type="url">',
+                'website',
+                ['class' => 'form-control']
+            ]
+        ];
+    }
+
+    /**
+     * @test
+     *
      * @dataProvider provideFileInputs
      *
      * @param  string  $expected
