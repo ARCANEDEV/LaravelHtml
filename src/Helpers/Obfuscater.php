@@ -22,24 +22,39 @@ class Obfuscater
                 return $letter;
             }
 
-            // To properly obfuscate the value, we will randomly convert each letter to
-            // its entity or hexadecimal representation, keeping a bot from sniffing
-            // the randomly obfuscated letters out of the string on the responses.
-            switch (rand(1, 3)) {
-                case 1:
-                    $safe .= '&#' . ord($letter).';';
-                    break;
-
-                case 2:
-                    $safe .= '&#x' . dechex(ord($letter)).';';
-                    break;
-
-                case 3:
-                    $safe .= $letter;
-                    // no break
-            }
+            self::makeSafer($letter, $safe);
         }
 
         return $safe;
+    }
+
+    /* ------------------------------------------------------------------------------------------------
+     |  Other Functions
+     | ------------------------------------------------------------------------------------------------
+     */
+    /**
+     * Make safer.
+     *
+     * @param  string  $letter
+     * @param  string  $safe
+     */
+    private static function makeSafer($letter, &$safe)
+    {
+        // To properly obfuscate the value, we will randomly convert each letter to
+        // its entity or hexadecimal representation, keeping a bot from sniffing
+        // the randomly obfuscated letters out of the string on the responses.
+        switch (rand(1, 3)) {
+            case 1:
+                $safe .= '&#' . ord($letter).';';
+                break;
+
+            case 2:
+                $safe .= '&#x' . dechex(ord($letter)).';';
+                break;
+
+            case 3:
+                $safe .= $letter;
+                // no break
+        }
     }
 }
