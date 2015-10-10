@@ -1,6 +1,5 @@
 <?php namespace Arcanedev\LaravelHtml;
 
-use Arcanedev\LaravelHtml\HtmlBuilder;
 use Arcanedev\LaravelHtml\Contracts\FormBuilderInterface;
 use DateTime;
 use Illuminate\Routing\UrlGenerator;
@@ -716,10 +715,10 @@ class FormBuilder implements FormBuilderInterface
     /**
      * Create a checkbox input field.
      *
-     * @param  string  $name
-     * @param  mixed   $value
-     * @param  bool    $checked
-     * @param  array   $options
+     * @param  string     $name
+     * @param  mixed      $value
+     * @param  bool|null  $checked
+     * @param  array      $options
      *
      * @return string
      */
@@ -750,11 +749,11 @@ class FormBuilder implements FormBuilderInterface
     /**
      * Create a checkable input field.
      *
-     * @param  string  $type
-     * @param  string  $name
-     * @param  mixed   $value
-     * @param  bool    $checked
-     * @param  array   $options
+     * @param  string     $type
+     * @param  string     $name
+     * @param  mixed      $value
+     * @param  bool|null  $checked
+     * @param  array      $options
      *
      * @return string
      */
@@ -762,7 +761,7 @@ class FormBuilder implements FormBuilderInterface
     {
         $checked = $this->getCheckedState($type, $name, $value, $checked);
 
-        if ($checked) {
+        if ( ! is_null($checked) && $checked) {
             $options['checked'] = 'checked';
         }
 
@@ -772,10 +771,10 @@ class FormBuilder implements FormBuilderInterface
     /**
      * Get the check state for a checkable input.
      *
-     * @param  string  $type
-     * @param  string  $name
-     * @param  mixed   $value
-     * @param  bool    $checked
+     * @param  string     $type
+     * @param  string     $name
+     * @param  mixed      $value
+     * @param  bool|null  $checked
      *
      * @return bool
      */
@@ -796,9 +795,9 @@ class FormBuilder implements FormBuilderInterface
     /**
      * Get the check state for a checkbox input.
      *
-     * @param  string  $name
-     * @param  mixed   $value
-     * @param  bool    $checked
+     * @param  string     $name
+     * @param  mixed      $value
+     * @param  bool|null  $checked
      *
      * @return bool
      */
@@ -832,9 +831,9 @@ class FormBuilder implements FormBuilderInterface
     /**
      * Get the check state for a radio input.
      *
-     * @param  string  $name
-     * @param  mixed   $value
-     * @param  bool    $checked
+     * @param  string     $name
+     * @param  mixed      $value
+     * @param  bool|null  $checked
      *
      * @return bool
      */

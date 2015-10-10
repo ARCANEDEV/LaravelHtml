@@ -282,10 +282,10 @@ interface FormBuilderInterface
     /**
      * Create a checkbox input field.
      *
-     * @param  string  $name
-     * @param  mixed   $value
-     * @param  bool    $checked
-     * @param  array   $options
+     * @param  string     $name
+     * @param  mixed      $value
+     * @param  bool|null  $checked
+     * @param  array      $options
      *
      * @return string
      */
