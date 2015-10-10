@@ -1,7 +1,6 @@
 <?php namespace Arcanedev\LaravelHtml\Tests;
 
-use Arcanedev\LaravelHtml\Builders\HtmlBuilder;
-use Illuminate\Foundation\Application;
+use Arcanedev\LaravelHtml\HtmlBuilder;
 use Illuminate\Http\Request;
 use Illuminate\Routing\RouteCollection;
 use Illuminate\Routing\UrlGenerator;
@@ -64,7 +63,7 @@ abstract class TestCase extends BaseTestCase
     /**
      * Get package providers.
      *
-     * @param  Application  $app
+     * @param  \Illuminate\Foundation\Application  $app
      *
      * @return array
      */
@@ -78,7 +77,7 @@ abstract class TestCase extends BaseTestCase
     /**
      * Get package aliases.
      *
-     * @param  Application  $app
+     * @param  \Illuminate\Foundation\Application  $app
      *
      * @return array
      */
@@ -109,9 +108,11 @@ abstract class TestCase extends BaseTestCase
     }
 
     /**
-     * @param  string $type
-     * @param  mixed $value
-     * @param  array $merge
+     * Get input data.
+     *
+     * @param  string  $type
+     * @param  mixed   $value
+     * @param  array   $merge
      *
      * @return array
      */
