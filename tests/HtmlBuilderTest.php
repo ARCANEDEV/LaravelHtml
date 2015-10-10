@@ -1,7 +1,6 @@
 <?php namespace Arcanedev\LaravelHtml\Tests;
 
 use Arcanedev\LaravelHtml\HtmlBuilder;
-use Arcanedev\LaravelHtml\Tests\TestCase;
 use Mockery as m;
 
 /**
@@ -147,15 +146,113 @@ class HtmlBuilderTest extends TestCase
     }
 
     /** @test */
+    public function it_can_make_secure_links_tags_for_assets()
+    {
+        $file = 'style.min.css';
+        $url  = 'https://localhost/' . $file;
+
+        $this->assertEquals(
+            '<a href="' . $url . '">' . $url . '</a>',
+            $this->htmlBuilder->linkSecureAsset($file)
+        );
+    }
+
+    /** @test */
+    public function it_can_make_link_from_route()
+    {
+        $this->assertEquals(
+            '<a href="http://localhost">Home</a>',
+            $this->htmlBuilder->linkRoute('home', 'Home')
+        );
+    }
+
+    /** @test */
+    public function it_can_make_link_from_action()
+    {
+        $this->assertEquals(
+            '<a href="http://localhost">Home</a>',
+            $this->htmlBuilder->linkAction(
+                'Arcanedev\LaravelHtml\Tests\Stubs\DummyController@index', 'Home'
+            )
+        );
+    }
+
+    /** @test */
+    public function it_can_make_mailto_link()
+    {
+        $email  = 'j.doe@gmail.com';
+        $mailto = $this->htmlBuilder->mailto($email);
+
+        $this->assertStringStartsWith('<a href="', $mailto);
+        $this->assertContains('&#', $mailto);
+        $this->assertStringEndsWith('</a>', $mailto);
+
+        $name   = 'John DOE';
+        $mailto = $this->htmlBuilder->mailto($email, $name);
+
+        $this->assertStringStartsWith('<a href="', $mailto);
+        $this->assertContains('&#', $mailto);
+        $this->assertStringEndsWith($name . '</a>', $mailto);
+    }
+
+    /** @test */
+    public function it_can_make_ol_tags()
+    {
+        $list       = [
+            'foo'   => 'bar',
+            'bing'  => 'baz',
+        ];
+
+        $attributes = [
+            'class' => 'example',
+        ];
+
+        $this->assertEquals(
+            '<ol class="example">' .
+                '<li>bar</li>' .
+                '<li>baz</li>' .
+            '</ol>',
+            $this->htmlBuilder->ol($list, $attributes)
+        );
+
+        // Empty list
+        $this->assertEmpty($this->htmlBuilder->ol([]));
+    }
+
+    /** @test */
+    public function it_can_make_ul_tags()
+    {
+        $list       = [
+            'foo'   => 'bar',
+            'bing'  => 'baz',
+        ];
+
+        $attributes = [
+            'class' => 'example',
+        ];
+
+        $this->assertEquals(
+            '<ul class="example">' .
+                '<li>bar</li>' .
+                '<li>baz</li>' .
+            '</ul>',
+            $this->htmlBuilder->ul($list, $attributes)
+        );
+
+        // Empty list
+        $this->assertEmpty($this->htmlBuilder->ul([]));
+    }
+
+    /** @test */
     public function it_can_make_dl_tags()
     {
         $list       = [
             'foo'   => 'bar',
-            'bing'  => 'baz'
+            'bing'  => 'baz',
         ];
 
         $attributes = [
-            'class' => 'example'
+            'class' => 'example',
         ];
 
         $this->assertEquals(
@@ -164,6 +261,89 @@ class HtmlBuilderTest extends TestCase
                 '<dt>bing</dt><dd>baz</dd>' .
             '</dl>',
             $this->htmlBuilder->dl($list, $attributes)
+        );
+
+        // Empty list
+        $this->assertEquals('<dl></dl>', $this->htmlBuilder->dl([]));
+    }
+
+    /** @test */
+    public function it_can_make_nested_listing()
+    {
+        $list = [
+            'foo'    => 'bar',
+            'bing'   => 'baz',
+            'nested' => [
+                'child-1',
+                'child-2',
+                'child-3',
+            ],
+        ];
+
+        $this->assertEquals(
+            '<ul>'.
+                '<li>bar</li>' .
+                '<li>baz</li>' .
+                '<li>nested' .
+                    '<ul>' .
+                        '<li>child-1</li>' .
+                        '<li>child-2</li>' .
+                        '<li>child-3</li>' .
+                    '</ul>' .
+                '</li>' .
+            '</ul>',
+            $this->htmlBuilder->ul($list)
+        );
+
+        $this->assertEquals(
+            '<ol>'.
+                '<li>bar</li>' .
+                '<li>baz</li>' .
+                '<li>nested' .
+                    '<ol>' .
+                        '<li>child-1</li>' .
+                        '<li>child-2</li>' .
+                        '<li>child-3</li>' .
+                    '</ol>' .
+                '</li>' .
+            '</ol>',
+            $this->htmlBuilder->ol($list)
+        );
+    }
+
+    /**
+     * @test
+     *
+     * @expectedException         \Exception
+     * @expectedExceptionMessage  Array to string conversion
+     */
+    public function it_must_throw_an_error_on_dl_nest_list()
+    {
+        $list = [
+            'foo'    => 'bar',
+            'bing'   => 'baz',
+            'nested' => [
+                'child-1',
+                'child-2',
+                'child-3',
+            ],
+        ];
+
+        $this->htmlBuilder->dl($list);
+    }
+
+    /** @test */
+    public function it_can_obfuscate()
+    {
+        $this->assertNotEmpty($this->htmlBuilder->obfuscate('à'));
+    }
+
+    /** @test */
+    public function it_can_make_attributes()
+    {
+        $this->assertEquals(
+            ' class="strong" required="required"',
+            $this->htmlBuilder->attributes(['class' => 'strong', 'required'])
         );
     }
 
