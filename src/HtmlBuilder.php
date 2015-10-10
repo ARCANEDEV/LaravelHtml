@@ -1,4 +1,4 @@
-<?php namespace Arcanedev\LaravelHtml\Builders;
+<?php namespace Arcanedev\LaravelHtml;
 
 use Arcanedev\LaravelHtml\Contracts\HtmlBuilderInterface;
 use Illuminate\Routing\UrlGenerator;

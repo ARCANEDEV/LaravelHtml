@@ -1,6 +1,6 @@
-<?php namespace Arcanedev\LaravelHtml\Tests\Builders;
+<?php namespace Arcanedev\LaravelHtml\Tests;
 
-use Arcanedev\LaravelHtml\Builders\FormBuilder;
+use Arcanedev\LaravelHtml\FormBuilder;
 use Arcanedev\LaravelHtml\Tests\Stubs\FormBuilderModelStub;
 use Arcanedev\LaravelHtml\Tests\TestCase;
 use Carbon\Carbon;

@@ -1,6 +1,6 @@
-<?php namespace Arcanedev\LaravelHtml\Tests\Builders;
+<?php namespace Arcanedev\LaravelHtml\Tests;
 
-use Arcanedev\LaravelHtml\Builders\HtmlBuilder;
+use Arcanedev\LaravelHtml\HtmlBuilder;
 use Arcanedev\LaravelHtml\Tests\TestCase;
 use Mockery as m;
 

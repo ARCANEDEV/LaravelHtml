@@ -1,5 +1,6 @@
-<?php namespace Arcanedev\LaravelHtml\Builders;
+<?php namespace Arcanedev\LaravelHtml;
 
+use Arcanedev\LaravelHtml\HtmlBuilder;
 use Arcanedev\LaravelHtml\Contracts\FormBuilderInterface;
 use DateTime;
 use Illuminate\Routing\UrlGenerator;
