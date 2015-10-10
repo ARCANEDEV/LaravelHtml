@@ -2,7 +2,6 @@
 
 use Arcanedev\LaravelHtml\FormBuilder;
 use Arcanedev\LaravelHtml\Tests\Stubs\FormBuilderModelStub;
-use Arcanedev\LaravelHtml\Tests\TestCase;
 use Carbon\Carbon;
 use Illuminate\Session\Store as Session;
 use Illuminate\Support\Collection;
