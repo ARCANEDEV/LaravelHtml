@@ -1,7 +1,5 @@
 <?php namespace Arcanedev\LaravelHtml;
 
-use Arcanedev\LaravelHtml\Builders\FormBuilder;
-use Arcanedev\LaravelHtml\Builders\HtmlBuilder;
 use Arcanedev\Support\ServiceProvider;
 
 /**
@@ -54,7 +52,7 @@ class HtmlServiceProvider extends ServiceProvider
      | ------------------------------------------------------------------------------------------------
      */
     /**
-     * Register the HTML builder instance.
+     * Register the HTML builder.
      */
     protected function registerHtmlBuilder()
     {
@@ -66,15 +64,15 @@ class HtmlServiceProvider extends ServiceProvider
     }
 
     /**
-     * Register the form builder instance.
+     * Register the form builder.
      */
     protected function registerFormBuilder()
     {
         $this->app->singleton('form', function($app) {
             /**
-             * @var Builders\HtmlBuilder             $html
-             * @var \Illuminate\Routing\UrlGenerator $url
-             * @var \Illuminate\Session\Store        $session
+             * @var HtmlBuilder                       $html
+             * @var \Illuminate\Routing\UrlGenerator  $url
+             * @var \Illuminate\Session\Store         $session
              */
             $html    = $app['html'];
             $url     = $app['url'];
