@@ -173,7 +173,7 @@ interface HtmlBuilderInterface
      *
      * @return string
      */
-    public function ol($list, $attributes = []);
+    public function ol(array $list, array $attributes = []);
 
     /**
      * Generate an un-ordered list of items.
@@ -183,7 +183,7 @@ interface HtmlBuilderInterface
      *
      * @return string
      */
-    public function ul($list, $attributes = []);
+    public function ul(array $list, array $attributes = []);
 
     /**
      * Generate a description list of items.

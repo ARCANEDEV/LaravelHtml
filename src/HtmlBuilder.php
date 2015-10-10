@@ -288,9 +288,9 @@ class HtmlBuilder implements HtmlBuilderInterface
      *
      * @return string
      */
-    public function ol($list, $attributes = [])
+    public function ol(array $list, array $attributes = [])
     {
-        return $this->listing('ol', $list, $attributes);
+        return Helpers\Lister::make('ol', $list, $attributes);
     }
 
     /**
@@ -301,9 +301,9 @@ class HtmlBuilder implements HtmlBuilderInterface
      *
      * @return string
      */
-    public function ul($list, $attributes = [])
+    public function ul(array $list, array $attributes = [])
     {
-        return $this->listing('ul', $list, $attributes);
+        return Helpers\Lister::make('ul', $list, $attributes);
     }
 
     /**
@@ -364,74 +364,6 @@ class HtmlBuilder implements HtmlBuilderInterface
      */
     public function meta($name, $content, array $attributes = [])
     {
-        $defaults   = compact('name', 'content');
-        $attributes = array_merge($defaults, $attributes);
-
-        return '<meta' . $this->attributes($attributes) . '>' . PHP_EOL;
-    }
-
-    /* ------------------------------------------------------------------------------------------------
-     |  Other Functions
-     | ------------------------------------------------------------------------------------------------
-     */
-    /**
-     * Create a listing HTML element.
-     *
-     * @param  string  $type
-     * @param  array   $list
-     * @param  array   $attributes
-     *
-     * @return string
-     */
-    protected function listing($type, $list, $attributes = [])
-    {
-        if (count($list) == 0) {
-            return '';
-        }
-
-        $html = '';
-
-        // Essentially we will just spin through the list and build the list of the HTML
-        // elements from the array. We will also handled nested lists in case that is
-        // present in the array. Then we will build out the final listing elements.
-        foreach ($list as $key => $value) {
-            $html .= $this->listingElement($key, $type, $value);
-        }
-
-        $attributes = $this->attributes($attributes);
-
-        return "<{$type}{$attributes}>{$html}</{$type}>";
-    }
-
-    /**
-     * Create the HTML for a listing element.
-     *
-     * @param  mixed   $key
-     * @param  string  $type
-     * @param  mixed   $value
-     *
-     * @return string
-     */
-    protected function listingElement($key, $type, $value)
-    {
-        return is_array($value)
-            ? $this->nestedListing($key, $type, $value)
-            : '<li>' . e($value) . '</li>';
-    }
-
-    /**
-     * Create the HTML for a nested listing attribute.
-     *
-     * @param  mixed   $key
-     * @param  string  $type
-     * @param  mixed   $value
-     *
-     * @return string
-     */
-    protected function nestedListing($key, $type, $value)
-    {
-        return is_int($key)
-            ? $this->listing($type, $value)
-            : '<li>' . $key . $this->listing($type, $value) . '</li>';
+        return Helpers\Meta::make($name, $content, $attributes);
     }
 }
