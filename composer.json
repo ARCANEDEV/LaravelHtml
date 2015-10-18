@@ -1,27 +1,28 @@
 {
-    "name": "arcanedev/laravel-html",
+    "name":        "arcanedev/laravel-html",
     "description": "HTML and Form Builders for the Laravel Framework",
-    "keywords": ["laravel", "html", "form", "arcanesoft"],
-    "homepage": "https://github.com/ARCANEDEV/LaravelHtml",
-    "license": "MIT",
+    "keywords":    ["arcanedev", "arcanesoft", "laravel", "html", "form"],
+    "homepage":    "https://github.com/ARCANEDEV/LaravelHtml",
     "authors": [
         {
-            "name": "ARCANEDEV",
-            "email": "arcanedev.maroc@gmail.com",
+            "name":     "ARCANEDEV",
+            "email":    "arcanedev.maroc@gmail.com",
             "homepage": "https://github.com/ARCANEDEV"
         }
     ],
+    "type":    "library",
+    "license": "MIT",
     "require": {
-        "php": ">=5.5.9",
-        "arcanedev/support": "~3.0",
-        "illuminate/routing": "~5.1.0",
-        "illuminate/session": "~5.1.0"
+        "php":                 ">=5.5.9",
+        "arcanedev/support":   "~3.0",
+        "illuminate/routing":  "~5.1.0",
+        "illuminate/session":  "~5.1.0"
     },
     "require-dev": {
         "orchestra/testbench": "~3.1.0",
-        "phpunit/phpunit": "~4.0",
-        "phpunit/phpcov": "~2.0",
-        "mockery/mockery": "~0.9"
+        "phpunit/phpcov":      "~2.0",
+        "phpunit/phpunit":     "~4.0|~5.0",
+        "mockery/mockery":     "~0.9"
     },
     "autoload": {
         "psr-4": {
@@ -32,6 +33,11 @@
     "autoload-dev": {
         "psr-4": {
             "Arcanedev\\LaravelHtml\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "5.2-dev"
         }
     }
 }
