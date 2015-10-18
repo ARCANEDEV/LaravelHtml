@@ -225,13 +225,25 @@ class FormBuilder implements FormBuilderInterface
     }
 
     /**
+     * Transform key from array to dot syntax.
+     *
+     * @param  string  $key
+     *
+     * @return string
+     */
+    private function transformKey($key)
+    {
+        return str_replace(['.', '[]', '[', ']'], ['_', '', '.', ''], $key);
+    }
+
+    /**
      * Determine if the old input is empty.
      *
      * @return bool
      */
     public function oldInputIsEmpty()
     {
-        return (isset($this->session) && count($this->session->getOldInput()) == 0);
+        return isset($this->session) && (count($this->session->getOldInput()) == 0);
     }
 
     /**
@@ -245,7 +257,7 @@ class FormBuilder implements FormBuilderInterface
     {
         $method = strtoupper($method);
 
-        return $method != 'GET' ? 'POST' : $method;
+        return $method !== 'GET' ? 'POST' : $method;
     }
 
     /* ------------------------------------------------------------------------------------------------
@@ -1096,17 +1108,5 @@ class FormBuilder implements FormBuilderInterface
         }
 
         return $appendage;
-    }
-
-    /**
-     * Transform key from array to dot syntax.
-     *
-     * @param  string  $key
-     *
-     * @return string
-     */
-    private function transformKey($key)
-    {
-        return str_replace(['.', '[]', '[', ']'], ['_', '', '.', ''], $key);
     }
 }
