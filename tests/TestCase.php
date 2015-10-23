@@ -2,7 +2,7 @@
 
 use Arcanedev\LaravelHtml\HtmlBuilder;
 use Illuminate\Http\Request;
-use Illuminate\Routing\RouteCollection;
+use Illuminate\Routing\Router;
 use Illuminate\Routing\UrlGenerator;
 use Orchestra\Testbench\TestCase as BaseTestCase;
 
@@ -93,13 +93,17 @@ abstract class TestCase extends BaseTestCase
      */
     protected function registerRoutes()
     {
-        /** @var \Illuminate\Routing\Router $router */
+        /** @var Router $router */
         $router = $this->app['router'];
 
-        $router->get('/', [
-            'as'    => 'home',
-            'uses'  => 'Arcanedev\LaravelHtml\Tests\Stubs\DummyController@index'
-        ]);
+        $router->group([
+            'namespace' => 'Arcanedev\LaravelHtml\Tests\Stubs',
+        ], function (Router $router) {
+            $router->get('/', [
+                'as'    => 'home',
+                'uses'  => 'DummyController@index'
+            ]);
+        });
 
         return $router;
     }
