@@ -26,31 +26,20 @@
 
 *By [ARCANEDEV&copy;](http://www.arcanedev.net/)*
 
-## Installation
+### Requirements
 
-```json
-{
-    "require": {
-        "arcanedev/laravel-html": "~5.1"
-    },
-}
-```
+    - PHP >= 5.5.9
 
-#### OR
-```bash
-$ composer require arcanedev/laravel-html
-```
+## INSTALLATION
 
-## Usage
-
-Coming soon ...
+You can install the bindings via [Composer](http://getcomposer.org/). By running `composer require arcanedev/laravel-html`.
 
 ## TODOS
 
   - [ ] Documentation
-  - [ ] Examples
-  - [ ] Laravel 5.1 support
+  - [x] Laravel 5.1 support
+
 
 ## Contribution
 
-Any ideas are welcome. Feel free to submit any issues or pull requests.
+Any ideas are welcome. Feel free to submit any issues or pull requests, please check the [contribution guidelines](CONTRIBUTING.md).
