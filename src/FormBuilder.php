@@ -729,7 +729,7 @@ class FormBuilder implements FormBuilderInterface
      *
      * @return string
      */
-    public function getSelectOption($display, $value, $selected)
+    private function getSelectOption($display, $value, $selected)
     {
         if (is_array($display)) {
             return $this->optionGroup($display, $value, $selected);

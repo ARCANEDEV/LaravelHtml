@@ -269,17 +269,6 @@ interface FormBuilderInterface
     public function selectMonth($name, $selected = null, $options = [], $format = '%B');
 
     /**
-     * Get the select option for the given value.
-     *
-     * @param  string  $display
-     * @param  string  $value
-     * @param  string  $selected
-     *
-     * @return string
-     */
-    public function getSelectOption($display, $value, $selected);
-
-    /**
      * Create a checkbox input field.
      *
      * @param  string     $name

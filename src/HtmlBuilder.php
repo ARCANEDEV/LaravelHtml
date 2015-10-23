@@ -1,7 +1,7 @@
 <?php namespace Arcanedev\LaravelHtml;
 
 use Arcanedev\LaravelHtml\Contracts\HtmlBuilderInterface;
-use Illuminate\Routing\UrlGenerator;
+use Illuminate\Contracts\Routing\UrlGenerator;
 use Illuminate\Support\Traits\Macroable;
 
 /**
@@ -25,7 +25,7 @@ class HtmlBuilder implements HtmlBuilderInterface
     /**
      * The URL generator instance.
      *
-     * @var UrlGenerator
+     * @var \Illuminate\Contracts\Routing\UrlGenerator
      */
     protected $url;
 
@@ -36,7 +36,7 @@ class HtmlBuilder implements HtmlBuilderInterface
     /**
      * Create a new HTML builder instance.
      *
-     * @param  UrlGenerator $url
+     * @param  \Illuminate\Contracts\Routing\UrlGenerator  $url
      */
     public function __construct(UrlGenerator $url = null)
     {
