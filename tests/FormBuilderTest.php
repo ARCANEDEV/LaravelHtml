@@ -3,9 +3,7 @@
 use Arcanedev\LaravelHtml\FormBuilder;
 use Arcanedev\LaravelHtml\Tests\Stubs\FormBuilderModelStub;
 use Carbon\Carbon;
-use Illuminate\Session\Store as Session;
 use Illuminate\Support\Collection;
-use Mockery as m;
 use StdClass;
 
 /**
@@ -48,7 +46,7 @@ class FormBuilderTest extends TestCase
      */
     public function tearDown()
     {
-        m::close();
+        parent::tearDown();
     }
 
     /* ------------------------------------------------------------------------------------------------
@@ -64,7 +62,10 @@ class FormBuilderTest extends TestCase
     /** @test */
     public function it_can_set_and_get_session()
     {
-        $this->assertEquals($this->mockSession(), $this->form->getSessionStore());
+        $this->assertEquals(
+            $this->mockSession()->reveal(),
+            $this->form->getSessionStore()
+        );
     }
 
     /**
@@ -78,6 +79,24 @@ class FormBuilderTest extends TestCase
     public function it_can_open_form($expected, $options)
     {
         $this->assertEquals($expected, $this->form->open($options));
+    }
+
+    /** @test */
+    public function it_can_open_form_with_different_actions()
+    {
+        $expected = implode('', [
+            '<form method="POST" action="http://localhost" accept-charset="UTF-8">',
+            '<input name="_token" type="hidden" value="abc">',
+        ]);
+
+        $options = [
+            ['route'  => 'home'],
+            ['action' => 'Arcanedev\LaravelHtml\Tests\Stubs\DummyController@index'],
+        ];
+
+        foreach ($options as $option) {
+            $this->assertEquals($expected, $this->form->open($option));
+        }
     }
 
     /** @test */
@@ -187,7 +206,7 @@ class FormBuilderTest extends TestCase
     public function it_can_make_not_filled_passwords()
     {
         $session = $this->mockSession();
-        $session->shouldReceive('getOldInput')->never();
+        $session->getOldInput()->shouldNotBeCalled();
 
         $this->assertEquals(
             '<input name="password" type="password" value="">',
@@ -199,7 +218,7 @@ class FormBuilderTest extends TestCase
     public function it_can_make_not_filled_files()
     {
         $session = $this->mockSession();
-        $session->shouldReceive('getOldInput')->never();
+        $session->getOldInput()->shouldNotBeCalled();
 
         $this->assertEquals(
             '<input name="img" type="file">',
@@ -256,10 +275,9 @@ class FormBuilderTest extends TestCase
     public function it_can_make_populated_text_inputs()
     {
         $session = $this->mockSession();
-        $session->shouldReceive('getOldInput')
-            ->twice()
-            ->with('name_with_dots')
-            ->andReturn('some value');
+        $session->getOldInput('name_with_dots')
+            ->shouldBeCalledTimes(2)
+            ->willReturn('some value');
 
         $this->setModel($model = [
             'relation'  => [
@@ -273,19 +291,16 @@ class FormBuilderTest extends TestCase
             $this->form->text('name.with.dots', 'default value')
         );
 
-        $session->shouldReceive('getOldInput')
-            ->once()
-            ->with('text.key.sub')
-            ->andReturn(null);
+        $session->getOldInput('text.key.sub')
+            ->shouldBeCalled()
+            ->willReturn(null);
 
         $this->assertEquals(
             '<input name="text[key][sub]" type="text" value="default value">',
             $this->form->text('text[key][sub]', 'default value')
         );
 
-        $session->shouldReceive('getOldInput')
-            ->with('relation.key')
-            ->andReturn(null);
+        $session->getOldInput('relation.key')->willReturn(null);
 
         $textInput = $this->form->text('relation[key]');
 
@@ -698,13 +713,12 @@ class FormBuilderTest extends TestCase
             'other' => 'val'
         ];
 
-        $session = $this->mockSession();
         $this->setModel($model);
+        $session = $this->mockSession();
 
-        $session->shouldReceive('getOldInput')
-            ->twice()
-            ->with('size')
-            ->andReturn('M');
+        $session->getOldInput('size')
+            ->shouldBeCalledTimes(2)
+            ->willReturn('M');
 
         $this->assertEquals(
             implode('', [
@@ -717,10 +731,9 @@ class FormBuilderTest extends TestCase
             $this->form->select('size', $list, 'S')
         );
 
-        $session->shouldReceive('getOldInput')
-            ->twice()
-            ->with('size.multi')
-            ->andReturn(['L', 'S']);
+        $session->getOldInput('size.multi')
+            ->shouldBeCalledTimes(2)
+            ->willReturn(['L', 'S']);
 
         $this->assertEquals(
             implode('', [
@@ -733,10 +746,9 @@ class FormBuilderTest extends TestCase
             $this->form->select('size[multi][]', $list, 'M', ['multiple' => 'multiple'])
         );
 
-        $session->shouldReceive('getOldInput')
-            ->once()
-            ->with('size.key')
-            ->andReturn(null);
+        $session->getOldInput('size.key')
+            ->shouldBeCalled()
+            ->willReturn(null);
 
         $this->assertEquals(
             implode('', [
@@ -858,15 +870,39 @@ class FormBuilderTest extends TestCase
     }
 
     /** @test */
+    public function it_can_make_select_options_inputs()
+    {
+        $list     = [
+            'country-1' => [
+                'city-1' => 'City 1',
+                'city-2' => 'City 2',
+            ],
+            'country-2' => [
+                'city-3' => 'City 3',
+                'city-4' => 'City 4',
+            ],
+        ];
+        $this->assertEquals(implode('', [
+            '<select name="countries">'.
+                '<optgroup label="country-1">'.
+                    '<option value="city-1">City 1</option>'.
+                    '<option value="city-2">City 2</option>'.
+                '</optgroup>'.
+                '<optgroup label="country-2">'.
+                    '<option value="city-3">City 3</option>'.
+                    '<option value="city-4">City 4</option>'.
+                '</optgroup>'.
+            '</select>',
+        ]), $this->form->select('countries', $list, null));
+    }
+
+    /** @test */
     public function it_can_make_checkbox_inputs()
     {
         $session = $this->mockSession();
-        $session->shouldReceive('getOldInput')
-            ->withNoArgs()
-            ->andReturn([]);
-        $session->shouldReceive('getOldInput')
-            ->with('foo')
-            ->andReturn(null);
+
+        $session->getOldInput()->willReturn([]);
+        $session->getOldInput('foo')->willReturn(null);
 
         $this->assertEquals(
             '<input name="foo" type="checkbox">',
@@ -893,32 +929,23 @@ class FormBuilderTest extends TestCase
     public function it_can_make_populated_checkbox_inputs()
     {
         $session = $this->mockSession();
-        $session->shouldReceive('getOldInput')
-            ->withNoArgs()
-            ->andReturn([1]);
 
-        $session->shouldReceive('getOldInput')
-            ->once()
-            ->with('check')
-            ->andReturn(null);
+        $session->getOldInput()->willReturn([1]);
+        $session->getOldInput('check')->willReturn(null);
 
         $this->assertEquals(
             '<input name="check" type="checkbox" value="1">',
             $this->form->checkbox('check', 1, true)
         );
 
-        $session->shouldReceive('getOldInput')
-            ->with('check.key')
-            ->andReturn('yes');
+        $session->getOldInput('check.key')->willReturn('yes');
 
         $this->assertEquals(
             '<input checked="checked" name="check[key]" type="checkbox" value="yes">',
             $this->form->checkbox('check[key]', 'yes')
         );
 
-        $session->shouldReceive('getOldInput')
-            ->with('multicheck')
-            ->andReturn([1, 3]);
+        $session->getOldInput('multicheck')->willReturn([1, 3]);
 
         $this->assertEquals(
             '<input checked="checked" name="multicheck[]" type="checkbox" value="1">',
@@ -954,8 +981,8 @@ class FormBuilderTest extends TestCase
     public function it_can_make_checkbox_with_model_relation()
     {
         $session = $this->mockSession();
-        $session->shouldReceive('getOldInput')->withNoArgs()->andReturn([]);
-        $session->shouldReceive('getOldInput')->with('items')->andReturn(null);
+        $session->getOldInput()->willReturn([]);
+        $session->getOldInput('items')->willReturn(null);
 
         $models = [];
 
@@ -991,6 +1018,20 @@ class FormBuilderTest extends TestCase
     }
 
     /** @test */
+    public function it_can_test_the_checkable_method()
+    {
+        $reflector = new \ReflectionMethod(FormBuilder::class, 'checkable');
+        $reflector->setAccessible(true);
+
+        $result = $reflector->invokeArgs($this->form, ['checkable', 'checkable', 1, true, []]);
+        $this->assertEquals(
+            '<input name="checkable" type="checkable" value="1">',
+            $result
+        );
+    }
+
+
+    /** @test */
     public function it_can_make_radio_inputs()
     {
         $this->assertEquals(
@@ -1018,9 +1059,8 @@ class FormBuilderTest extends TestCase
     public function it_can_make_populated_radio_inputs()
     {
         $session = $this->mockSession();
-        $session->shouldReceive('getOldInput')
-            ->with('radio')
-            ->andReturn(1);
+        $session->getOldInput('radio')
+            ->willReturn(1);
 
         $this->assertEquals(
             '<input checked="checked" name="radio" type="radio" value="1">',
@@ -1148,13 +1188,13 @@ class FormBuilderTest extends TestCase
      | ------------------------------------------------------------------------------------------------
      */
     /**
-     * @return m\MockInterface
+     * @return \Prophecy\Prophecy\ObjectProphecy
      */
     protected function mockSession()
     {
-        /** @var Session $session */
-        $session = m::mock(Session::class);
-        $this->form->setSessionStore($session);
+        /** @var \Prophecy\Prophecy\ObjectProphecy $session */
+        $session = $this->prophesize(\Illuminate\Session\Store::class);
+        $this->form->setSessionStore($session->reveal());
 
         return $session;
     }

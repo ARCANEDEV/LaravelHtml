@@ -1,7 +1,6 @@
 <?php namespace Arcanedev\LaravelHtml\Tests;
 
 use Arcanedev\LaravelHtml\HtmlBuilder;
-use Mockery as m;
 
 /**
  * Class     HtmlBuilderTest
@@ -29,8 +28,6 @@ class HtmlBuilderTest extends TestCase
     public function tearDown()
     {
         parent::tearDown();
-
-        m::close();
     }
 
     /* ------------------------------------------------------------------------------------------------
