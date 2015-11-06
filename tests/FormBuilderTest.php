@@ -479,6 +479,84 @@ class FormBuilderTest extends TestCase
     /**
      * @test
      *
+     * @dataProvider provideDateTimeInputs
+     *
+     * @param  string  $expected
+     * @param  string  $name
+     * @param  string  $value
+     * @param  array   $options
+     */
+    public function it_can_make_datetime_input($expected, $name, $value, $options)
+    {
+        $this->assertEquals($expected, $this->form->datetime($name, $value, $options));
+    }
+
+    /**
+     * Provide datetime inputs.
+     *
+     * @return array
+     */
+    public function provideDateTimeInputs()
+    {
+        return [
+            [
+                '<input name="datetime" type="datetime" value="2015-01-01T00:00:00+00:00">',
+                'datetime', new \DateTime('2015-01-01'), [],
+            ],[
+                '<input name="datetime" type="datetime" value="2015-01-01T15:01:01+00:00">',
+                'datetime', new \DateTime('2015-01-01 15:01:01'), [],
+            ],[
+                '<input name="datetime" type="datetime" value="2015-01-01 15:01:01">',
+                'datetime', '2015-01-01 15:01:01', [],
+            ],[
+                '<input class="datetime-picker" name="datetime" type="datetime" value="2015-01-01 12:00:00">',
+                'datetime', '2015-01-01 12:00:00', ['class' => 'datetime-picker'],
+            ]
+        ];
+    }
+
+    /**
+     * @test
+     *
+     * @dataProvider provideDateTimeLocaleInputs
+     *
+     * @param  string  $expected
+     * @param  string  $name
+     * @param  string  $value
+     * @param  array   $options
+     */
+    public function it_can_make_datetime_locale_input($expected, $name, $value, $options)
+    {
+        $this->assertEquals($expected, $this->form->datetimeLocal($name, $value, $options));
+    }
+
+    /**
+     * Provide datetime locale inputs.
+     *
+     * @return array
+     */
+    public function provideDateTimeLocaleInputs()
+    {
+        return [
+            [
+                '<input name="datetime-locale" type="datetime-local" value="2015-01-01T00:00">',
+                'datetime-locale', new \DateTime('2015-01-01'), [],
+            ],[
+                '<input name="datetime-local" type="datetime-local" value="2015-01-01T15:01">',
+                'datetime-local', new \DateTime('2015-01-01 15:01:01'), [],
+            ],[
+                '<input name="datetime-local" type="datetime-local" value="2015-01-01 15:01:01">',
+                'datetime-local', '2015-01-01 15:01:01', [],
+            ],[
+                '<input class="datetime-local-picker" name="datetime-local" type="datetime-local" value="2015-01-01 12:00:00">',
+                'datetime-local', '2015-01-01 12:00:00', ['class' => 'datetime-local-picker'],
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     *
      * @dataProvider provideTimeInputs
      *
      * @param  string  $expected
