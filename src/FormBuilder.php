@@ -156,7 +156,7 @@ class FormBuilder implements FormBuilderInterface
      *
      * @return string
      */
-    public function getIdAttribute($name, $attributes)
+    public function getIdAttribute($name, array $attributes)
     {
         if (array_key_exists('id', $attributes)) {
             return $attributes['id'];
@@ -375,7 +375,7 @@ class FormBuilder implements FormBuilderInterface
      *
      * @return string
      */
-    public function input($type, $name, $value = null, $options = [])
+    public function input($type, $name, $value = null, array $options = [])
     {
         if ( ! isset($options['name'])) {
             $options['name'] = $name;
@@ -407,7 +407,7 @@ class FormBuilder implements FormBuilderInterface
      *
      * @return string
      */
-    public function text($name, $value = null, $options = [])
+    public function text($name, $value = null, array $options = [])
     {
         return $this->input('text', $name, $value, $options);
     }
@@ -420,7 +420,7 @@ class FormBuilder implements FormBuilderInterface
      *
      * @return string
      */
-    public function password($name, $options = [])
+    public function password($name, array $options = [])
     {
         return $this->input('password', $name, '', $options);
     }
@@ -434,7 +434,7 @@ class FormBuilder implements FormBuilderInterface
      *
      * @return string
      */
-    public function hidden($name, $value = null, $options = [])
+    public function hidden($name, $value = null, array $options = [])
     {
         return $this->input('hidden', $name, $value, $options);
     }
@@ -448,7 +448,7 @@ class FormBuilder implements FormBuilderInterface
      *
      * @return string
      */
-    public function email($name, $value = null, $options = [])
+    public function email($name, $value = null, array $options = [])
     {
         return $this->input('email', $name, $value, $options);
     }
@@ -462,7 +462,7 @@ class FormBuilder implements FormBuilderInterface
      *
      * @return string
      */
-    public function tel($name, $value = null, $options = [])
+    public function tel($name, $value = null, array $options = [])
     {
         return $this->input('tel', $name, $value, $options);
     }
@@ -476,7 +476,7 @@ class FormBuilder implements FormBuilderInterface
      *
      * @return string
      */
-    public function number($name, $value = null, $options = [])
+    public function number($name, $value = null, array $options = [])
     {
         return $this->input('number', $name, $value, $options);
     }
@@ -490,7 +490,7 @@ class FormBuilder implements FormBuilderInterface
      *
      * @return string
      */
-    public function date($name, $value = null, $options = [])
+    public function date($name, $value = null, array $options = [])
     {
         if ($value instanceof DateTime) {
             $value = $value->format('Y-m-d');
@@ -508,7 +508,7 @@ class FormBuilder implements FormBuilderInterface
      *
      * @return string
      */
-    public function datetime($name, $value = null, $options = [])
+    public function datetime($name, $value = null, array $options = [])
     {
         if ($value instanceof DateTime) {
             $value = $value->format(DateTime::RFC3339);
@@ -526,7 +526,7 @@ class FormBuilder implements FormBuilderInterface
      *
      * @return string
      */
-    public function datetimeLocal($name, $value = null, $options = [])
+    public function datetimeLocal($name, $value = null, array $options = [])
     {
         if ($value instanceof DateTime) {
             $value = $value->format('Y-m-d\TH:i');
@@ -544,7 +544,7 @@ class FormBuilder implements FormBuilderInterface
      *
      * @return string
      */
-    public function time($name, $value = null, $options = [])
+    public function time($name, $value = null, array $options = [])
     {
         return $this->input('time', $name, $value, $options);
     }
@@ -558,7 +558,7 @@ class FormBuilder implements FormBuilderInterface
      *
      * @return string
      */
-    public function url($name, $value = null, $options = [])
+    public function url($name, $value = null, array $options = [])
     {
         return $this->input('url', $name, $value, $options);
     }
@@ -571,7 +571,7 @@ class FormBuilder implements FormBuilderInterface
      *
      * @return string
      */
-    public function file($name, $options = [])
+    public function file($name, array $options = [])
     {
         return $this->input('file', $name, null, $options);
     }
@@ -585,7 +585,7 @@ class FormBuilder implements FormBuilderInterface
      *
      * @return string
      */
-    public function textarea($name, $value = null, $options = [])
+    public function textarea($name, $value = null, array $options = [])
     {
         if ( ! isset($options['name'])) {
             $options['name'] = $name;
@@ -615,7 +615,7 @@ class FormBuilder implements FormBuilderInterface
      *
      * @return array
      */
-    private function setTextAreaSize($options)
+    private function setTextAreaSize(array $options)
     {
         if (isset($options['size'])) {
             return $this->setQuickTextAreaSize($options);
@@ -637,7 +637,7 @@ class FormBuilder implements FormBuilderInterface
      *
      * @return array
      */
-    protected function setQuickTextAreaSize($options)
+    protected function setQuickTextAreaSize(array $options)
     {
         list($cols, $rows) = explode('x', $options['size']);
 
@@ -657,7 +657,7 @@ class FormBuilder implements FormBuilderInterface
      *
      * @return string
      */
-    public function select($name, $list = [], $selected = null, $options = [])
+    public function select($name, $list = [], $selected = null, array $options = [])
     {
         // When building a select box the "value" attribute is really the selected one
         // so we will use that when checking the model or session for a value which
@@ -693,9 +693,8 @@ class FormBuilder implements FormBuilderInterface
         // formatting the attributes into an HTML "attributes" string, then we will
         // build out a final select statement, which will contain all the values.
         $options = $this->html->attributes($options);
-        $list    = implode('', $html);
 
-        return "<select{$options}>{$list}</select>";
+        return "<select{$options}>" . implode('', $html) . "</select>";
     }
 
     /**
@@ -709,7 +708,7 @@ class FormBuilder implements FormBuilderInterface
      *
      * @return string
      */
-    public function selectRange($name, $begin, $end, $selected = null, $options = [])
+    public function selectRange($name, $begin, $end, $selected = null, array $options = [])
     {
         $range = array_combine($range = range($begin, $end), $range);
 
@@ -727,7 +726,7 @@ class FormBuilder implements FormBuilderInterface
      *
      * @return string
      */
-    public function selectYear($name, $begin, $end, $selected = null, $options = [])
+    public function selectYear($name, $begin, $end, $selected = null, array $options = [])
     {
         return call_user_func_array(
             [$this, 'selectRange'],
@@ -745,7 +744,7 @@ class FormBuilder implements FormBuilderInterface
      *
      * @return string
      */
-    public function selectMonth($name, $selected = null, $options = [], $format = '%B')
+    public function selectMonth($name, $selected = null, array $options = [], $format = '%B')
     {
         $months = [];
 
@@ -783,7 +782,7 @@ class FormBuilder implements FormBuilderInterface
      *
      * @return string
      */
-    private function optionGroup($list, $label, $selected)
+    private function optionGroup(array $list, $label, $selected)
     {
         $html = [];
 
@@ -855,7 +854,7 @@ class FormBuilder implements FormBuilderInterface
      *
      * @return string
      */
-    public function checkbox($name, $value = 1, $checked = null, $options = [])
+    public function checkbox($name, $value = 1, $checked = null, array $options = [])
     {
         return $this->checkable('checkbox', $name, $value, $checked, $options);
     }
@@ -870,7 +869,7 @@ class FormBuilder implements FormBuilderInterface
      *
      * @return string
      */
-    public function radio($name, $value = null, $checked = null, $options = [])
+    public function radio($name, $value = null, $checked = null, array $options = [])
     {
         if (is_null($value)) {
             $value = $name;
@@ -890,7 +889,7 @@ class FormBuilder implements FormBuilderInterface
      *
      * @return string
      */
-    protected function checkable($type, $name, $value, $checked, $options)
+    protected function checkable($type, $name, $value, $checked, array $options)
     {
         $checked = $this->getCheckedState($type, $name, $value, $checked);
 
@@ -997,7 +996,7 @@ class FormBuilder implements FormBuilderInterface
      *
      * @return string
      */
-    public function reset($value, $attributes = [])
+    public function reset($value, array $attributes = [])
     {
         return $this->input('reset', null, $value, $attributes);
     }
@@ -1011,7 +1010,7 @@ class FormBuilder implements FormBuilderInterface
     *
     * @return string
     */
-    public function image($url, $name = null, $attributes = [])
+    public function image($url, $name = null, array $attributes = [])
     {
         $attributes['src'] = $this->url->asset($url);
 
@@ -1026,7 +1025,7 @@ class FormBuilder implements FormBuilderInterface
      *
      * @return string
      */
-    public function submit($value = null, $options = [])
+    public function submit($value = null, array $options = [])
     {
         return $this->input('submit', null, $value, $options);
     }
@@ -1039,7 +1038,7 @@ class FormBuilder implements FormBuilderInterface
     *
     * @return string
     */
-    public function button($value = null, $options = [])
+    public function button($value = null, array $options = [])
     {
         if ( ! array_key_exists('type', $options)) {
             $options['type'] = 'button';
@@ -1048,6 +1047,10 @@ class FormBuilder implements FormBuilderInterface
         return '<button' . $this->html->attributes($options) . '>' . $value . '</button>';
     }
 
+    /* ------------------------------------------------------------------------------------------------
+     |  Other Functions
+     | ------------------------------------------------------------------------------------------------
+     */
     /**
      * Get the form action from the options.
      *

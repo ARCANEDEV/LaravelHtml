@@ -39,6 +39,16 @@ interface FormBuilderInterface
      */
     public function setModel($model);
 
+    /**
+     * Get the ID attribute for a field name.
+     *
+     * @param  string  $name
+     * @param  array   $attributes
+     *
+     * @return string
+     */
+    public function getIdAttribute($name, array $attributes);
+
     /* ------------------------------------------------------------------------------------------------
      |  Main Functions
      | ------------------------------------------------------------------------------------------------
@@ -97,7 +107,7 @@ interface FormBuilderInterface
      *
      * @return string
      */
-    public function input($type, $name, $value = null, $options = []);
+    public function input($type, $name, $value = null, array $options = []);
 
     /**
      * Create a text input field.
@@ -108,7 +118,7 @@ interface FormBuilderInterface
      *
      * @return string
      */
-    public function text($name, $value = null, $options = []);
+    public function text($name, $value = null, array $options = []);
 
     /**
      * Create a password input field.
@@ -118,7 +128,7 @@ interface FormBuilderInterface
      *
      * @return string
      */
-    public function password($name, $options = []);
+    public function password($name, array $options = []);
 
     /**
      * Create a hidden input field.
@@ -129,7 +139,7 @@ interface FormBuilderInterface
      *
      * @return string
      */
-    public function hidden($name, $value = null, $options = []);
+    public function hidden($name, $value = null, array $options = []);
 
     /**
      * Create an e-mail input field.
@@ -140,7 +150,7 @@ interface FormBuilderInterface
      *
      * @return string
      */
-    public function email($name, $value = null, $options = []);
+    public function email($name, $value = null, array $options = []);
 
     /**
      * Create a tel input field.
@@ -151,7 +161,7 @@ interface FormBuilderInterface
      *
      * @return string
      */
-    public function tel($name, $value = null, $options = []);
+    public function tel($name, $value = null, array $options = []);
 
     /**
      * Create a number input field.
@@ -162,7 +172,7 @@ interface FormBuilderInterface
      *
      * @return string
      */
-    public function number($name, $value = null, $options = []);
+    public function number($name, $value = null, array $options = []);
 
     /**
      * Create a date input field.
@@ -173,7 +183,7 @@ interface FormBuilderInterface
      *
      * @return string
      */
-    public function date($name, $value = null, $options = []);
+    public function date($name, $value = null, array $options = []);
 
     /**
      * Create a time input field.
@@ -184,7 +194,7 @@ interface FormBuilderInterface
      *
      * @return string
      */
-    public function time($name, $value = null, $options = []);
+    public function time($name, $value = null, array $options = []);
 
     /**
      * Create a url input field.
@@ -195,7 +205,7 @@ interface FormBuilderInterface
      *
      * @return string
      */
-    public function url($name, $value = null, $options = []);
+    public function url($name, $value = null, array $options = []);
 
     /**
      * Create a file input field.
@@ -205,7 +215,7 @@ interface FormBuilderInterface
      *
      * @return string
      */
-    public function file($name, $options = []);
+    public function file($name, array $options = []);
 
     /**
      * Create a textarea input field.
@@ -216,7 +226,7 @@ interface FormBuilderInterface
      *
      * @return string
      */
-    public function textarea($name, $value = null, $options = []);
+    public function textarea($name, $value = null, array $options = []);
 
     /**
      * Create a select box field.
@@ -228,7 +238,7 @@ interface FormBuilderInterface
      *
      * @return string
      */
-    public function select($name, $list = [], $selected = null, $options = []);
+    public function select($name, $list = [], $selected = null, array $options = []);
 
     /**
      * Create a select range field.
@@ -241,7 +251,7 @@ interface FormBuilderInterface
      *
      * @return string
      */
-    public function selectRange($name, $begin, $end, $selected = null, $options = []);
+    public function selectRange($name, $begin, $end, $selected = null, array $options = []);
 
     /**
      * Create a select year field.
@@ -254,7 +264,7 @@ interface FormBuilderInterface
      *
      * @return string
      */
-    public function selectYear($name, $begin, $end, $selected = null, $options = []);
+    public function selectYear($name, $begin, $end, $selected = null, array $options = []);
 
     /**
      * Create a select month field.
@@ -266,7 +276,7 @@ interface FormBuilderInterface
      *
      * @return string
      */
-    public function selectMonth($name, $selected = null, $options = [], $format = '%B');
+    public function selectMonth($name, $selected = null, array $options = [], $format = '%B');
 
     /**
      * Create a checkbox input field.
@@ -278,7 +288,7 @@ interface FormBuilderInterface
      *
      * @return string
      */
-    public function checkbox($name, $value = 1, $checked = null, $options = []);
+    public function checkbox($name, $value = 1, $checked = null, array $options = []);
 
     /**
      * Create a radio button input field.
@@ -290,7 +300,7 @@ interface FormBuilderInterface
      *
      * @return string
      */
-    public function radio($name, $value = null, $checked = null, $options = []);
+    public function radio($name, $value = null, $checked = null, array $options = []);
 
     /**
      * Create a HTML reset input element.
@@ -300,7 +310,7 @@ interface FormBuilderInterface
      *
      * @return string
      */
-    public function reset($value, $attributes = []);
+    public function reset($value, array $attributes = []);
 
     /**
      * Create a HTML image input element.
@@ -311,7 +321,7 @@ interface FormBuilderInterface
      *
      * @return string
      */
-    public function image($url, $name = null, $attributes = []);
+    public function image($url, $name = null, array $attributes = []);
 
     /**
      * Create a submit button element.
@@ -321,7 +331,7 @@ interface FormBuilderInterface
      *
      * @return string
      */
-    public function submit($value = null, $options = []);
+    public function submit($value = null, array $options = []);
 
     /**
      * Create a button element.
@@ -331,17 +341,7 @@ interface FormBuilderInterface
      *
      * @return string
      */
-    public function button($value = null, $options = []);
-
-    /**
-     * Get the ID attribute for a field name.
-     *
-     * @param  string  $name
-     * @param  array   $attributes
-     *
-     * @return string
-     */
-    public function getIdAttribute($name, $attributes);
+    public function button($value = null, array $options = []);
 
     /**
      * Get the value that should be assigned to the field.
