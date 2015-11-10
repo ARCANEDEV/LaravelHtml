@@ -2,7 +2,7 @@
 
 use Arcanedev\LaravelHtml\Contracts\FormBuilderInterface;
 use DateTime;
-use Illuminate\Routing\UrlGenerator;
+use Illuminate\Contracts\Routing\UrlGenerator;
 use Illuminate\Session\Store as Session;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Traits\Macroable;
@@ -28,14 +28,14 @@ class FormBuilder implements FormBuilderInterface
     /**
     * The HTML builder instance.
     *
-    * @var HtmlBuilder
+    * @var \Arcanedev\LaravelHtml\Contracts\HtmlBuilderInterface
     */
     protected $html;
 
     /**
     * The URL generator instance.
     *
-    * @var UrlGenerator $url
+    * @var \Illuminate\Contracts\Routing\UrlGenerator
     */
     protected $url;
 
@@ -95,12 +95,15 @@ class FormBuilder implements FormBuilderInterface
     /**
     * Create a new form builder instance.
     *
-    * @param  UrlGenerator  $url
-    * @param  HtmlBuilder   $html
-    * @param  string        $csrfToken
+    * @param  \Illuminate\Contracts\Routing\UrlGenerator             $url
+    * @param  \Arcanedev\LaravelHtml\Contracts\HtmlBuilderInterface  $html
+    * @param  string                                                 $csrfToken
     */
-    public function __construct(HtmlBuilder $html, UrlGenerator $url, $csrfToken)
-    {
+    public function __construct(
+        Contracts\HtmlBuilderInterface $html,
+        UrlGenerator $url,
+        $csrfToken
+    ) {
         $this->url       = $url;
         $this->html      = $html;
         $this->csrfToken = $csrfToken;
@@ -113,7 +116,7 @@ class FormBuilder implements FormBuilderInterface
     /**
      * Get the session store implementation.
      *
-     * @return  Session  $session
+     * @return  Session
      */
     public function getSessionStore()
     {
