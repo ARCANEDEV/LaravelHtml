@@ -557,6 +557,42 @@ class FormBuilderTest extends TestCase
     /**
      * @test
      *
+     * @dataProvider provideColorInputs
+     *
+     * @param  string  $expected
+     * @param  string  $name
+     * @param  string  $value
+     * @param  array   $options
+     */
+    public function it_can_make_color_input($expected, $name, $value, $options)
+    {
+        $this->assertEquals($expected, $this->form->color($name, $value, $options));
+    }
+
+    /**
+     * Provide color inputs.
+     *
+     * @return array
+     */
+    public function provideColorInputs()
+    {
+        return [
+            [
+                '<input name="palette" type="color">',
+                'palette', null, [],
+            ],[
+                '<input name="palette" type="color" value="#BADA55">',
+                'palette', '#BADA55', [],
+            ],[
+                '<input class="palette-class" name="palette" type="color" value="#BADA55">',
+                'palette', '#BADA55', ['class' => 'palette-class'],
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     *
      * @dataProvider provideTimeInputs
      *
      * @param  string  $expected

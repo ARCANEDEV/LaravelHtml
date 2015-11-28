@@ -361,6 +361,17 @@ interface FormBuilderInterface
     public function button($value = null, array $options = []);
 
     /**
+     * Create a color input field.
+     *
+     * @param  string  $name
+     * @param  string  $value
+     * @param  array   $options
+     *
+     * @return string
+     */
+    public function color($name, $value = null, array $options = []);
+
+    /**
      * Get a value from the session's old input.
      *
      * @param  string  $name
