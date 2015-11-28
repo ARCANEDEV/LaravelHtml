@@ -1050,6 +1050,20 @@ class FormBuilder implements FormBuilderInterface
         return '<button' . $this->html->attributes($options) . '>' . $value . '</button>';
     }
 
+    /**
+     * Create a color input field.
+     *
+     * @param  string  $name
+     * @param  string  $value
+     * @param  array   $options
+     *
+     * @return string
+     */
+    public function color($name, $value = null, array $options = [])
+    {
+        return $this->input('color', $name, $value, $options);
+    }
+
     /* ------------------------------------------------------------------------------------------------
      |  Other Functions
      | ------------------------------------------------------------------------------------------------
