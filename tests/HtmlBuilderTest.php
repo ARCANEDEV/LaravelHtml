@@ -260,6 +260,23 @@ class HtmlBuilderTest extends TestCase
             $this->htmlBuilder->dl($list, $attributes)
         );
 
+        $list       = [
+            'foo'   => 'bar',
+            'bing'  => 'baz',
+            'qux'   => [
+                'qux-foo', 'qux-bar', 'qux-baz',
+            ]
+        ];
+
+        $this->assertEquals(
+            '<dl class="example">' .
+                '<dt>foo</dt><dd>bar</dd>' .
+                '<dt>bing</dt><dd>baz</dd>' .
+                '<dt>qux</dt><dd>qux-foo</dd><dd>qux-bar</dd><dd>qux-baz</dd>' .
+            '</dl>',
+            $this->htmlBuilder->dl($list, $attributes)
+        );
+
         // Empty list
         $this->assertEquals('<dl></dl>', $this->htmlBuilder->dl([]));
     }
@@ -322,7 +339,9 @@ class HtmlBuilderTest extends TestCase
             'nested' => [
                 'child-1',
                 'child-2',
-                'child-3',
+                'child-3' => [
+                    'hello', 'world'
+                ],
             ],
         ];
 

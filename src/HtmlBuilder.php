@@ -321,7 +321,12 @@ class HtmlBuilder implements HtmlBuilderInterface
         $html = "<dl{$attributes}>";
 
         foreach ($list as $key => $value) {
-            $html .= "<dt>$key</dt><dd>$value</dd>";
+            $value = (array) $value;
+            $html .= "<dt>$key</dt>";
+
+            foreach ($value as $vKey => $vValue) {
+                $html .= "<dd>$vValue</dd>";
+            }
         }
 
         $html .= '</dl>';
