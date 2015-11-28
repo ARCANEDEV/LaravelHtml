@@ -3,7 +3,7 @@
 use Arcanedev\LaravelHtml\Contracts\FormBuilderInterface;
 use DateTime;
 use Illuminate\Contracts\Routing\UrlGenerator;
-use Illuminate\Session\Store as Session;
+use Illuminate\Session\SessionInterface as Session;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Traits\Macroable;
 
@@ -49,7 +49,7 @@ class FormBuilder implements FormBuilderInterface
     /**
     * The session store implementation.
     *
-    * @var Session
+    * @var \Illuminate\Session\SessionInterface
     */
     protected $session;
 
@@ -116,7 +116,7 @@ class FormBuilder implements FormBuilderInterface
     /**
      * Get the session store implementation.
      *
-     * @return  Session
+     * @return  \Illuminate\Session\SessionInterface
      */
     public function getSessionStore()
     {
@@ -126,7 +126,7 @@ class FormBuilder implements FormBuilderInterface
     /**
      * Set the session store implementation.
      *
-     * @param  Session  $session
+     * @param  \Illuminate\Session\SessionInterface  $session
      *
      * @return self
      */

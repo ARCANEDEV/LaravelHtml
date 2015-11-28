@@ -1,6 +1,6 @@
 <?php namespace Arcanedev\LaravelHtml\Contracts;
 
-use Illuminate\Session\Store as Session;
+use Illuminate\Session\SessionInterface as Session;
 
 /**
  * Interface  FormBuilderInterface
@@ -17,7 +17,7 @@ interface FormBuilderInterface
     /**
      * Get the session store implementation.
      *
-     * @return  Session  $session
+     * @return  \Illuminate\Session\SessionInterface
      */
     public function getSessionStore();
 
@@ -48,6 +48,23 @@ interface FormBuilderInterface
      * @return string
      */
     public function getIdAttribute($name, array $attributes);
+
+    /**
+     * Get the value that should be assigned to the field.
+     *
+     * @param  string  $name
+     * @param  string  $value
+     *
+     * @return mixed
+     */
+    public function getValueAttribute($name, $value = null);
+
+    /**
+     * Determine if the old input is empty.
+     *
+     * @return bool
+     */
+    public function oldInputIsEmpty();
 
     /* ------------------------------------------------------------------------------------------------
      |  Main Functions
@@ -344,16 +361,6 @@ interface FormBuilderInterface
     public function button($value = null, array $options = []);
 
     /**
-     * Get the value that should be assigned to the field.
-     *
-     * @param  string  $name
-     * @param  string  $value
-     *
-     * @return mixed
-     */
-    public function getValueAttribute($name, $value = null);
-
-    /**
      * Get a value from the session's old input.
      *
      * @param  string  $name
@@ -361,11 +368,4 @@ interface FormBuilderInterface
      * @return mixed
      */
     public function old($name);
-
-    /**
-     * Determine if the old input is empty.
-     *
-     * @return bool
-     */
-    public function oldInputIsEmpty();
 }
