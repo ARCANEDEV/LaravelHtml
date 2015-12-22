@@ -43,10 +43,10 @@ abstract class TestCase extends BaseTestCase
 
     public function tearDown()
     {
-        parent::tearDown();
-
         unset($this->urlGenerator);
         unset($this->htmlBuilder);
+
+        parent::tearDown();
     }
 
     /* ------------------------------------------------------------------------------------------------
