@@ -37,7 +37,7 @@ You can install the bindings via [Composer](http://getcomposer.org/). By running
 ## TODOS
 
   - [ ] Documentation.
-  - [ ] Laravel 5.2 support
+  - [x] Laravel 5.2 support
   - [x] Laravel 5.1 support.
 
 
