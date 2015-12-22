@@ -46,6 +46,8 @@ class FormBuilderTest extends TestCase
      */
     public function tearDown()
     {
+        unset($this->form);
+
         parent::tearDown();
     }
 
