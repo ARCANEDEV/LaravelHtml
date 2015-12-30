@@ -1,11 +1,11 @@
 <?php namespace Arcanedev\LaravelHtml;
 
+use Arcanedev\LaravelHtml\Bases\Builder;
 use Arcanedev\LaravelHtml\Contracts\FormBuilderInterface;
 use DateTime;
 use Illuminate\Contracts\Routing\UrlGenerator;
 use Illuminate\Session\SessionInterface as Session;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Traits\Macroable;
 
 /**
  * Class     FormBuilder
@@ -13,14 +13,8 @@ use Illuminate\Support\Traits\Macroable;
  * @package  Arcanedev\LaravelHtml\Builders
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
-class FormBuilder implements FormBuilderInterface
+class FormBuilder extends Builder implements FormBuilderInterface
 {
-    /* ------------------------------------------------------------------------------------------------
-     |  Traits
-     | ------------------------------------------------------------------------------------------------
-     */
-    use Macroable;
-
     /* ------------------------------------------------------------------------------------------------
      |  Properties
      | ------------------------------------------------------------------------------------------------
@@ -307,17 +301,17 @@ class FormBuilder implements FormBuilderInterface
         // different method than it actually is, for convenience from the forms.
         $append = $this->getAppendage($method);
 
-        return '<form' . $attributes . '>' . $append;
+        return $this->toHtmlString('<form' . $attributes . '>' . $append);
     }
 
     /**
-    * Create a new model based form builder.
-    *
-    * @param  mixed  $model
-    * @param  array  $options
-    *
-    * @return string
-    */
+     * Create a new model based form builder.
+     *
+     * @param  mixed  $model
+     * @param  array  $options
+     *
+     * @return \Illuminate\Support\HtmlString
+     */
     public function model($model, array $options = [])
     {
         $this->setModel($model);
@@ -328,20 +322,20 @@ class FormBuilder implements FormBuilderInterface
     /**
      * Close the current form.
      *
-     * @return string
+     * @return \Illuminate\Support\HtmlString
      */
     public function close()
     {
         $this->labels = [];
         $this->setModel(null);
 
-        return '</form>';
+        return $this->toHtmlString('</form>');
     }
 
     /**
      * Generate a hidden field with the current CSRF token.
      *
-     * @return string
+     * @return \Illuminate\Support\HtmlString
      */
     public function token()
     {
@@ -359,13 +353,13 @@ class FormBuilder implements FormBuilderInterface
      * @param  string  $value
      * @param  array   $options
      *
-     * @return string
+     * @return \Illuminate\Support\HtmlString
      */
     public function label($name, $value = null, array $options = [])
     {
         $this->labels[] = $name;
 
-        return Helpers\Label::make($name, $value, $options);
+        return $this->toHtmlString(Helpers\Label::make($name, $value, $options));
     }
 
     /**
@@ -376,7 +370,7 @@ class FormBuilder implements FormBuilderInterface
      * @param  string  $value
      * @param  array   $options
      *
-     * @return string
+     * @return \Illuminate\Support\HtmlString
      */
     public function input($type, $name, $value = null, array $options = [])
     {
@@ -398,7 +392,7 @@ class FormBuilder implements FormBuilderInterface
         // when creating the HTML element. Then, we will return the entire input.
         $options = array_merge($options, compact('type', 'value', 'id'));
 
-        return '<input' . $this->html->attributes($options) . '>';
+        return $this->toHtmlString('<input' . $this->html->attributes($options) . '>');
     }
 
     /**
@@ -408,7 +402,7 @@ class FormBuilder implements FormBuilderInterface
      * @param  string  $value
      * @param  array   $options
      *
-     * @return string
+     * @return \Illuminate\Support\HtmlString
      */
     public function text($name, $value = null, array $options = [])
     {
@@ -421,7 +415,7 @@ class FormBuilder implements FormBuilderInterface
      * @param  string  $name
      * @param  array   $options
      *
-     * @return string
+     * @return \Illuminate\Support\HtmlString
      */
     public function password($name, array $options = [])
     {
@@ -435,7 +429,7 @@ class FormBuilder implements FormBuilderInterface
      * @param  string  $value
      * @param  array   $options
      *
-     * @return string
+     * @return \Illuminate\Support\HtmlString
      */
     public function hidden($name, $value = null, array $options = [])
     {
@@ -449,7 +443,7 @@ class FormBuilder implements FormBuilderInterface
      * @param  string  $value
      * @param  array   $options
      *
-     * @return string
+     * @return \Illuminate\Support\HtmlString
      */
     public function email($name, $value = null, array $options = [])
     {
@@ -463,7 +457,7 @@ class FormBuilder implements FormBuilderInterface
      * @param  string  $value
      * @param  array   $options
      *
-     * @return string
+     * @return \Illuminate\Support\HtmlString
      */
     public function tel($name, $value = null, array $options = [])
     {
@@ -477,7 +471,7 @@ class FormBuilder implements FormBuilderInterface
      * @param  string  $value
      * @param  array   $options
      *
-     * @return string
+     * @return \Illuminate\Support\HtmlString
      */
     public function number($name, $value = null, array $options = [])
     {
@@ -491,7 +485,7 @@ class FormBuilder implements FormBuilderInterface
      * @param  string  $value
      * @param  array   $options
      *
-     * @return string
+     * @return \Illuminate\Support\HtmlString
      */
     public function date($name, $value = null, array $options = [])
     {
@@ -509,7 +503,7 @@ class FormBuilder implements FormBuilderInterface
      * @param  string  $value
      * @param  array   $options
      *
-     * @return string
+     * @return \Illuminate\Support\HtmlString
      */
     public function datetime($name, $value = null, array $options = [])
     {
@@ -527,7 +521,7 @@ class FormBuilder implements FormBuilderInterface
      * @param  string  $value
      * @param  array   $options
      *
-     * @return string
+     * @return \Illuminate\Support\HtmlString
      */
     public function datetimeLocal($name, $value = null, array $options = [])
     {
@@ -545,7 +539,7 @@ class FormBuilder implements FormBuilderInterface
      * @param  string  $value
      * @param  array   $options
      *
-     * @return string
+     * @return \Illuminate\Support\HtmlString
      */
     public function time($name, $value = null, array $options = [])
     {
@@ -559,7 +553,7 @@ class FormBuilder implements FormBuilderInterface
      * @param  string  $value
      * @param  array   $options
      *
-     * @return string
+     * @return \Illuminate\Support\HtmlString
      */
     public function url($name, $value = null, array $options = [])
     {
@@ -572,7 +566,7 @@ class FormBuilder implements FormBuilderInterface
      * @param  string  $name
      * @param  array   $options
      *
-     * @return string
+     * @return \Illuminate\Support\HtmlString
      */
     public function file($name, array $options = [])
     {
@@ -586,7 +580,7 @@ class FormBuilder implements FormBuilderInterface
      * @param  string  $value
      * @param  array   $options
      *
-     * @return string
+     * @return \Illuminate\Support\HtmlString
      */
     public function textarea($name, $value = null, array $options = [])
     {
@@ -608,7 +602,7 @@ class FormBuilder implements FormBuilderInterface
         // the element. Then we'll create the final textarea elements HTML for us.
         $options = $this->html->attributes($options);
 
-        return '<textarea' . $options . '>' . e($value) . '</textarea>';
+        return $this->toHtmlString('<textarea' . $options . '>' . e($value) . '</textarea>');
     }
 
     /**
@@ -658,7 +652,7 @@ class FormBuilder implements FormBuilderInterface
      * @param  string  $selected
      * @param  array   $options
      *
-     * @return string
+     * @return \Illuminate\Support\HtmlString
      */
     public function select($name, $list = [], $selected = null, array $options = [])
     {
@@ -697,7 +691,7 @@ class FormBuilder implements FormBuilderInterface
         // build out a final select statement, which will contain all the values.
         $options = $this->html->attributes($options);
 
-        return "<select{$options}>" . implode('', $html) . "</select>";
+        return $this->toHtmlString("<select{$options}>" . implode('', $html) . "</select>");
     }
 
     /**
@@ -709,7 +703,7 @@ class FormBuilder implements FormBuilderInterface
      * @param  string  $selected
      * @param  array   $options
      *
-     * @return string
+     * @return \Illuminate\Support\HtmlString
      */
     public function selectRange($name, $begin, $end, $selected = null, array $options = [])
     {
@@ -727,7 +721,7 @@ class FormBuilder implements FormBuilderInterface
      * @param  string  $selected
      * @param  array   $options
      *
-     * @return string
+     * @return \Illuminate\Support\HtmlString
      */
     public function selectYear($name, $begin, $end, $selected = null, array $options = [])
     {
@@ -745,7 +739,7 @@ class FormBuilder implements FormBuilderInterface
      * @param  array   $options
      * @param  string  $format
      *
-     * @return string
+     * @return \Illuminate\Support\HtmlString
      */
     public function selectMonth($name, $selected = null, array $options = [], $format = '%B')
     {
@@ -855,7 +849,7 @@ class FormBuilder implements FormBuilderInterface
      * @param  bool|null  $checked
      * @param  array      $options
      *
-     * @return string
+     * @return \Illuminate\Support\HtmlString
      */
     public function checkbox($name, $value = 1, $checked = null, array $options = [])
     {
@@ -870,7 +864,7 @@ class FormBuilder implements FormBuilderInterface
      * @param  bool    $checked
      * @param  array   $options
      *
-     * @return string
+     * @return \Illuminate\Support\HtmlString
      */
     public function radio($name, $value = null, $checked = null, array $options = [])
     {
@@ -890,7 +884,7 @@ class FormBuilder implements FormBuilderInterface
      * @param  bool|null  $checked
      * @param  array      $options
      *
-     * @return string
+     * @return \Illuminate\Support\HtmlString
      */
     protected function checkable($type, $name, $value, $checked, array $options)
     {
@@ -997,7 +991,7 @@ class FormBuilder implements FormBuilderInterface
      * @param  string  $value
      * @param  array   $attributes
      *
-     * @return string
+     * @return \Illuminate\Support\HtmlString
      */
     public function reset($value, array $attributes = [])
     {
@@ -1011,7 +1005,7 @@ class FormBuilder implements FormBuilderInterface
     * @param  string  $name
     * @param  array   $attributes
     *
-    * @return string
+     * @return \Illuminate\Support\HtmlString
     */
     public function image($url, $name = null, array $attributes = [])
     {
@@ -1026,7 +1020,7 @@ class FormBuilder implements FormBuilderInterface
      * @param  string  $value
      * @param  array   $options
      *
-     * @return string
+     * @return \Illuminate\Support\HtmlString
      */
     public function submit($value = null, array $options = [])
     {
@@ -1039,7 +1033,7 @@ class FormBuilder implements FormBuilderInterface
     * @param  string  $value
     * @param  array   $options
     *
-    * @return string
+    * @return \Illuminate\Support\HtmlString
     */
     public function button($value = null, array $options = [])
     {
@@ -1047,7 +1041,9 @@ class FormBuilder implements FormBuilderInterface
             $options['type'] = 'button';
         }
 
-        return '<button' . $this->html->attributes($options) . '>' . $value . '</button>';
+        return $this->toHtmlString(
+            '<button' . $this->html->attributes($options) . '>' . $value . '</button>'
+        );
     }
 
     /**

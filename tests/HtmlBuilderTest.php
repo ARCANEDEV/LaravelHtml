@@ -158,14 +158,14 @@ class HtmlBuilderTest extends TestCase
     public function it_can_make_mailto_link()
     {
         $email  = 'j.doe@gmail.com';
-        $mailto = $this->htmlBuilder->mailto($email);
+        $mailto = $this->htmlBuilder->mailto($email)->toHtml();
 
         $this->assertStringStartsWith('<a href="', $mailto);
         $this->assertContains('&#', $mailto);
         $this->assertStringEndsWith('</a>', $mailto);
 
         $name   = 'John DOE';
-        $mailto = $this->htmlBuilder->mailto($email, $name);
+        $mailto = $this->htmlBuilder->mailto($email, $name)->toHtml();
 
         $this->assertStringStartsWith('<a href="', $mailto);
         $this->assertContains('&#', $mailto);
@@ -193,7 +193,7 @@ class HtmlBuilderTest extends TestCase
         );
 
         // Empty list
-        $this->assertEmpty($this->htmlBuilder->ol([]));
+        $this->assertEmpty($this->htmlBuilder->ol([])->toHtml());
     }
 
     /** @test */
@@ -217,7 +217,7 @@ class HtmlBuilderTest extends TestCase
         );
 
         // Empty list
-        $this->assertEmpty($this->htmlBuilder->ul([]));
+        $this->assertEmpty($this->htmlBuilder->ul([])->toHtml());
     }
 
     /** @test */
@@ -361,5 +361,26 @@ class HtmlBuilderTest extends TestCase
                 'property' => 'og:type'
             ])
         );
+    }
+
+    /** @test */
+    public function it_can_register_a_component()
+    {
+        $this->htmlBuilder->component('tweet', 'components.tweet', [
+            'handle', 'body', 'date'
+        ]);
+
+        $this->assertTrue($this->htmlBuilder->hasComponent('tweet'));
+    }
+
+    /**
+     * @test
+     *
+     * @expectedException         \BadMethodCallException
+     * @expectedExceptionMessage  Method btnSuccess does not exist.
+     */
+    public function it_must_throw_bad_method_call_exception_on_component()
+    {
+        $this->htmlBuilder->btnSuccess('Hello');
     }
 }

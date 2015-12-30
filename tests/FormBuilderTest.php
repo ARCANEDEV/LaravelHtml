@@ -917,7 +917,7 @@ class FormBuilderTest extends TestCase
                     '<option value="2001">2001</option>'
                     // To be continued...
             ]),
-            $this->form->selectYear('year', 2000, 2020)
+            $this->form->selectYear('year', 2000, 2020)->toHtml()
         );
 
         $this->assertStringStartsWith(
@@ -927,7 +927,7 @@ class FormBuilderTest extends TestCase
                     '<option value="2001">2001</option>'
                     // To be continued...
             ]),
-            $this->form->selectYear('year', 2000, 2020, null, ['id' => 'foo'])
+            $this->form->selectYear('year', 2000, 2020, null, ['id' => 'foo'])->toHtml()
         );
 
         $this->assertStringStartsWith(
@@ -937,14 +937,14 @@ class FormBuilderTest extends TestCase
                     '<option value="2001">2001</option>'
                     // To be continued...
             ]),
-            $this->form->selectYear('year', 2000, 2020, '2000')
+            $this->form->selectYear('year', 2000, 2020, '2000')->toHtml()
         );
     }
 
     /** @test */
     public function it_can_make_select_range_inputs()
     {
-        $range = $this->form->selectRange('dob', 1900, 2013, 2000);
+        $range = $this->form->selectRange('dob', 1900, 2013, 2000)->toHtml();
 
         $this->assertStringStartsWith('<select name="dob"><option value="1900">1900</option>', $range);
         $this->assertContains('<option value="2000" selected="selected">2000</option>', $range);
@@ -961,7 +961,7 @@ class FormBuilderTest extends TestCase
                     '<option value="2">February</option>'
                     // To be continued ...
             ]),
-            $this->form->selectMonth('month')
+            $this->form->selectMonth('month')->toHtml()
         );
 
         $this->assertStringStartsWith(
@@ -971,7 +971,7 @@ class FormBuilderTest extends TestCase
                     '<option value="2">February</option>'
                     // To be continued ...
             ]),
-            $this->form->selectMonth('month', '1')
+            $this->form->selectMonth('month', '1')->toHtml()
         );
 
         $this->assertStringStartsWith(
@@ -981,7 +981,7 @@ class FormBuilderTest extends TestCase
                     '<option value="2">February</option>'
                     // To be continued ...
             ]),
-            $this->form->selectMonth('month', null, ['id' => 'foo'])
+            $this->form->selectMonth('month', null, ['id' => 'foo'])->toHtml()
         );
     }
 
@@ -1239,6 +1239,22 @@ class FormBuilderTest extends TestCase
         $this->assertEquals(
             '<input src="'. $url .'" type="image">',
             $this->form->image($url)
+        );
+    }
+
+    /** @test */
+    public function it_can_register_and_use_a_component()
+    {
+        $view       = '_components.text';
+        $name       = 'first_name';
+        $value      = null;
+        $attributes = [];
+
+        $this->form->component('bsText', $view, ['name', 'value', 'attributes']);
+
+        $this->assertEquals(
+            view($view, compact('name', 'value', 'attributes'))->render(),
+            $this->form->bsText($name, $value, $attributes)->toHtml()
         );
     }
 
