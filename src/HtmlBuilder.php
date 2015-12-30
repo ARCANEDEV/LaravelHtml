@@ -1,8 +1,8 @@
 <?php namespace Arcanedev\LaravelHtml;
 
+use Arcanedev\LaravelHtml\Bases\Builder;
 use Arcanedev\LaravelHtml\Contracts\HtmlBuilderInterface;
 use Illuminate\Contracts\Routing\UrlGenerator;
-use Illuminate\Support\Traits\Macroable;
 
 /**
  * Class     HtmlBuilder
@@ -10,14 +10,8 @@ use Illuminate\Support\Traits\Macroable;
  * @package  Arcanedev\LaravelHtml\Builders
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
-class HtmlBuilder implements HtmlBuilderInterface
+class HtmlBuilder extends Builder implements HtmlBuilderInterface
 {
-    /* ------------------------------------------------------------------------------------------------
-     |  Traits
-     | ------------------------------------------------------------------------------------------------
-     */
-    use Macroable;
-
     /* ------------------------------------------------------------------------------------------------
      |  Properties
      | ------------------------------------------------------------------------------------------------
@@ -78,13 +72,15 @@ class HtmlBuilder implements HtmlBuilderInterface
      * @param  array   $attributes
      * @param  bool    $secure
      *
-     * @return string
+     * @return \Illuminate\Support\HtmlString
      */
     public function script($url, $attributes = [], $secure = null)
     {
         $attributes['src'] = $this->url->asset($url, $secure);
 
-        return '<script' . $this->attributes($attributes) . '></script>' . PHP_EOL;
+        return $this->toHtmlString(
+            '<script' . $this->attributes($attributes) . '></script>' . PHP_EOL
+        );
     }
 
     /**
@@ -94,7 +90,7 @@ class HtmlBuilder implements HtmlBuilderInterface
      * @param  array   $attributes
      * @param  bool    $secure
      *
-     * @return string
+     * @return \Illuminate\Support\HtmlString
      */
     public function style($url, $attributes = [], $secure = null)
     {
@@ -105,7 +101,9 @@ class HtmlBuilder implements HtmlBuilderInterface
         ];
         $attributes['href'] = $this->url->asset($url, $secure);
 
-        return '<link' . $this->attributes($attributes) . '>' . PHP_EOL;
+        return $this->toHtmlString(
+            '<link' . $this->attributes($attributes) . '>' . PHP_EOL
+        );
     }
 
     /**
@@ -116,13 +114,15 @@ class HtmlBuilder implements HtmlBuilderInterface
      * @param  array   $attributes
      * @param  bool    $secure
      *
-     * @return string
+     * @return \Illuminate\Support\HtmlString
      */
     public function image($url, $alt = null, $attributes = [], $secure = null)
     {
         $attributes['alt'] = $alt;
 
-        return '<img src="' . $this->url->asset($url, $secure) . '"' . $this->attributes($attributes) . '>';
+        return $this->toHtmlString(
+            '<img src="' . $this->url->asset($url, $secure) . '"' . $this->attributes($attributes) . '>'
+        );
     }
 
     /**
@@ -132,18 +132,19 @@ class HtmlBuilder implements HtmlBuilderInterface
      * @param  array   $attributes
      * @param  bool    $secure
      *
-     * @return string
+     * @return \Illuminate\Support\HtmlString
      */
     public function favicon($url, $attributes = [], $secure = null)
     {
         $attributes = array_merge($attributes, [
-            'rel'   => 'shortcut icon',
-            'type'  => 'image/x-icon'
+            'rel'  => 'shortcut icon',
+            'type' => 'image/x-icon',
+            'href' => $this->url->asset($url, $secure)
         ]);
 
-        $attributes['href'] = $this->url->asset($url, $secure);
-
-        return '<link' . $this->attributes($attributes) . '>' . PHP_EOL;
+        return $this->toHtmlString(
+            '<link' . $this->attributes($attributes) . '>' . PHP_EOL
+        );
     }
 
     /**
@@ -154,7 +155,7 @@ class HtmlBuilder implements HtmlBuilderInterface
      * @param  array   $attributes
      * @param  bool    $secure
      *
-     * @return string
+     * @return \Illuminate\Support\HtmlString
      */
     public function link($url, $title = null, $attributes = [], $secure = null)
     {
@@ -164,7 +165,9 @@ class HtmlBuilder implements HtmlBuilderInterface
             $title = $url;
         }
 
-        return '<a href="' . $url . '"' . $this->attributes($attributes) . '>' . $this->entities($title) . '</a>';
+        return $this->toHtmlString(
+            '<a href="' . $url . '"' . $this->attributes($attributes) . '>' . $this->entities($title) . '</a>'
+        );
     }
 
     /**
@@ -174,7 +177,7 @@ class HtmlBuilder implements HtmlBuilderInterface
      * @param  string  $title
      * @param  array   $attributes
      *
-     * @return string
+     * @return \Illuminate\Support\HtmlString
      */
     public function secureLink($url, $title = null, $attributes = [])
     {
@@ -189,7 +192,7 @@ class HtmlBuilder implements HtmlBuilderInterface
      * @param  array   $attributes
      * @param  bool    $secure
      *
-     * @return string
+     * @return \Illuminate\Support\HtmlString
      */
     public function linkAsset($url, $title = null, $attributes = [], $secure = null)
     {
@@ -205,7 +208,7 @@ class HtmlBuilder implements HtmlBuilderInterface
      * @param  string  $title
      * @param  array   $attributes
      *
-     * @return string
+     * @return \Illuminate\Support\HtmlString
      */
     public function linkSecureAsset($url, $title = null, $attributes = [])
     {
@@ -220,7 +223,7 @@ class HtmlBuilder implements HtmlBuilderInterface
      * @param  array   $parameters
      * @param  array   $attributes
      *
-     * @return string
+     * @return \Illuminate\Support\HtmlString
      */
     public function linkRoute($name, $title = null, $parameters = [], $attributes = [])
     {
@@ -239,7 +242,7 @@ class HtmlBuilder implements HtmlBuilderInterface
      * @param  array   $parameters
      * @param  array   $attributes
      *
-     * @return string
+     * @return \Illuminate\Support\HtmlString
      */
     public function linkAction($action, $title = null, $parameters = [], $attributes = [])
     {
@@ -257,7 +260,7 @@ class HtmlBuilder implements HtmlBuilderInterface
      * @param  string  $title
      * @param  array   $attributes
      *
-     * @return string
+     * @return \Illuminate\Support\HtmlString
      */
     public function mailto($email, $title = null, $attributes = [])
     {
@@ -265,7 +268,9 @@ class HtmlBuilder implements HtmlBuilderInterface
         $title = $title ?: $email;
         $email = $this->obfuscate('mailto:') . $email;
 
-        return '<a href="' . $email . '"' . $this->attributes($attributes) . '>' . $this->entities($title) . '</a>';
+        return $this->toHtmlString(
+            '<a href="' . $email . '"' . $this->attributes($attributes) . '>' . $this->entities($title) . '</a>'
+        );
     }
 
     /**
@@ -286,11 +291,13 @@ class HtmlBuilder implements HtmlBuilderInterface
      * @param  array  $list
      * @param  array  $attributes
      *
-     * @return string
+     * @return \Illuminate\Support\HtmlString
      */
     public function ol(array $list, array $attributes = [])
     {
-        return Helpers\Lister::make('ol', $list, $attributes);
+        return $this->toHtmlString(
+            Helpers\Lister::make('ol', $list, $attributes)
+        );
     }
 
     /**
@@ -299,11 +306,13 @@ class HtmlBuilder implements HtmlBuilderInterface
      * @param  array  $list
      * @param  array  $attributes
      *
-     * @return string
+     * @return \Illuminate\Support\HtmlString
      */
     public function ul(array $list, array $attributes = [])
     {
-        return Helpers\Lister::make('ul', $list, $attributes);
+        return $this->toHtmlString(
+            Helpers\Lister::make('ul', $list, $attributes)
+        );
     }
 
     /**
@@ -312,7 +321,7 @@ class HtmlBuilder implements HtmlBuilderInterface
      * @param  array  $list
      * @param  array  $attributes
      *
-     * @return string
+     * @return \Illuminate\Support\HtmlString
      */
     public function dl(array $list, array $attributes = [])
     {
@@ -331,7 +340,7 @@ class HtmlBuilder implements HtmlBuilderInterface
 
         $html .= '</dl>';
 
-        return $html;
+        return $this->toHtmlString($html);
     }
 
     /**
@@ -365,10 +374,12 @@ class HtmlBuilder implements HtmlBuilderInterface
      * @param  string  $content
      * @param  array   $attributes
      *
-     * @return string
+     * @return \Illuminate\Support\HtmlString
      */
     public function meta($name, $content, array $attributes = [])
     {
-        return Helpers\Meta::make($name, $content, $attributes);
+        return $this->toHtmlString(
+            Helpers\Meta::make($name, $content, $attributes)
+        );
     }
 }

@@ -82,10 +82,46 @@ abstract class TestCase extends BaseTestCase
         ];
     }
 
+    /**
+     * Define environment setup.
+     *
+     * @param  \Illuminate\Foundation\Application   $app
+     */
+    protected function getEnvironmentSetUp($app)
+    {
+        /** @var  \Illuminate\Contracts\Config\Repository  $config */
+        $config = $app['config'];
+
+        // Setup default database to use sqlite :memory:
+        $config->set('database.default', 'testbench');
+        $config->set('database.connections.testbench', [
+            'driver'   => 'sqlite',
+            'database' => ':memory:',
+            'prefix'   => '',
+        ]);
+
+        $viewPaths   = $config->get('view.paths');
+        $viewPaths[] = __DIR__ . '/fixtures/views';
+
+        $config->set('view.paths', array_map('realpath', $viewPaths));
+    }
+
+
     /* ------------------------------------------------------------------------------------------------
      |  Other Functions
      | ------------------------------------------------------------------------------------------------
      */
+    /**
+     * Migrate the database.
+     */
+    protected function migrate()
+    {
+        $this->artisan('migrate', [
+            '--database' => 'testbench',
+            '--realpath' => realpath(__DIR__ . '/fixtures/migrations'),
+        ]);
+    }
+
     /**
      * Register routes for tests.
      *
