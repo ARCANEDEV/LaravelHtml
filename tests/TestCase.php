@@ -89,13 +89,21 @@ abstract class TestCase extends BaseTestCase
      */
     protected function getEnvironmentSetUp($app)
     {
+        /** @var  \Illuminate\Contracts\Config\Repository  $config */
+        $config = $app['config'];
+
         // Setup default database to use sqlite :memory:
-        $app['config']->set('database.default', 'testbench');
-        $app['config']->set('database.connections.testbench', [
+        $config->set('database.default', 'testbench');
+        $config->set('database.connections.testbench', [
             'driver'   => 'sqlite',
             'database' => ':memory:',
             'prefix'   => '',
         ]);
+
+        $viewPaths   = $config->get('view.paths');
+        $viewPaths[] = __DIR__ . '/fixtures/views';
+
+        $config->set('view.paths', array_map('realpath', $viewPaths));
     }
 
 
@@ -110,7 +118,7 @@ abstract class TestCase extends BaseTestCase
     {
         $this->artisan('migrate', [
             '--database' => 'testbench',
-            '--realpath' => realpath(__DIR__ . '/migrations'),
+            '--realpath' => realpath(__DIR__ . '/fixtures/migrations'),
         ]);
     }
 
