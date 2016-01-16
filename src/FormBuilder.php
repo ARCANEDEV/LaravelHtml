@@ -50,7 +50,7 @@ class FormBuilder extends Builder implements FormBuilderInterface
     /**
     * The current model instance for the form.
     *
-    * @var mixed
+    * @var \Illuminate\Database\Eloquent\Model
     */
     protected $model;
 
@@ -134,7 +134,7 @@ class FormBuilder extends Builder implements FormBuilderInterface
     /**
      * Set the model instance on the form builder.
      *
-     * @param  mixed  $model
+     * @param  \Illuminate\Database\Eloquent\Model  $model
      *
      * @return self
      */
