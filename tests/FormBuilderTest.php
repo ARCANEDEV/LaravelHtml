@@ -490,7 +490,10 @@ class FormBuilderTest extends TestCase
      */
     public function it_can_make_datetime_input($expected, $name, $value, $options)
     {
-        $this->assertEquals($expected, $this->form->datetime($name, $value, $options));
+        $this->assertEquals(
+            $expected,
+            $this->form->datetime($name, $value, $options)->toHtml()
+        );
     }
 
     /**
@@ -500,6 +503,8 @@ class FormBuilderTest extends TestCase
      */
     public function provideDateTimeInputs()
     {
+        date_default_timezone_set('UTC');
+
         return [
             [
                 '<input name="datetime" type="datetime" value="2015-01-01T00:00:00+00:00">',
@@ -998,7 +1003,8 @@ class FormBuilderTest extends TestCase
                 'city-4' => 'City 4',
             ],
         ];
-        $this->assertEquals(implode('', [
+
+        $this->assertEquals(
             '<select name="countries">'.
                 '<optgroup label="country-1">'.
                     '<option value="city-1">City 1</option>'.
@@ -1009,7 +1015,27 @@ class FormBuilderTest extends TestCase
                     '<option value="city-4">City 4</option>'.
                 '</optgroup>'.
             '</select>',
-        ]), $this->form->select('countries', $list, null));
+            $this->form->select('countries', $list, null)
+        );
+
+        $list  = [
+            'Large sizes' => [
+                'L'  => 'Large',
+                'XL' => 'Extra Large',
+            ],
+            'S' => 'Small',
+        ];
+
+        $this->assertEquals(
+            '<select class="class-name" id="select-id" name="size">'.
+                '<optgroup label="Large sizes">'.
+                    '<option value="L">Large</option>'.
+                    '<option value="XL">Extra Large</option>'.
+                '</optgroup>'.
+                '<option value="S">Small</option>'.
+            '</select>',
+            $this->form->select('size', $list, null, ['class' => 'class-name', 'id' => 'select-id'])
+        );
     }
 
     /** @test */

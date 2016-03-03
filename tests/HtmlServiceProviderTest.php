@@ -41,18 +41,27 @@ class HtmlServiceProviderTest extends TestCase
      | ------------------------------------------------------------------------------------------------
      */
     /** @test */
-    public function it_must_be_a_laravel_provider()
+    public function it_can_be_instantiated()
     {
-        $this->assertInstanceOf(\Illuminate\Support\ServiceProvider::class, $this->provider);
-        $this->assertInstanceOf(\Arcanedev\Support\ServiceProvider::class,  $this->provider);
+        $expectations = [
+            \Illuminate\Support\ServiceProvider::class,
+            \Arcanedev\Support\ServiceProvider::class,
+            \Arcanedev\LaravelHtml\HtmlServiceProvider::class,
+        ];
+
+        foreach ($expectations as $expected) {
+            $this->assertInstanceOf($expected, $this->provider);
+        }
     }
 
     /** @test */
     public function it_can_get_provides()
     {
-        $this->assertEquals([
+        $expected = [
             'html', \Arcanedev\LaravelHtml\HtmlBuilder::class,
             'form', \Arcanedev\LaravelHtml\FormBuilder::class
-        ], $this->provider->provides());
+        ];
+
+        $this->assertEquals($expected, $this->provider->provides());
     }
 }

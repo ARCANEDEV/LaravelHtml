@@ -36,7 +36,7 @@ class HtmlBuilderTest extends TestCase
         $value  = 'Un \'apostrophe\' en <strong>gras</strong>';
         $result = 'Un &#039;apostrophe&#039; en &lt;strong&gt;gras&lt;/strong&gt;';
 
-        $this->assertEquals($value,  $this->htmlBuilder->decode($result));
+        $this->assertEquals($value, $this->htmlBuilder->decode($result));
     }
 
     /** @test */
@@ -193,7 +193,9 @@ class HtmlBuilderTest extends TestCase
         );
 
         // Empty list
-        $this->assertEmpty($this->htmlBuilder->ol([])->toHtml());
+        $this->assertEmpty(
+            $this->htmlBuilder->ol([])->toHtml()
+        );
     }
 
     /** @test */
@@ -217,7 +219,9 @@ class HtmlBuilderTest extends TestCase
         );
 
         // Empty list
-        $this->assertEmpty($this->htmlBuilder->ul([])->toHtml());
+        $this->assertEmpty(
+            $this->htmlBuilder->ul([])->toHtml()
+        );
     }
 
     /** @test */
@@ -258,7 +262,10 @@ class HtmlBuilderTest extends TestCase
         );
 
         // Empty list
-        $this->assertEquals('<dl></dl>', $this->htmlBuilder->dl([]));
+        $this->assertEquals(
+            '<dl></dl>',
+            $this->htmlBuilder->dl([])
+        );
     }
 
     /** @test */
