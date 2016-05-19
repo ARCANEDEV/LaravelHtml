@@ -180,7 +180,7 @@ class FormBuilder extends Builder implements FormBuilderInterface
             return $value;
         }
 
-        if ( ! is_null($this->old($name))) {
+        if ( ! is_null($this->old($name)) && $name !== '_method') {
             return $this->old($name);
         }
 
@@ -188,11 +188,9 @@ class FormBuilder extends Builder implements FormBuilderInterface
             return $value;
         }
 
-        if (isset($this->model)) {
-            return $this->getModelValueAttribute($name);
-        }
-
-        return null;
+        return isset($this->model)
+            ? $this->getModelValueAttribute($name)
+            : null;
     }
 
     /**
