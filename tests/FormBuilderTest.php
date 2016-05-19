@@ -822,12 +822,36 @@ class FormBuilderTest extends TestCase
     }
 
     /** @test */
+    public function it_can_make_select_input_with_nested_options()
+    {
+        $list = [
+            'Large sizes' => [
+                'L' => 'Large',
+                'XL' => 'Extra Large',
+            ],
+            'S' => 'Small',
+        ];
+
+        $this->assertEquals(implode('', [
+                '<select class="class-name" id="select-id" name="size">',
+                    '<optgroup label="Large sizes">',
+                        '<option value="L">Large</option>',
+                        '<option value="XL">Extra Large</option>',
+                    '</optgroup>',
+                    '<option value="S">Small</option>',
+                '</select>'
+            ]),
+            $this->form->select('size', $list, null,['class' => 'class-name', 'id' => 'select-id'])
+        );
+    }
+
+    /** @test */
     public function it_can_make_populated_select_inputs()
     {
         $list  = [
             'L' => 'Large',
             'M' => 'Medium',
-            'S' => 'Small'
+            'S' => 'Small',
         ];
         $model = [
             'size'  => ['key' => 'S'],
@@ -1171,7 +1195,6 @@ class FormBuilderTest extends TestCase
             $result
         );
     }
-
 
     /** @test */
     public function it_can_make_radio_inputs()
