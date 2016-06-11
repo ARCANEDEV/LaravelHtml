@@ -116,12 +116,13 @@ class FormBuilderTest extends TestCase
      * @param  string  $name
      * @param  string  $value
      * @param  array   $options
+     * @param  bool    $escaped
      */
-    public function it_can_make_label($expected, $name, $value, $options)
+    public function it_can_make_label($expected, $name, $value, $options, $escaped = true)
     {
         $this->assertEquals(
             $expected,
-            $this->form->label($name, $value, $options)
+            $this->form->label($name, $value, $options, $escaped)
         );
     }
 
@@ -1334,13 +1335,19 @@ class FormBuilderTest extends TestCase
                 '<label for="foo">Foobar</label>',
                 'foo',
                 'Foobar',
-                []
+                [],
             ],[
                 '<label for="foo" class="control-label">Foobar</label>',
                 'foo',
                 'Foobar',
-                ['class' => 'control-label']
-            ]
+                ['class' => 'control-label'],
+            ],[
+                '<label for="foo">Foobar <i>bar</i></label>',
+                'foo',
+                'Foobar <i>bar</i>',
+                [],
+                false
+            ],
         ];
     }
 

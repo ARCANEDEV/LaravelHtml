@@ -350,14 +350,17 @@ class FormBuilder extends Builder implements FormBuilderInterface
      * @param  string  $name
      * @param  string  $value
      * @param  array   $options
+     * @param  bool    $escaped
      *
      * @return \Illuminate\Support\HtmlString
      */
-    public function label($name, $value = null, array $options = [])
+    public function label($name, $value = null, array $options = [], $escaped = true)
     {
         $this->labels[] = $name;
 
-        return $this->toHtmlString(Helpers\Label::make($name, $value, $options));
+        return $this->toHtmlString(
+            Helpers\Label::make($name, $value, $options, $escaped)
+        );
     }
 
     /**

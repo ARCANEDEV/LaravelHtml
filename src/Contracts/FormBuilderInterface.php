@@ -109,10 +109,11 @@ interface FormBuilderInterface
      * @param  string  $name
      * @param  string  $value
      * @param  array   $options
+     * @param  bool    $escaped
      *
-     * @return string
+     * @return \Illuminate\Support\HtmlString
      */
-    public function label($name, $value = null, array $options = []);
+    public function label($name, $value = null, array $options = [], $escaped = true);
 
     /**
      * Create a form input field.
