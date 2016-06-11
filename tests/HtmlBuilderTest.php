@@ -18,6 +18,7 @@ class HtmlBuilderTest extends TestCase
     public function it_can_be_instantiated()
     {
         $this->assertInstanceOf(HtmlBuilder::class, $this->htmlBuilder);
+        $this->assertInstanceOf(HtmlBuilder::class, html());
     }
 
     /** @test */
@@ -89,12 +90,27 @@ class HtmlBuilderTest extends TestCase
     /** @test */
     public function it_can_make_link_tags()
     {
-        $title = null;
         $url   = $this->urlTo('hello');
 
         $this->assertEquals(
             '<a href="' . $url . '">' . $url . '</a>',
-            $this->htmlBuilder->link($url, $title)
+            $this->htmlBuilder->link($url, null)
+        );
+
+        $this->assertEquals(
+            '<a href="' . $url . '">Website</a>',
+            $this->htmlBuilder->link($url, 'Website')
+        );
+
+        $this->assertEquals(
+            '<a href="' . $url . '" class="btn btn-primary">Website</a>',
+            $this->htmlBuilder->link($url, 'Website', ['class' => 'btn btn-primary'])
+        );
+
+        $title = '<i class="fa fa-globe"></i> ' . $url;
+        $this->assertEquals(
+            '<a href="' . $url . '">' . $title . '</a>',
+            $this->htmlBuilder->link($url, $title, [], null, false)
         );
     }
 
@@ -108,13 +124,25 @@ class HtmlBuilderTest extends TestCase
             '<a href="' . $url . '">' . $url . '</a>',
             $this->htmlBuilder->secureLink($url, $title)
         );
+
+        $title = '<i class="fa fa-globe"></i> ' . $url;
+
+        $this->assertEquals(
+            '<a href="' . $url . '">' . e($title) . '</a>',
+            $this->htmlBuilder->secureLink($url, $title, [])
+        );
+
+        $this->assertEquals(
+            '<a href="' . $url . '">' . $title . '</a>',
+            $this->htmlBuilder->secureLink($url, $title, [], false)
+        );
     }
 
     /** @test */
     public function it_can_make_link_tags_for_assets()
     {
-        $file = 'style.min.css';
-        $url  = $this->baseUrl . '/style.min.css';
+        $file = 'assets/img/logo.png';
+        $url  = $this->baseUrl . '/' . $file;
 
         $this->assertEquals(
             '<a href="' . $url . '">' . $url . '</a>',
@@ -125,7 +153,7 @@ class HtmlBuilderTest extends TestCase
     /** @test */
     public function it_can_make_secure_links_tags_for_assets()
     {
-        $file = 'style.min.css';
+        $file = 'assets/img/logo.png';
         $url  = 'https://localhost/' . $file;
 
         $this->assertEquals(
@@ -137,20 +165,57 @@ class HtmlBuilderTest extends TestCase
     /** @test */
     public function it_can_make_link_from_route()
     {
+        $title = 'Home';
+        $route = 'home';
         $this->assertEquals(
-            '<a href="http://localhost">Home</a>',
-            $this->htmlBuilder->linkRoute('home', 'Home')
+            '<a href="' . route($route) . '">' . $title . '</a>',
+            $this->htmlBuilder->linkRoute($route, $title)
+        );
+
+        $this->assertEquals(
+            '<a href="' . route($route) . '" class="btn btn-primary">' . $title . '</a>',
+            $this->htmlBuilder->linkRoute($route, $title, [], ['class' => 'btn btn-primary'])
+        );
+
+        $title = '<i class="fa fa-home"></i>' . $title;
+
+        $this->assertEquals(
+            '<a href="' . route($route) . '" class="btn btn-primary">' . e($title) . '</a>',
+            $this->htmlBuilder->linkRoute($route, $title, [], ['class' => 'btn btn-primary'])
+        );
+
+        $this->assertEquals(
+            '<a href="' . route($route) . '" class="btn btn-primary">' . $title . '</a>',
+            $this->htmlBuilder->linkRoute($route, $title, [], ['class' => 'btn btn-primary'], false)
         );
     }
 
     /** @test */
     public function it_can_make_link_from_action()
     {
+        $title  = 'Home';
+        $action = 'Arcanedev\LaravelHtml\Tests\Stubs\DummyController@index';
+
         $this->assertEquals(
-            '<a href="http://localhost">Home</a>',
-            $this->htmlBuilder->linkAction(
-                'Arcanedev\LaravelHtml\Tests\Stubs\DummyController@index', 'Home'
-            )
+            '<a href="' . action($action) . '">' . $title . '</a>',
+            $this->htmlBuilder->linkAction($action, $title)
+        );
+
+        $this->assertEquals(
+            '<a href="' . action($action) . '" class="btn btn-primary">' . $title . '</a>',
+            $this->htmlBuilder->linkAction($action, $title, [], ['class' => 'btn btn-primary'])
+        );
+
+        $title = '<i class="fa fa-home"></i>' . $title;
+
+        $this->assertEquals(
+            '<a href="' . action($action) . '" class="btn btn-primary">' . e($title) . '</a>',
+            $this->htmlBuilder->linkAction($action, $title, [], ['class' => 'btn btn-primary'])
+        );
+
+        $this->assertEquals(
+            '<a href="' . action($action) . '" class="btn btn-primary">' . $title . '</a>',
+            $this->htmlBuilder->linkAction($action, $title, [], ['class' => 'btn btn-primary'], false)
         );
     }
 
@@ -166,6 +231,13 @@ class HtmlBuilderTest extends TestCase
 
         $name   = 'John DOE';
         $mailto = $this->htmlBuilder->mailto($email, $name)->toHtml();
+
+        $this->assertStringStartsWith('<a href="', $mailto);
+        $this->assertContains('&#', $mailto);
+        $this->assertStringEndsWith($name . '</a>', $mailto);
+
+        $name   = '<span>John DOE</span>';
+        $mailto = $this->htmlBuilder->mailto($email, $name, ['class' => 'mailto-link'], false)->toHtml();
 
         $this->assertStringStartsWith('<a href="', $mailto);
         $this->assertContains('&#', $mailto);

@@ -154,19 +154,21 @@ class HtmlBuilder extends Builder implements HtmlBuilderInterface
      * @param  string  $title
      * @param  array   $attributes
      * @param  bool    $secure
+     * @param  bool    $escaped
      *
      * @return \Illuminate\Support\HtmlString
      */
-    public function link($url, $title = null, $attributes = [], $secure = null)
+    public function link($url, $title = null, $attributes = [], $secure = null, $escaped = true)
     {
         $url = $this->url->to($url, [], $secure);
 
-        if (is_null($title) || $title === false) {
+        if (is_null($title) || $title === false)
             $title = $url;
-        }
 
         return $this->toHtmlString(
-            '<a href="' . $url . '"' . $this->attributes($attributes) . '>' . $this->entities($title) . '</a>'
+            '<a href="' . $url . '"' . $this->attributes($attributes) . '>' .
+                ($escaped ? $this->entities($title) : $title).
+            '</a>'
         );
     }
 
@@ -176,12 +178,13 @@ class HtmlBuilder extends Builder implements HtmlBuilderInterface
      * @param  string  $url
      * @param  string  $title
      * @param  array   $attributes
+     * @param  bool    $escaped
      *
      * @return \Illuminate\Support\HtmlString
      */
-    public function secureLink($url, $title = null, $attributes = [])
+    public function secureLink($url, $title = null, $attributes = [], $escaped = true)
     {
-        return $this->link($url, $title, $attributes, true);
+        return $this->link($url, $title, $attributes, true, $escaped);
     }
 
     /**
@@ -222,16 +225,15 @@ class HtmlBuilder extends Builder implements HtmlBuilderInterface
      * @param  string  $title
      * @param  array   $parameters
      * @param  array   $attributes
+     * @param  bool    $escaped
      *
      * @return \Illuminate\Support\HtmlString
      */
-    public function linkRoute($name, $title = null, $parameters = [], $attributes = [])
+    public function linkRoute($name, $title = null, $parameters = [], $attributes = [], $escaped = true)
     {
-        return $this->link(
-            $this->url->route($name, $parameters),
-            $title,
-            $attributes
-        );
+        $url = $this->url->route($name, $parameters);
+
+        return $this->link($url, $title, $attributes, null, $escaped);
     }
 
     /**
@@ -241,16 +243,15 @@ class HtmlBuilder extends Builder implements HtmlBuilderInterface
      * @param  string  $title
      * @param  array   $parameters
      * @param  array   $attributes
+     * @param  bool    $escaped
      *
      * @return \Illuminate\Support\HtmlString
      */
-    public function linkAction($action, $title = null, $parameters = [], $attributes = [])
+    public function linkAction($action, $title = null, $parameters = [], $attributes = [], $escaped = true)
     {
-        return $this->link(
-            $this->url->action($action, $parameters),
-            $title,
-            $attributes
-        );
+        $url = $this->url->action($action, $parameters);
+
+        return $this->link($url, $title, $attributes, null, $escaped);
     }
 
     /**
@@ -259,17 +260,20 @@ class HtmlBuilder extends Builder implements HtmlBuilderInterface
      * @param  string  $email
      * @param  string  $title
      * @param  array   $attributes
+     * @param  bool    $escaped
      *
      * @return \Illuminate\Support\HtmlString
      */
-    public function mailto($email, $title = null, $attributes = [])
+    public function mailto($email, $title = null, $attributes = [], $escaped = true)
     {
         $email = $this->email($email);
         $title = $title ?: $email;
         $email = $this->obfuscate('mailto:') . $email;
 
         return $this->toHtmlString(
-            '<a href="' . $email . '"' . $this->attributes($attributes) . '>' . $this->entities($title) . '</a>'
+            '<a href="' . $email . '"' . $this->attributes($attributes) . '>' .
+                ($escaped ? $this->entities($title) : $title) .
+            '</a>'
         );
     }
 

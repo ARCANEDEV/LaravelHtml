@@ -42,8 +42,8 @@ class HtmlServiceProvider extends ServiceProvider
     public function provides()
     {
         return [
-            'html', HtmlBuilder::class,
-            'form', FormBuilder::class
+            'html', HtmlBuilder::class, Contracts\HtmlBuilderInterface::class,
+            'form', FormBuilder::class, Contracts\FormBuilderInterface::class,
         ];
     }
 
@@ -61,6 +61,7 @@ class HtmlServiceProvider extends ServiceProvider
         });
 
         $this->app->alias('html', HtmlBuilder::class);
+        $this->app->bind(Contracts\HtmlBuilderInterface::class, 'html');
     }
 
     /**
@@ -86,5 +87,6 @@ class HtmlServiceProvider extends ServiceProvider
         });
 
         $this->app->alias('form', FormBuilder::class);
+        $this->app->bind(Contracts\FormBuilderInterface::class, 'form');
     }
 }

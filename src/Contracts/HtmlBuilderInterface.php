@@ -37,7 +37,7 @@ interface HtmlBuilderInterface
      * @param  array   $attributes
      * @param  bool    $secure
      *
-     * @return string
+     * @return \Illuminate\Support\HtmlString
      */
     public function script($url, $attributes = [], $secure = null);
 
@@ -48,7 +48,7 @@ interface HtmlBuilderInterface
      * @param  array   $attributes
      * @param  bool    $secure
      *
-     * @return string
+     * @return \Illuminate\Support\HtmlString
      */
     public function style($url, $attributes = [], $secure = null);
 
@@ -60,7 +60,7 @@ interface HtmlBuilderInterface
      * @param  array   $attributes
      * @param  bool    $secure
      *
-     * @return string
+     * @return \Illuminate\Support\HtmlString
      */
     public function image($url, $alt = null, $attributes = [], $secure = null);
 
@@ -71,7 +71,7 @@ interface HtmlBuilderInterface
      * @param  array   $attributes
      * @param  bool    $secure
      *
-     * @return string
+     * @return \Illuminate\Support\HtmlString
      */
     public function favicon($url, $attributes = [], $secure = null);
 
@@ -82,10 +82,11 @@ interface HtmlBuilderInterface
      * @param  string  $title
      * @param  array   $attributes
      * @param  bool    $secure
+     * @param  bool    $escaped
      *
-     * @return string
+     * @return \Illuminate\Support\HtmlString
      */
-    public function link($url, $title = null, $attributes = [], $secure = null);
+    public function link($url, $title = null, $attributes = [], $secure = null, $escaped = true);
 
     /**
      * Generate a HTTPS HTML link.
@@ -93,10 +94,11 @@ interface HtmlBuilderInterface
      * @param  string  $url
      * @param  string  $title
      * @param  array   $attributes
+     * @param  bool    $escaped
      *
-     * @return string
+     * @return \Illuminate\Support\HtmlString
      */
-    public function secureLink($url, $title = null, $attributes = []);
+    public function secureLink($url, $title = null, $attributes = [], $escaped = true);
 
     /**
      * Generate a HTML link to an asset.
@@ -106,7 +108,7 @@ interface HtmlBuilderInterface
      * @param  array   $attributes
      * @param  bool    $secure
      *
-     * @return string
+     * @return \Illuminate\Support\HtmlString
      */
     public function linkAsset($url, $title = null, $attributes = [], $secure = null);
 
@@ -117,7 +119,7 @@ interface HtmlBuilderInterface
      * @param  string  $title
      * @param  array   $attributes
      *
-     * @return string
+     * @return \Illuminate\Support\HtmlString
      */
     public function linkSecureAsset($url, $title = null, $attributes = []);
 
@@ -128,10 +130,11 @@ interface HtmlBuilderInterface
      * @param  string  $title
      * @param  array   $parameters
      * @param  array   $attributes
+     * @param  bool    $escaped
      *
-     * @return string
+     * @return \Illuminate\Support\HtmlString
      */
-    public function linkRoute($name, $title = null, $parameters = [], $attributes = []);
+    public function linkRoute($name, $title = null, $parameters = [], $attributes = [], $escaped = true);
 
     /**
      * Generate a HTML link to a controller action.
@@ -140,10 +143,11 @@ interface HtmlBuilderInterface
      * @param  string  $title
      * @param  array   $parameters
      * @param  array   $attributes
+     * @param  bool    $escaped
      *
-     * @return string
+     * @return \Illuminate\Support\HtmlString
      */
-    public function linkAction($action, $title = null, $parameters = [], $attributes = []);
+    public function linkAction($action, $title = null, $parameters = [], $attributes = [], $escaped = true);
 
     /**
      * Generate a HTML link to an email address.
@@ -151,10 +155,11 @@ interface HtmlBuilderInterface
      * @param  string  $email
      * @param  string  $title
      * @param  array   $attributes
+     * @param  bool    $escaped
      *
-     * @return string
+     * @return \Illuminate\Support\HtmlString
      */
-    public function mailto($email, $title = null, $attributes = []);
+    public function mailto($email, $title = null, $attributes = [], $escaped = true);
 
     /**
      * Obfuscate an e-mail address to prevent spam-bots from sniffing it.
@@ -171,7 +176,7 @@ interface HtmlBuilderInterface
      * @param  array  $list
      * @param  array  $attributes
      *
-     * @return string
+     * @return \Illuminate\Support\HtmlString
      */
     public function ol(array $list, array $attributes = []);
 
@@ -181,7 +186,7 @@ interface HtmlBuilderInterface
      * @param  array  $list
      * @param  array  $attributes
      *
-     * @return string
+     * @return \Illuminate\Support\HtmlString
      */
     public function ul(array $list, array $attributes = []);
 
@@ -191,7 +196,7 @@ interface HtmlBuilderInterface
      * @param  array  $list
      * @param  array  $attributes
      *
-     * @return string
+     * @return \Illuminate\Support\HtmlString
      */
     public function dl(array $list, array $attributes = []);
 
@@ -220,7 +225,7 @@ interface HtmlBuilderInterface
      * @param  string  $content
      * @param  array   $attributes
      *
-     * @return string
+     * @return \Illuminate\Support\HtmlString
      */
     public function meta($name, $content, array $attributes = []);
 }
