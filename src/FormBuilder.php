@@ -260,12 +260,12 @@ class FormBuilder extends Builder implements FormBuilderInterface
      | ------------------------------------------------------------------------------------------------
      */
     /**
-    * Open up a new HTML form.
-    *
-    * @param  array  $options
-    *
-    * @return string
-    */
+     * Open up a new HTML form.
+     *
+     * @param  array  $options
+     *
+     * @return \Illuminate\Support\HtmlString
+     */
     public function open(array $options = [])
     {
         $method = array_get($options, 'method', 'post');
@@ -1026,13 +1026,13 @@ class FormBuilder extends Builder implements FormBuilderInterface
     }
 
     /**
-    * Create a button element.
-    *
-    * @param  string  $value
-    * @param  array   $options
-    *
-    * @return \Illuminate\Support\HtmlString
-    */
+     * Create a button element.
+     *
+     * @param  string  $value
+     * @param  array   $options
+     *
+     * @return \Illuminate\Support\HtmlString
+     */
     public function button($value = null, array $options = [])
     {
         if ( ! array_key_exists('type', $options)) {
@@ -1051,7 +1051,7 @@ class FormBuilder extends Builder implements FormBuilderInterface
      * @param  string  $value
      * @param  array   $options
      *
-     * @return string
+     * @return \Illuminate\Support\HtmlString
      */
     public function color($name, $value = null, array $options = [])
     {
