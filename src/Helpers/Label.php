@@ -12,14 +12,17 @@ class Label
      * @param  string  $name
      * @param  string  $value
      * @param  array   $options
+     * @param  bool    $escaped
      *
      * @return string
      */
-    public static function make($name, $value = null, array $options = [])
+    public static function make($name, $value = null, array $options = [], $escaped = true)
     {
+        $value = self::format($name, $value);
+
         return implode('', [
             '<label for="' . $name . '"' . Attributes::make($options) . '>',
-                e(self::format($name, $value)),
+                $escaped ? e($value) : $value,
             '</label>'
         ]);
     }
