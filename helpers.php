@@ -1,5 +1,17 @@
 <?php
 
+if ( ! function_exists('html')) {
+    /**
+     * Get the HTML Builder instance.
+     *
+     * @return \Arcanedev\LaravelHtml\Contracts\HtmlBuilderInterface
+     */
+    function html()
+    {
+        return app(\Arcanedev\LaravelHtml\Contracts\HtmlBuilderInterface::class);
+    }
+}
+
 /* ------------------------------------------------------------------------------------------------
  |  Link Helpers
  | ------------------------------------------------------------------------------------------------
@@ -12,12 +24,13 @@ if ( ! function_exists('link_to')) {
      * @param  string  $title
      * @param  array   $attributes
      * @param  bool    $secure
+     * @param  bool    $escaped
      *
      * @return string
      */
-    function link_to($url, $title = null, $attributes = array(), $secure = null)
+    function link_to($url, $title = null, $attributes = [], $secure = null, $escaped = true)
     {
-        return app('html')->link($url, $title, $attributes, $secure);
+        return html()->link($url, $title, $attributes, $secure, $escaped);
     }
 }
 
@@ -32,9 +45,9 @@ if ( ! function_exists('link_to_asset')) {
      *
      * @return string
      */
-    function link_to_asset($url, $title = null, $attributes = array(), $secure = null)
+    function link_to_asset($url, $title = null, $attributes = [], $secure = null)
     {
-        return app('html')->linkAsset($url, $title, $attributes, $secure);
+        return html()->linkAsset($url, $title, $attributes, $secure);
     }
 }
 
@@ -44,14 +57,15 @@ if ( ! function_exists('link_to_route')) {
      *
      * @param  string  $name
      * @param  string  $title
-     * @param  array   $parameters
+     * @param  array   $params
      * @param  array   $attributes
+     * @param  bool    $escaped
      *
      * @return string
      */
-    function link_to_route($name, $title = null, $parameters = array(), $attributes = array())
+    function link_to_route($name, $title = null, $params = [], $attributes = [], $escaped = true)
     {
-        return app('html')->linkRoute($name, $title, $parameters, $attributes);
+        return html()->linkRoute($name, $title, $params, $attributes, $escaped);
     }
 }
 
@@ -61,13 +75,14 @@ if ( ! function_exists('link_to_action')) {
      *
      * @param  string  $action
      * @param  string  $title
-     * @param  array   $parameters
+     * @param  array   $params
      * @param  array   $attributes
+     * @param  bool    $escaped
      *
      * @return string
      */
-    function link_to_action($action, $title = null, $parameters = array(), $attributes = array())
+    function link_to_action($action, $title = null, $params = [], $attributes = [], $escaped = true)
     {
-        return app('html')->linkAction($action, $title, $parameters, $attributes);
+        return html()->linkAction($action, $title, $params, $attributes, $escaped);
     }
 }

@@ -36,6 +36,7 @@ abstract class TestCase extends BaseTestCase
     {
         parent::setUp();
 
+        $this->app->loadDeferredProviders();
         $router             = $this->registerRoutes();
         $this->urlGenerator = new UrlGenerator($router->getRoutes(), Request::create('/foo', 'GET'));
         $this->htmlBuilder  = new HtmlBuilder($this->urlGenerator);
