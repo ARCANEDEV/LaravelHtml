@@ -75,7 +75,7 @@ interface FormBuilderInterface
      *
      * @param  array  $options
      *
-     * @return string
+     * @return \Illuminate\Support\HtmlString
      */
     public function open(array $options = []);
 
@@ -85,21 +85,21 @@ interface FormBuilderInterface
      * @param  mixed  $model
      * @param  array  $options
      *
-     * @return string
+     * @return \Illuminate\Support\HtmlString
      */
     public function model($model, array $options = []);
 
     /**
      * Close the current form.
      *
-     * @return string
+     * @return \Illuminate\Support\HtmlString
      */
     public function close();
 
     /**
      * Generate a hidden field with the current CSRF token.
      *
-     * @return string
+     * @return \Illuminate\Support\HtmlString
      */
     public function token();
 
@@ -110,7 +110,7 @@ interface FormBuilderInterface
      * @param  string  $value
      * @param  array   $options
      *
-     * @return string
+     * @return \Illuminate\Support\HtmlString
      */
     public function label($name, $value = null, array $options = []);
 
@@ -122,7 +122,7 @@ interface FormBuilderInterface
      * @param  string  $value
      * @param  array   $options
      *
-     * @return string
+     * @return \Illuminate\Support\HtmlString
      */
     public function input($type, $name, $value = null, array $options = []);
 
@@ -133,7 +133,7 @@ interface FormBuilderInterface
      * @param  string  $value
      * @param  array   $options
      *
-     * @return string
+     * @return \Illuminate\Support\HtmlString
      */
     public function text($name, $value = null, array $options = []);
 
@@ -143,7 +143,7 @@ interface FormBuilderInterface
      * @param  string  $name
      * @param  array   $options
      *
-     * @return string
+     * @return \Illuminate\Support\HtmlString
      */
     public function password($name, array $options = []);
 
@@ -154,7 +154,7 @@ interface FormBuilderInterface
      * @param  string  $value
      * @param  array   $options
      *
-     * @return string
+     * @return \Illuminate\Support\HtmlString
      */
     public function hidden($name, $value = null, array $options = []);
 
@@ -165,7 +165,7 @@ interface FormBuilderInterface
      * @param  string  $value
      * @param  array   $options
      *
-     * @return string
+     * @return \Illuminate\Support\HtmlString
      */
     public function email($name, $value = null, array $options = []);
 
@@ -176,7 +176,7 @@ interface FormBuilderInterface
      * @param  string  $value
      * @param  array   $options
      *
-     * @return string
+     * @return \Illuminate\Support\HtmlString
      */
     public function tel($name, $value = null, array $options = []);
 
@@ -187,7 +187,7 @@ interface FormBuilderInterface
      * @param  string  $value
      * @param  array   $options
      *
-     * @return string
+     * @return \Illuminate\Support\HtmlString
      */
     public function number($name, $value = null, array $options = []);
 
@@ -198,7 +198,7 @@ interface FormBuilderInterface
      * @param  string  $value
      * @param  array   $options
      *
-     * @return string
+     * @return \Illuminate\Support\HtmlString
      */
     public function date($name, $value = null, array $options = []);
 
@@ -209,7 +209,7 @@ interface FormBuilderInterface
      * @param  string  $value
      * @param  array   $options
      *
-     * @return string
+     * @return \Illuminate\Support\HtmlString
      */
     public function time($name, $value = null, array $options = []);
 
@@ -220,7 +220,7 @@ interface FormBuilderInterface
      * @param  string  $value
      * @param  array   $options
      *
-     * @return string
+     * @return \Illuminate\Support\HtmlString
      */
     public function url($name, $value = null, array $options = []);
 
@@ -230,7 +230,7 @@ interface FormBuilderInterface
      * @param  string  $name
      * @param  array   $options
      *
-     * @return string
+     * @return \Illuminate\Support\HtmlString
      */
     public function file($name, array $options = []);
 
@@ -241,7 +241,7 @@ interface FormBuilderInterface
      * @param  string  $value
      * @param  array   $options
      *
-     * @return string
+     * @return \Illuminate\Support\HtmlString
      */
     public function textarea($name, $value = null, array $options = []);
 
@@ -253,7 +253,7 @@ interface FormBuilderInterface
      * @param  string  $selected
      * @param  array   $options
      *
-     * @return string
+     * @return \Illuminate\Support\HtmlString
      */
     public function select($name, $list = [], $selected = null, array $options = []);
 
@@ -266,7 +266,7 @@ interface FormBuilderInterface
      * @param  string  $selected
      * @param  array   $options
      *
-     * @return string
+     * @return \Illuminate\Support\HtmlString
      */
     public function selectRange($name, $begin, $end, $selected = null, array $options = []);
 
@@ -279,7 +279,7 @@ interface FormBuilderInterface
      * @param  string  $selected
      * @param  array   $options
      *
-     * @return string
+     * @return \Illuminate\Support\HtmlString
      */
     public function selectYear($name, $begin, $end, $selected = null, array $options = []);
 
@@ -291,7 +291,7 @@ interface FormBuilderInterface
      * @param  array   $options
      * @param  string  $format
      *
-     * @return string
+     * @return \Illuminate\Support\HtmlString
      */
     public function selectMonth($name, $selected = null, array $options = [], $format = '%B');
 
@@ -303,7 +303,7 @@ interface FormBuilderInterface
      * @param  bool|null  $checked
      * @param  array      $options
      *
-     * @return string
+     * @return \Illuminate\Support\HtmlString
      */
     public function checkbox($name, $value = 1, $checked = null, array $options = []);
 
@@ -315,7 +315,7 @@ interface FormBuilderInterface
      * @param  bool    $checked
      * @param  array   $options
      *
-     * @return string
+     * @return \Illuminate\Support\HtmlString
      */
     public function radio($name, $value = null, $checked = null, array $options = []);
 
@@ -325,7 +325,7 @@ interface FormBuilderInterface
      * @param  string  $value
      * @param  array   $attributes
      *
-     * @return string
+     * @return \Illuminate\Support\HtmlString
      */
     public function reset($value, array $attributes = []);
 
@@ -336,7 +336,7 @@ interface FormBuilderInterface
      * @param  string  $name
      * @param  array   $attributes
      *
-     * @return string
+     * @return \Illuminate\Support\HtmlString
      */
     public function image($url, $name = null, array $attributes = []);
 
@@ -346,7 +346,7 @@ interface FormBuilderInterface
      * @param  string  $value
      * @param  array   $options
      *
-     * @return string
+     * @return \Illuminate\Support\HtmlString
      */
     public function submit($value = null, array $options = []);
 
@@ -356,7 +356,7 @@ interface FormBuilderInterface
      * @param  string  $value
      * @param  array   $options
      *
-     * @return string
+     * @return \Illuminate\Support\HtmlString
      */
     public function button($value = null, array $options = []);
 
@@ -367,7 +367,7 @@ interface FormBuilderInterface
      * @param  string  $value
      * @param  array   $options
      *
-     * @return string
+     * @return \Illuminate\Support\HtmlString
      */
     public function color($name, $value = null, array $options = []);
 
