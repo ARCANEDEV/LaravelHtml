@@ -1,46 +1,68 @@
-# Laravel HTML & Forms  [![Packagist License][badge_license]](LICENSE.md)
+# Laravel HTML & Forms [![Packagist License][badge_license]](LICENSE.md) [![For Laravel 5][badge_laravel]][link-github-repo]
 
-[![Travis Status][badge_build]](https://travis-ci.org/ARCANEDEV/LaravelHtml)
-[![HHVM Status][badge_hhvm]](http://hhvm.h4cc.de/package/arcanedev/laravel-html)
-[![Coverage Status][badge_coverage]](https://scrutinizer-ci.com/g/ARCANEDEV/LaravelHtml/?branch=master)
-[![Scrutinizer Code Quality][badge_quality]](https://scrutinizer-ci.com/g/ARCANEDEV/LaravelHtml/?branch=master)
-[![SensioLabs Insight][badge_insight]](https://insight.sensiolabs.com/projects/dfcc38f2-7302-4c01-90ff-2d6c21782682)
-[![Github Issues][badge_issues]](https://github.com/ARCANEDEV/LaravelHtml/issues)
+[![Travis Status][badge_build]][link-travis]
+[![HHVM Status][badge_hhvm]][link-hhvm]
+[![Coverage Status][badge_coverage]][link-scrutinizer]
+[![Scrutinizer Code Quality][badge_quality]][link-scrutinizer]
+[![SensioLabs Insight][badge_insight]][link-insight]
+[![Github Issues][badge_issues]][link-github-issues]
 
-[![Packagist][badge_package]](https://packagist.org/packages/arcanedev/laravel-html)
-[![Packagist Release][badge_release]](https://packagist.org/packages/arcanedev/laravel-html)
-[![Packagist Downloads][badge_downloads]](https://packagist.org/packages/arcanedev/laravel-html)
-
-[badge_license]:   http://img.shields.io/packagist/l/arcanedev/laravel-html.svg?style=flat-square
-
-[badge_build]:     http://img.shields.io/travis/ARCANEDEV/LaravelHtml.svg?style=flat-square
-[badge_hhvm]:      https://img.shields.io/hhvm/arcanedev/laravel-html.svg?style=flat-square
-[badge_coverage]:  https://img.shields.io/scrutinizer/coverage/g/ARCANEDEV/LaravelHtml.svg?style=flat-square
-[badge_quality]:   https://img.shields.io/scrutinizer/g/ARCANEDEV/LaravelHtml.svg?style=flat-square
-[badge_insight]:   https://img.shields.io/sensiolabs/i/dfcc38f2-7302-4c01-90ff-2d6c21782682.svg?style=flat-square
-[badge_issues]:    http://img.shields.io/github/issues/ARCANEDEV/LaravelHtml.svg?style=flat-square
-
-[badge_package]:   https://img.shields.io/badge/package-arcanedev/laravel--html-blue.svg?style=flat-square
-[badge_release]:   https://img.shields.io/packagist/v/arcanedev/laravel-html.svg?style=flat-square
-[badge_downloads]: https://img.shields.io/packagist/dt/arcanedev/laravel-html.svg?style=flat-square
+[![Packagist][badge_package]][link-packagist]
+[![Packagist Release][badge_release]][link-packagist]
+[![Packagist Downloads][badge_downloads]][link-packagist]
 
 *By [ARCANEDEV&copy;](http://www.arcanedev.net/)*
 
-### Requirements
+This package is inspired/based on [illuminate/html](https://github.com/illuminate/html) and [LaravelCollective/html](https://github.com/LaravelCollective/html).
 
-    - PHP >= 5.5.9
+## Table of contents
 
-## INSTALLATION
-
-You can install the bindings via [Composer](http://getcomposer.org/). By running `composer require arcanedev/laravel-html`.
+1. [Requirements](_docs/1.Requirements.md)
+2. [Installation and Setup](_docs/2.Installation-and-Setup.md)
+3. [Configuration](_docs/3.Configuration.md)
+4. [Usage](_docs/4.Usage.md)
 
 ## TODOS
 
   - [ ] Documentation.
-  - [x] Laravel 5.2 support
+  - [ ] 100% Code coverage + Maximum code quality.
+  - [ ] Laravel 5.3 support.
+  - [x] Laravel 5.2 support.
   - [x] Laravel 5.1 support.
-
+  - [x] Well documented package (IDE Friendly).
 
 ## Contribution
 
 Any ideas are welcome. Feel free to submit any issues or pull requests, please check the [contribution guidelines](CONTRIBUTING.md).
+
+## Security
+
+If you discover any security related issues, please email arcanedev.maroc@gmail.com instead of using the issue tracker.
+
+## Credits
+
+- [ARCANEDEV][link-author]
+- [LaravelCollective](https://github.com/LaravelCollective/html)
+- [All Contributors][link-contributors]
+
+[badge_laravel]:      https://img.shields.io/badge/For-Laravel%205.1|5.2-orange.svg?style=flat-square
+[badge_license]:      https://img.shields.io/packagist/l/arcanedev/laravel-html.svg?style=flat-square
+[badge_build]:        https://img.shields.io/travis/ARCANEDEV/LaravelHtml.svg?style=flat-square
+[badge_hhvm]:         https://img.shields.io/hhvm/arcanedev/laravel-html.svg?style=flat-square
+[badge_coverage]:     https://img.shields.io/scrutinizer/coverage/g/ARCANEDEV/LaravelHtml.svg?style=flat-square
+[badge_quality]:      https://img.shields.io/scrutinizer/g/ARCANEDEV/LaravelHtml.svg?style=flat-square
+[badge_insight]:      https://img.shields.io/sensiolabs/i/dfcc38f2-7302-4c01-90ff-2d6c21782682.svg?style=flat-square
+[badge_issues]:       https://img.shields.io/github/issues/ARCANEDEV/LaravelHtml.svg?style=flat-square
+[badge_package]:      https://img.shields.io/badge/package-arcanedev/laravel--html-blue.svg?style=flat-square
+[badge_release]:      https://img.shields.io/packagist/v/arcanedev/laravel-html.svg?style=flat-square
+[badge_downloads]:    https://img.shields.io/packagist/dt/arcanedev/laravel-html.svg?style=flat-square
+
+[link-author]:        https://github.com/arcanedev-maroc
+[link-github-repo]:   https://github.com/ARCANEDEV/LaravelHtml
+[link-github-issues]: https://github.com/ARCANEDEV/LaravelHtml/issues
+[link-contributors]:  https://github.com/ARCANEDEV/LaravelHtml/graphs/contributors
+[link-packagist]:     https://packagist.org/packages/arcanedev/laravel-html
+[link-travis]:        https://travis-ci.org/ARCANEDEV/LaravelHtml
+[link-hhvm]:          http://hhvm.h4cc.de/package/arcanedev/laravel-html
+[link-scrutinizer]:   https://scrutinizer-ci.com/g/ARCANEDEV/LaravelHtml/?branch=master
+[link-insight]:       https://insight.sensiolabs.com/projects/dfcc38f2-7302-4c01-90ff-2d6c21782682
