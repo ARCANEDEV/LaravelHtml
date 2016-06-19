@@ -202,7 +202,11 @@ class FormBuilder extends Builder implements FormBuilderInterface
      */
     private function getModelValueAttribute($name)
     {
-        return data_get($this->model, $this->transformKey($name));
+        $key = $this->transformKey($name);
+
+        return method_exists($this->model, 'getFormValue')
+            ? $this->model->getFormValue($key)
+            : data_get($this->model, $key);
     }
 
     /**
