@@ -26,7 +26,7 @@ if ( ! function_exists('link_to')) {
      * @param  bool    $secure
      * @param  bool    $escaped
      *
-     * @return string
+     * @return \Illuminate\Support\HtmlString
      */
     function link_to($url, $title = null, $attributes = [], $secure = null, $escaped = true)
     {
@@ -43,7 +43,7 @@ if ( ! function_exists('link_to_asset')) {
      * @param  array   $attributes
      * @param  bool    $secure
      *
-     * @return string
+     * @return \Illuminate\Support\HtmlString
      */
     function link_to_asset($url, $title = null, $attributes = [], $secure = null)
     {
@@ -61,7 +61,7 @@ if ( ! function_exists('link_to_route')) {
      * @param  array   $attributes
      * @param  bool    $escaped
      *
-     * @return string
+     * @return \Illuminate\Support\HtmlString
      */
     function link_to_route($name, $title = null, $params = [], $attributes = [], $escaped = true)
     {
@@ -79,7 +79,7 @@ if ( ! function_exists('link_to_action')) {
      * @param  array   $attributes
      * @param  bool    $escaped
      *
-     * @return string
+     * @return \Illuminate\Support\HtmlString
      */
     function link_to_action($action, $title = null, $params = [], $attributes = [], $escaped = true)
     {
