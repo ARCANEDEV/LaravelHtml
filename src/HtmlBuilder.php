@@ -7,7 +7,7 @@ use Illuminate\Contracts\Routing\UrlGenerator;
 /**
  * Class     HtmlBuilder
  *
- * @package  Arcanedev\LaravelHtml\Builders
+ * @package  Arcanedev\LaravelHtml
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 class HtmlBuilder extends Builder implements HtmlBuilderInterface
@@ -332,6 +332,18 @@ class HtmlBuilder extends Builder implements HtmlBuilderInterface
         return $this->toHtmlString(
             Helpers\Lister::dl($list, $attributes)
         );
+    }
+
+    /**
+     * Generates non-breaking space entities based on a supplied multiplier.
+     *
+     * @param  int  $multiplier
+     *
+     * @return string
+     */
+    public function nbsp($multiplier = 1)
+    {
+        return str_repeat('&nbsp;', $multiplier);
     }
 
     /**

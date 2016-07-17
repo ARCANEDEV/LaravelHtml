@@ -17,14 +17,14 @@ interface FormBuilderInterface
     /**
      * Get the session store implementation.
      *
-     * @return  \Illuminate\Session\SessionInterface
+     * @return \Illuminate\Session\SessionInterface
      */
     public function getSessionStore();
 
     /**
      * Set the session store implementation.
      *
-     * @param  Session  $session
+     * @param  \Illuminate\Session\SessionInterface  $session
      *
      * @return self
      */

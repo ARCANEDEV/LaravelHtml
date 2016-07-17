@@ -1,5 +1,11 @@
 <?php namespace Arcanedev\LaravelHtml\Helpers;
 
+/**
+ * Class     Label
+ *
+ * @package  Arcanedev\LaravelHtml\Helpers
+ * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
+ */
 class Label
 {
     /* ------------------------------------------------------------------------------------------------
@@ -11,17 +17,17 @@ class Label
      *
      * @param  string  $name
      * @param  string  $value
-     * @param  array   $options
+     * @param  array   $attributes
      * @param  bool    $escaped
      *
      * @return string
      */
-    public static function make($name, $value = null, array $options = [], $escaped = true)
+    public static function make($name, $value = null, array $attributes = [], $escaped = true)
     {
-        $value = self::format($name, $value);
+        $value = static::format($name, $value);
 
         return implode('', [
-            '<label for="' . $name . '"' . Attributes::make($options) . '>',
+            '<label for="' . $name . '"' . Attributes::make($attributes) . '>',
                 $escaped ? e($value) : $value,
             '</label>'
         ]);

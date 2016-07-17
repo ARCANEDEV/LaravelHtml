@@ -1,5 +1,11 @@
 <?php namespace Arcanedev\LaravelHtml\Helpers;
 
+/**
+ * Class     Attributes
+ *
+ * @package  Arcanedev\LaravelHtml\Helpers
+ * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
+ */
 class Attributes
 {
     /* ------------------------------------------------------------------------------------------------
@@ -18,7 +24,7 @@ class Attributes
         $html = [];
 
         foreach ((array) $attributes as $key => $value) {
-            $element = self::makeAttributeElement($key, $value);
+            $element = static::makeAttributeElement($key, $value);
 
             if ( ! is_null($element)) {
                 $html[] = $element;
@@ -42,9 +48,7 @@ class Attributes
      */
     private static function makeAttributeElement($key, $value)
     {
-        if (is_null($value)) {
-            return null;
-        }
+        if (is_null($value)) return null;
 
         // For numeric keys we will assume that the key and the value are the same
         // as this will convert HTML attributes such as "required" to a correct

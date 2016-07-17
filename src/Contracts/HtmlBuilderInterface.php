@@ -201,6 +201,15 @@ interface HtmlBuilderInterface
     public function dl(array $list, array $attributes = []);
 
     /**
+     * Generates non-breaking space entities based on a supplied multiplier.
+     *
+     * @param  int  $multiplier
+     *
+     * @return string
+     */
+    public function nbsp($multiplier = 1);
+
+    /**
      * Build an HTML attribute string from an array.
      *
      * @param  array  $attributes

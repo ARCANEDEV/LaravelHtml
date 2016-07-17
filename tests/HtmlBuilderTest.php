@@ -462,4 +462,13 @@ class HtmlBuilderTest extends TestCase
     {
         $this->htmlBuilder->btnSuccess('Hello');
     }
+
+    /** @test */
+    public function it_can_generate_nbsp()
+    {
+        $nbsp = '&nbsp;';
+
+        $this->assertEquals($nbsp, $this->htmlBuilder->nbsp());
+        $this->assertEquals(str_repeat($nbsp, 5), $this->htmlBuilder->nbsp(5));
+    }
 }
