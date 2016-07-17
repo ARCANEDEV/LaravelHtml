@@ -300,7 +300,7 @@ class HtmlBuilder extends Builder implements HtmlBuilderInterface
     public function ol(array $list, array $attributes = [])
     {
         return $this->toHtmlString(
-            Helpers\Lister::make('ol', $list, $attributes)
+            Helpers\Lister::ol($list, $attributes)
         );
     }
 
@@ -315,7 +315,7 @@ class HtmlBuilder extends Builder implements HtmlBuilderInterface
     public function ul(array $list, array $attributes = [])
     {
         return $this->toHtmlString(
-            Helpers\Lister::make('ul', $list, $attributes)
+            Helpers\Lister::ul($list, $attributes)
         );
     }
 
@@ -329,22 +329,9 @@ class HtmlBuilder extends Builder implements HtmlBuilderInterface
      */
     public function dl(array $list, array $attributes = [])
     {
-        $attributes = $this->attributes($attributes);
-
-        $html = "<dl{$attributes}>";
-
-        foreach ($list as $key => $value) {
-            $value = (array) $value;
-            $html .= "<dt>$key</dt>";
-
-            foreach ($value as $vKey => $vValue) {
-                $html .= "<dd>$vValue</dd>";
-            }
-        }
-
-        $html .= '</dl>';
-
-        return $this->toHtmlString($html);
+        return $this->toHtmlString(
+            Helpers\Lister::dl($list, $attributes)
+        );
     }
 
     /**
