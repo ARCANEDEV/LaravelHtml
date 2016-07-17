@@ -1,5 +1,11 @@
 <?php namespace Arcanedev\LaravelHtml\Helpers;
 
+/**
+ * Class     Lister
+ *
+ * @package  Arcanedev\LaravelHtml\Helpers
+ * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
+ */
 class Lister
 {
     /* ------------------------------------------------------------------------------------------------

@@ -10,7 +10,7 @@ use Illuminate\Support\Collection;
 /**
  * Class     FormBuilder
  *
- * @package  Arcanedev\LaravelHtml\Builders
+ * @package  Arcanedev\LaravelHtml
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 class FormBuilder extends Builder implements FormBuilderInterface

@@ -7,7 +7,7 @@ use Illuminate\Contracts\Routing\UrlGenerator;
 /**
  * Class     HtmlBuilder
  *
- * @package  Arcanedev\LaravelHtml\Builders
+ * @package  Arcanedev\LaravelHtml
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 class HtmlBuilder extends Builder implements HtmlBuilderInterface

@@ -1,5 +1,11 @@
 <?php namespace Arcanedev\LaravelHtml\Helpers;
 
+/**
+ * Class     Obfuscater
+ *
+ * @package  Arcanedev\LaravelHtml\Helpers
+ * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
+ */
 class Obfuscater
 {
     /* ------------------------------------------------------------------------------------------------
@@ -18,11 +24,9 @@ class Obfuscater
         $safe = '';
 
         foreach (str_split($value) as $letter) {
-            if (ord($letter) > 128) {
-                return $letter;
-            }
+            if (ord($letter) > 128) return $letter;
 
-            self::makeSafer($letter, $safe);
+            static::makeSafer($letter, $safe);
         }
 
         return $safe;

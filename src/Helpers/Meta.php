@@ -1,5 +1,11 @@
 <?php namespace Arcanedev\LaravelHtml\Helpers;
 
+/**
+ * Class     Meta
+ *
+ * @package  Arcanedev\LaravelHtml\Helpers
+ * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
+ */
 class Meta
 {
     /* ------------------------------------------------------------------------------------------------
@@ -17,10 +23,10 @@ class Meta
      */
     public static function make($name, $content, array $attributes = [])
     {
-        $attributes = array_merge(
+        $attributes = Attributes::make(array_merge(
             compact('name', 'content'), $attributes
-        );
+        ));
 
-        return '<meta' . Attributes::make($attributes) . '>' . PHP_EOL;
+        return "<meta{$attributes}>" . PHP_EOL;
     }
 }
