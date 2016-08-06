@@ -29,7 +29,7 @@ trait FormAccessible
     /**
      * Get form value from the eloquent model.
      *
-     * @param string $key
+     * @param  string  $key
      *
      * @return mixed
      */
@@ -43,6 +43,9 @@ trait FormAccessible
 
         if ($this->hasFormMutator($key)) {
             $value = $this->mutateFormAttribute($key, $value);
+        } else {
+            // No form mutator, let the model resolve this
+            $value = data_get($this, $key);
         }
 
         return $value;

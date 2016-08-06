@@ -56,6 +56,9 @@ class FormAccessible extends TestCase
         $this->modelData = [
             'string'     => 'abcdefghijklmnop',
             'email'      => 'tj@tjshafer.com',
+            'address'    => [
+                'street' => 'abcde st'
+            ],
             'created_at' => $this->now,
             'updated_at' => $this->now,
         ];
@@ -70,7 +73,6 @@ class FormAccessible extends TestCase
         parent::tearDown();
     }
 
-
     /* ------------------------------------------------------------------------------------------------
      |  Test Functions
      | ------------------------------------------------------------------------------------------------
@@ -81,8 +83,8 @@ class FormAccessible extends TestCase
         $model = new ModelThatUsesForms($this->modelData);
         $this->form->setModel($model);
 
-        $this->assertEquals($model->getFormValue('string'), 'ponmlkjihgfedcba');
-        $this->assertEquals($model->getFormValue('created_at'), $this->now->timestamp);
+        $this->assertSame('ponmlkjihgfedcba', $model->getFormValue('string'));
+        $this->assertSame($this->now->timestamp, $model->getFormValue('created_at'));
     }
 
     /** @test */
@@ -91,8 +93,8 @@ class FormAccessible extends TestCase
         $model = new ModelThatUsesForms($this->modelData);
         $this->form->setModel($model);
 
-        $this->assertEquals($model->string, 'ABCDEFGHIJKLMNOP');
-        $this->assertEquals($model->created_at, '1 second ago');
+        $this->assertSame('ABCDEFGHIJKLMNOP', $model->string);
+        $this->assertSame('1 second ago', $model->created_at);
     }
 
     /** @test */
@@ -101,7 +103,16 @@ class FormAccessible extends TestCase
         $model = new ModelThatDoesntUseForms($this->modelData);
         $this->form->setModel($model);
 
-        $this->assertEquals($model->string, 'ABCDEFGHIJKLMNOP');
-        $this->assertEquals($model->created_at, '1 second ago');
+        $this->assertSame('ABCDEFGHIJKLMNOP', $model->string);
+        $this->assertSame('1 second ago', $model->created_at);
+    }
+
+    /** @test */
+    public function it_can_get_related_value_for_forms()
+    {
+        $model = new ModelThatUsesForms($this->modelData);
+        $this->form->setModel($model);
+
+        $this->assertSame('abcde st', $model->getFormValue('address.street'));
     }
 }
