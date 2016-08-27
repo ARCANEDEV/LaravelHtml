@@ -15,21 +15,24 @@
 
 This package is inspired/based on [illuminate/html](https://github.com/illuminate/html) and [LaravelCollective/html](https://github.com/LaravelCollective/html).
 
+### Features
+
+  * Easy setup &amp; configuration.
+  * Well documented &amp; IDE Friendly.
+  * Well tested with maximum code quality.
+  * Laravel `5.1 | 5.2 | 5.3` are supported.
+  * Made with :heart: &amp; :coffee:.
+  
 ## Table of contents
 
-1. [Requirements](_docs/1.Requirements.md)
-2. [Installation and Setup](_docs/2.Installation-and-Setup.md)
-3. [Configuration](_docs/3.Configuration.md)
-4. [Usage](_docs/4.Usage.md)
+  1. [Requirements](_docs/1.Requirements.md)
+  2. [Installation and Setup](_docs/2.Installation-and-Setup.md)
+  3. [Configuration](_docs/3.Configuration.md)
+  4. [Usage](_docs/4.Usage.md)
 
 ## TODOS
 
   - [ ] Documentation.
-  - [ ] 100% Code coverage + Maximum code quality.
-  - [ ] Laravel 5.3 support.
-  - [x] Laravel 5.2 support.
-  - [x] Laravel 5.1 support.
-  - [x] Well documented package (IDE Friendly).
 
 ## Contribution
 
@@ -45,7 +48,7 @@ If you discover any security related issues, please email arcanedev.maroc@gmail.
 - [LaravelCollective](https://github.com/LaravelCollective/html)
 - [All Contributors][link-contributors]
 
-[badge_laravel]:      https://img.shields.io/badge/For-Laravel%205.1|5.2-orange.svg?style=flat-square
+[badge_laravel]:      https://img.shields.io/badge/Laravel-5.1|5.2|5.3-orange.svg?style=flat-square
 [badge_license]:      https://img.shields.io/packagist/l/arcanedev/laravel-html.svg?style=flat-square
 [badge_build]:        https://img.shields.io/travis/ARCANEDEV/LaravelHtml.svg?style=flat-square
 [badge_hhvm]:         https://img.shields.io/hhvm/arcanedev/laravel-html.svg?style=flat-square
