@@ -66,13 +66,6 @@ class FormAccessible extends TestCase
         $this->form = new FormBuilder($this->htmlBuilder, $this->urlGenerator, 'abc');
     }
 
-    public function tearDown()
-    {
-        $this->artisan('migrate:reset');
-
-        parent::tearDown();
-    }
-
     /* ------------------------------------------------------------------------------------------------
      |  Test Functions
      | ------------------------------------------------------------------------------------------------
