@@ -93,16 +93,13 @@ trait FormAccessible
      */
     protected function hasFormMutator($key)
     {
-        $methods = $this->getReflection()->getMethods(
-            ReflectionMethod::IS_PUBLIC
-        );
-
-        $mutator = collect($methods)
-            ->first(function ($index, ReflectionMethod $method) use ($key) {
+        $methods  = $this->getReflection()->getMethods(ReflectionMethod::IS_PUBLIC);
+        $mutators = collect($methods)
+            ->filter(function (ReflectionMethod $method) use ($key) {
                 return $method->name === $this->getMutateFromMethodName($key);
             });
 
-        return (bool) $mutator;
+        return ! $mutators->isEmpty();
     }
 
     /**
