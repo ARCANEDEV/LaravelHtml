@@ -58,8 +58,8 @@ class HtmlServiceProviderTest extends TestCase
     public function it_can_get_provides()
     {
         $expected = [
-            'html', \Arcanedev\LaravelHtml\HtmlBuilder::class, \Arcanedev\LaravelHtml\Contracts\HtmlBuilderInterface::class,
-            'form', \Arcanedev\LaravelHtml\FormBuilder::class, \Arcanedev\LaravelHtml\Contracts\FormBuilderInterface::class,
+            'html', \Arcanedev\LaravelHtml\HtmlBuilder::class, \Arcanedev\LaravelHtml\Contracts\HtmlBuilder::class,
+            'form', \Arcanedev\LaravelHtml\FormBuilder::class, \Arcanedev\LaravelHtml\Contracts\FormBuilder::class,
         ];
 
         $this->assertEquals($expected, $this->provider->provides());

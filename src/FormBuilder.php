@@ -1,10 +1,11 @@
 <?php namespace Arcanedev\LaravelHtml;
 
 use Arcanedev\LaravelHtml\Bases\Builder;
-use Arcanedev\LaravelHtml\Contracts\FormBuilderInterface;
+use Arcanedev\LaravelHtml\Contracts\FormBuilder as FormBuilderContract;
 use DateTime;
 use Illuminate\Contracts\Routing\UrlGenerator;
-use Illuminate\Session\SessionInterface as Session;
+use Illuminate\Contracts\Session\Session;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 
 /**
@@ -13,7 +14,7 @@ use Illuminate\Support\Collection;
  * @package  Arcanedev\LaravelHtml
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
-class FormBuilder extends Builder implements FormBuilderInterface
+class FormBuilder extends Builder implements FormBuilderContract
 {
     /* ------------------------------------------------------------------------------------------------
      |  Properties
@@ -22,7 +23,7 @@ class FormBuilder extends Builder implements FormBuilderInterface
     /**
     * The HTML builder instance.
     *
-    * @var \Arcanedev\LaravelHtml\Contracts\HtmlBuilderInterface
+    * @var \Arcanedev\LaravelHtml\Contracts\HtmlBuilder
     */
     protected $html;
 
@@ -43,7 +44,7 @@ class FormBuilder extends Builder implements FormBuilderInterface
     /**
     * The session store implementation.
     *
-    * @var \Illuminate\Session\SessionInterface
+    * @var \Illuminate\Contracts\Session\Session
     */
     protected $session;
 
@@ -89,18 +90,20 @@ class FormBuilder extends Builder implements FormBuilderInterface
     /**
     * Create a new form builder instance.
     *
-    * @param  \Illuminate\Contracts\Routing\UrlGenerator             $url
-    * @param  \Arcanedev\LaravelHtml\Contracts\HtmlBuilderInterface  $html
-    * @param  string                                                 $csrfToken
+    * @param  \Arcanedev\LaravelHtml\Contracts\HtmlBuilder  $html
+    * @param  \Illuminate\Contracts\Routing\UrlGenerator    $url
+    * @param  \Illuminate\Contracts\Session\Session         $session
     */
     public function __construct(
-        Contracts\HtmlBuilderInterface $html,
+        Contracts\HtmlBuilder $html,
         UrlGenerator $url,
-        $csrfToken
+        Session $session
     ) {
         $this->url       = $url;
         $this->html      = $html;
-        $this->csrfToken = $csrfToken;
+        $this->csrfToken = $session->token();
+
+        $this->setSessionStore($session);
     }
 
     /* ------------------------------------------------------------------------------------------------
@@ -110,7 +113,7 @@ class FormBuilder extends Builder implements FormBuilderInterface
     /**
      * Get the session store implementation.
      *
-     * @return  \Illuminate\Session\SessionInterface
+     * @return  \Illuminate\Contracts\Session\Session
      */
     public function getSessionStore()
     {
@@ -120,7 +123,7 @@ class FormBuilder extends Builder implements FormBuilderInterface
     /**
      * Set the session store implementation.
      *
-     * @param  \Illuminate\Session\SessionInterface  $session
+     * @param  \Illuminate\Contracts\Session\Session  $session
      *
      * @return self
      */
@@ -272,7 +275,7 @@ class FormBuilder extends Builder implements FormBuilderInterface
      */
     public function open(array $options = [])
     {
-        $method = array_get($options, 'method', 'post');
+        $method = Arr::get($options, 'method', 'post');
 
         // We need to extract the proper method from the attributes. If the method is
         // something other than GET or POST we'll use POST since we will spoof the
@@ -343,7 +346,7 @@ class FormBuilder extends Builder implements FormBuilderInterface
     {
         $token = ! empty($this->csrfToken)
             ? $this->csrfToken
-            : $this->session->getToken();
+            : $this->session->token();
 
         return $this->hidden('_token', $token);
     }
@@ -607,7 +610,7 @@ class FormBuilder extends Builder implements FormBuilderInterface
         // the element. Then we'll create the final textarea elements HTML for us.
         $options = $this->html->attributes($options);
 
-        return $this->toHtmlString('<textarea' . $options . '>' . e($value) . '</textarea>');
+        return $this->toHtmlString('<textarea' . $options . '>' . $this->html->escape($value) . '</textarea>');
     }
 
     /**
@@ -626,8 +629,8 @@ class FormBuilder extends Builder implements FormBuilderInterface
         // If the "size" attribute was not specified, we will just look for the regular
         // columns and rows attributes, using sane defaults if these do not exist on
         // the attributes array. We'll then return this entire options array back.
-        $cols = array_get($options, 'cols', 50);
-        $rows = array_get($options, 'rows', 10);
+        $cols = Arr::get($options, 'cols', 50);
+        $rows = Arr::get($options, 'rows', 10);
 
         return array_merge($options, compact('cols', 'rows'));
     }
@@ -664,7 +667,7 @@ class FormBuilder extends Builder implements FormBuilderInterface
         // When building a select box the "value" attribute is really the selected one
         // so we will use that when checking the model or session for a value which
         // should provide a convenient method of re-populating the forms on post.
-        $selected      = $this->getValueAttribute($name, $selected);
+        $selected = $this->getValueAttribute($name, $selected);
 
         // Transform to array if it is a collection
         if ($selected instanceof Collection) {
@@ -696,7 +699,7 @@ class FormBuilder extends Builder implements FormBuilderInterface
         // build out a final select statement, which will contain all the values.
         $options = $this->html->attributes($options);
 
-        return $this->toHtmlString("<select{$options}>" . implode('', $html) . "</select>");
+        return $this->toHtmlString("<select{$options}>".implode('', $html).'</select>');
     }
 
     /**
@@ -768,11 +771,9 @@ class FormBuilder extends Builder implements FormBuilderInterface
      */
     private function getSelectOption($display, $value, $selected)
     {
-        if (is_array($display)) {
-            return $this->optionGroup($display, $value, $selected);
-        }
-
-        return $this->option($display, $value, $selected);
+        return is_array($display)
+            ? $this->optionGroup($display, $value, $selected)
+            : $this->option($display, $value, $selected);
     }
 
     /**
@@ -792,7 +793,7 @@ class FormBuilder extends Builder implements FormBuilderInterface
             $html[] = $this->option($display, $value, $selected);
         }
 
-        return '<optgroup label="' . e($label) . '">' . implode('', $html) . '</optgroup>';
+        return '<optgroup label="'.$this->html->escape($label).'">'.implode('', $html).'</optgroup>';
     }
 
     /**
@@ -809,7 +810,7 @@ class FormBuilder extends Builder implements FormBuilderInterface
         $selected = $this->getSelectedValue($value, $selected);
         $options  = compact('value', 'selected');
 
-        return '<option' . $this->html->attributes($options) . '>' . e($display) . '</option>';
+        return '<option'.$this->html->attributes($options).'>'.$this->html->escape($display).'</option>';
     }
 
     /**
@@ -826,7 +827,7 @@ class FormBuilder extends Builder implements FormBuilderInterface
         $options          = compact('selected');
         $options['value'] = '';
 
-        return '<option' . $this->html->attributes($options) . '>' . e($display) . '</option>';
+        return '<option'.$this->html->attributes($options).'>'.$this->html->escape($display).'</option>';
     }
 
     /**

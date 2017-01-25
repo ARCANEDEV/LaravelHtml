@@ -63,7 +63,11 @@ class FormAccessible extends TestCase
             'updated_at' => $this->now,
         ];
 
-        $this->form = new FormBuilder($this->htmlBuilder, $this->urlGenerator, 'abc');
+        /** @var \Illuminate\Contracts\Session\Session  $session */
+        $session = $this->app['session.store'];
+        $session->put('_token', 'abc');
+
+        $this->form = new FormBuilder($this->html, $this->urlGenerator, $session);
     }
 
     /* ------------------------------------------------------------------------------------------------

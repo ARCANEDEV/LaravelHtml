@@ -17,7 +17,7 @@ class HtmlBuilderTest extends TestCase
     /** @test */
     public function it_can_be_instantiated()
     {
-        $this->assertInstanceOf(HtmlBuilder::class, $this->htmlBuilder);
+        $this->assertInstanceOf(HtmlBuilder::class, $this->html);
         $this->assertInstanceOf(HtmlBuilder::class, html());
     }
 
@@ -27,7 +27,7 @@ class HtmlBuilderTest extends TestCase
         $value  = 'Un \'apostrophe\' en <strong>gras</strong>';
         $result = 'Un &#039;apostrophe&#039; en &lt;strong&gt;gras&lt;/strong&gt;';
 
-        $this->assertEquals($result, $this->htmlBuilder->entities($value));
+        $this->assertEquals($result, $this->html->entities($value));
 
     }
 
@@ -37,7 +37,7 @@ class HtmlBuilderTest extends TestCase
         $value  = 'Un \'apostrophe\' en <strong>gras</strong>';
         $result = 'Un &#039;apostrophe&#039; en &lt;strong&gt;gras&lt;/strong&gt;';
 
-        $this->assertEquals($value, $this->htmlBuilder->decode($result));
+        $this->assertEquals($value, $this->html->decode($result));
     }
 
     /** @test */
@@ -48,7 +48,7 @@ class HtmlBuilderTest extends TestCase
 
         $this->assertEquals(
             '<script src="' . $url . '"></script>' . PHP_EOL,
-            $this->htmlBuilder->script($file)
+            $this->html->script($file)
         );
     }
 
@@ -60,7 +60,7 @@ class HtmlBuilderTest extends TestCase
 
         $this->assertEquals(
             '<link media="all" type="text/css" rel="stylesheet" href="' . $url . '">' . PHP_EOL,
-            $this->htmlBuilder->style($file)
+            $this->html->style($file)
         );
     }
 
@@ -72,7 +72,7 @@ class HtmlBuilderTest extends TestCase
 
         $this->assertEquals(
             '<img src="' . $url . '">',
-            $this->htmlBuilder->image($file)
+            $this->html->image($file)
         );
     }
 
@@ -83,7 +83,7 @@ class HtmlBuilderTest extends TestCase
 
         $this->assertEquals(
             '<link rel="shortcut icon" type="image/x-icon" href="' . $url . '">' . PHP_EOL,
-            $this->htmlBuilder->favicon($url)
+            $this->html->favicon($url)
         );
     }
 
@@ -94,23 +94,23 @@ class HtmlBuilderTest extends TestCase
 
         $this->assertEquals(
             '<a href="' . $url . '">' . $url . '</a>',
-            $this->htmlBuilder->link($url, null)
+            $this->html->link($url, null)
         );
 
         $this->assertEquals(
             '<a href="' . $url . '">Website</a>',
-            $this->htmlBuilder->link($url, 'Website')
+            $this->html->link($url, 'Website')
         );
 
         $this->assertEquals(
             '<a href="' . $url . '" class="btn btn-primary">Website</a>',
-            $this->htmlBuilder->link($url, 'Website', ['class' => 'btn btn-primary'])
+            $this->html->link($url, 'Website', ['class' => 'btn btn-primary'])
         );
 
         $title = '<i class="fa fa-globe"></i> ' . $url;
         $this->assertEquals(
             '<a href="' . $url . '">' . $title . '</a>',
-            $this->htmlBuilder->link($url, $title, [], null, false)
+            $this->html->link($url, $title, [], null, false)
         );
     }
 
@@ -122,19 +122,19 @@ class HtmlBuilderTest extends TestCase
 
         $this->assertEquals(
             '<a href="' . $url . '">' . $url . '</a>',
-            $this->htmlBuilder->secureLink($url, $title)
+            $this->html->secureLink($url, $title)
         );
 
         $title = '<i class="fa fa-globe"></i> ' . $url;
 
         $this->assertEquals(
             '<a href="' . $url . '">' . e($title) . '</a>',
-            $this->htmlBuilder->secureLink($url, $title, [])
+            $this->html->secureLink($url, $title, [])
         );
 
         $this->assertEquals(
             '<a href="' . $url . '">' . $title . '</a>',
-            $this->htmlBuilder->secureLink($url, $title, [], false)
+            $this->html->secureLink($url, $title, [], false)
         );
     }
 
@@ -146,7 +146,7 @@ class HtmlBuilderTest extends TestCase
 
         $this->assertEquals(
             '<a href="' . $url . '">' . $url . '</a>',
-            $this->htmlBuilder->linkAsset($file)
+            $this->html->linkAsset($file)
         );
     }
 
@@ -158,7 +158,7 @@ class HtmlBuilderTest extends TestCase
 
         $this->assertEquals(
             '<a href="' . $url . '">' . $url . '</a>',
-            $this->htmlBuilder->linkSecureAsset($file)
+            $this->html->linkSecureAsset($file)
         );
     }
 
@@ -169,24 +169,24 @@ class HtmlBuilderTest extends TestCase
         $route = 'home';
         $this->assertEquals(
             '<a href="' . route($route) . '">' . $title . '</a>',
-            $this->htmlBuilder->linkRoute($route, $title)
+            $this->html->linkRoute($route, $title)
         );
 
         $this->assertEquals(
             '<a href="' . route($route) . '" class="btn btn-primary">' . $title . '</a>',
-            $this->htmlBuilder->linkRoute($route, $title, [], ['class' => 'btn btn-primary'])
+            $this->html->linkRoute($route, $title, [], ['class' => 'btn btn-primary'])
         );
 
         $title = '<i class="fa fa-home"></i>' . $title;
 
         $this->assertEquals(
             '<a href="' . route($route) . '" class="btn btn-primary">' . e($title) . '</a>',
-            $this->htmlBuilder->linkRoute($route, $title, [], ['class' => 'btn btn-primary'])
+            $this->html->linkRoute($route, $title, [], ['class' => 'btn btn-primary'])
         );
 
         $this->assertEquals(
             '<a href="' . route($route) . '" class="btn btn-primary">' . $title . '</a>',
-            $this->htmlBuilder->linkRoute($route, $title, [], ['class' => 'btn btn-primary'], false)
+            $this->html->linkRoute($route, $title, [], ['class' => 'btn btn-primary'], false)
         );
     }
 
@@ -198,24 +198,24 @@ class HtmlBuilderTest extends TestCase
 
         $this->assertEquals(
             '<a href="' . action($action) . '">' . $title . '</a>',
-            $this->htmlBuilder->linkAction($action, $title)
+            $this->html->linkAction($action, $title)
         );
 
         $this->assertEquals(
             '<a href="' . action($action) . '" class="btn btn-primary">' . $title . '</a>',
-            $this->htmlBuilder->linkAction($action, $title, [], ['class' => 'btn btn-primary'])
+            $this->html->linkAction($action, $title, [], ['class' => 'btn btn-primary'])
         );
 
         $title = '<i class="fa fa-home"></i>' . $title;
 
         $this->assertEquals(
             '<a href="' . action($action) . '" class="btn btn-primary">' . e($title) . '</a>',
-            $this->htmlBuilder->linkAction($action, $title, [], ['class' => 'btn btn-primary'])
+            $this->html->linkAction($action, $title, [], ['class' => 'btn btn-primary'])
         );
 
         $this->assertEquals(
             '<a href="' . action($action) . '" class="btn btn-primary">' . $title . '</a>',
-            $this->htmlBuilder->linkAction($action, $title, [], ['class' => 'btn btn-primary'], false)
+            $this->html->linkAction($action, $title, [], ['class' => 'btn btn-primary'], false)
         );
     }
 
@@ -223,21 +223,21 @@ class HtmlBuilderTest extends TestCase
     public function it_can_make_mailto_link()
     {
         $email  = 'j.doe@gmail.com';
-        $mailto = $this->htmlBuilder->mailto($email)->toHtml();
+        $mailto = $this->html->mailto($email)->toHtml();
 
         $this->assertStringStartsWith('<a href="', $mailto);
         $this->assertContains('&#', $mailto);
         $this->assertStringEndsWith('</a>', $mailto);
 
         $name   = 'John DOE';
-        $mailto = $this->htmlBuilder->mailto($email, $name)->toHtml();
+        $mailto = $this->html->mailto($email, $name)->toHtml();
 
         $this->assertStringStartsWith('<a href="', $mailto);
         $this->assertContains('&#', $mailto);
         $this->assertStringEndsWith($name . '</a>', $mailto);
 
         $name   = '<span>John DOE</span>';
-        $mailto = $this->htmlBuilder->mailto($email, $name, ['class' => 'mailto-link'], false)->toHtml();
+        $mailto = $this->html->mailto($email, $name, ['class' => 'mailto-link'], false)->toHtml();
 
         $this->assertStringStartsWith('<a href="', $mailto);
         $this->assertContains('&#', $mailto);
@@ -261,12 +261,22 @@ class HtmlBuilderTest extends TestCase
                 '<li>bar</li>' .
                 '<li>baz</li>' .
             '</ol>',
-            $this->htmlBuilder->ol($list, $attributes)
+            $this->html->ol($list, $attributes)
         );
 
         // Empty list
         $this->assertEmpty(
-            $this->htmlBuilder->ol([])->toHtml()
+            $this->html->ol([])->toHtml()
+        );
+
+        // Escaped list
+        $this->assertEquals(
+            '<ol class="example">'.
+                '<li>foo</li>'.
+                '<li>bar</li>'.
+                '<li>&amp;amp;</li>'.
+            '</ol>',
+            $this->html->ol(['foo', 'bar', '&amp;'], ['class' => 'example'])
         );
     }
 
@@ -287,12 +297,22 @@ class HtmlBuilderTest extends TestCase
                 '<li>bar</li>' .
                 '<li>baz</li>' .
             '</ul>',
-            $this->htmlBuilder->ul($list, $attributes)
+            $this->html->ul($list, $attributes)
         );
 
         // Empty list
         $this->assertEmpty(
-            $this->htmlBuilder->ul([])->toHtml()
+            $this->html->ul([])->toHtml()
+        );
+
+        // Escaped list
+        $this->assertEquals(
+            '<ul class="example">'.
+                '<li>foo</li>'.
+                '<li>bar</li>'.
+                '<li>&amp;amp;</li>'.
+            '</ul>',
+            $this->html->ul(['foo', 'bar', '&amp;'], ['class' => 'example'])
         );
     }
 
@@ -313,7 +333,7 @@ class HtmlBuilderTest extends TestCase
                 '<dt>foo</dt><dd>bar</dd>' .
                 '<dt>bing</dt><dd>baz</dd>' .
             '</dl>',
-            $this->htmlBuilder->dl($list, $attributes)
+            $this->html->dl($list, $attributes)
         );
 
         $list       = [
@@ -330,13 +350,13 @@ class HtmlBuilderTest extends TestCase
                 '<dt>bing</dt><dd>baz</dd>' .
                 '<dt>qux</dt><dd>qux-foo</dd><dd>qux-bar</dd><dd>qux-baz</dd>' .
             '</dl>',
-            $this->htmlBuilder->dl($list, $attributes)
+            $this->html->dl($list, $attributes)
         );
 
         // Empty list
         $this->assertEquals(
             '<dl></dl>',
-            $this->htmlBuilder->dl([])
+            $this->html->dl([])
         );
     }
 
@@ -365,7 +385,7 @@ class HtmlBuilderTest extends TestCase
                     '</ul>' .
                 '</li>' .
             '</ul>',
-            $this->htmlBuilder->ul($list)
+            $this->html->ul($list)
         );
 
         $this->assertEquals(
@@ -380,7 +400,7 @@ class HtmlBuilderTest extends TestCase
                     '</ol>' .
                 '</li>' .
             '</ol>',
-            $this->htmlBuilder->ol($list)
+            $this->html->ol($list)
         );
     }
 
@@ -404,13 +424,13 @@ class HtmlBuilderTest extends TestCase
             ],
         ];
 
-        $this->htmlBuilder->dl($list);
+        $this->html->dl($list);
     }
 
     /** @test */
     public function it_can_obfuscate()
     {
-        $this->assertNotEmpty($this->htmlBuilder->obfuscate('à'));
+        $this->assertNotEmpty($this->html->obfuscate('à'));
     }
 
     /** @test */
@@ -418,7 +438,7 @@ class HtmlBuilderTest extends TestCase
     {
         $this->assertEquals(
             ' class="strong" required="required"',
-            $this->htmlBuilder->attributes(['class' => 'strong', 'required'])
+            $this->html->attributes(['class' => 'strong', 'required'])
         );
     }
 
@@ -427,7 +447,7 @@ class HtmlBuilderTest extends TestCase
     {
         $this->assertEquals(
             '<meta name="description" content="Lorem ipsum dolor sit amet.">' . PHP_EOL,
-            $this->htmlBuilder->meta('description', 'Lorem ipsum dolor sit amet.')
+            $this->html->meta('description', 'Lorem ipsum dolor sit amet.')
         );
     }
 
@@ -436,7 +456,7 @@ class HtmlBuilderTest extends TestCase
     {
         $this->assertEquals(
             '<meta content="website" property="og:type">' . PHP_EOL,
-            $this->htmlBuilder->meta(null, 'website', [
+            $this->html->meta(null, 'website', [
                 'property' => 'og:type'
             ])
         );
@@ -445,11 +465,11 @@ class HtmlBuilderTest extends TestCase
     /** @test */
     public function it_can_register_a_component()
     {
-        $this->htmlBuilder->component('tweet', 'components.tweet', [
+        $this->html->component('tweet', 'components.tweet', [
             'handle', 'body', 'date'
         ]);
 
-        $this->assertTrue($this->htmlBuilder->hasComponent('tweet'));
+        $this->assertTrue($this->html->hasComponent('tweet'));
     }
 
     /**
@@ -460,7 +480,7 @@ class HtmlBuilderTest extends TestCase
      */
     public function it_must_throw_bad_method_call_exception_on_component()
     {
-        $this->htmlBuilder->btnSuccess('Hello');
+        $this->html->btnSuccess('Hello');
     }
 
     /** @test */
@@ -468,7 +488,7 @@ class HtmlBuilderTest extends TestCase
     {
         $nbsp = '&nbsp;';
 
-        $this->assertEquals($nbsp, $this->htmlBuilder->nbsp());
-        $this->assertEquals(str_repeat($nbsp, 5), $this->htmlBuilder->nbsp(5));
+        $this->assertEquals($nbsp, $this->html->nbsp());
+        $this->assertEquals(str_repeat($nbsp, 5), $this->html->nbsp(5));
     }
 }

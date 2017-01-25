@@ -1,12 +1,12 @@
 <?php namespace Arcanedev\LaravelHtml\Contracts;
 
 /**
- * Interface  HtmlBuilderInterface
+ * Interface  HtmlBuilder
  *
  * @package   Arcanedev\LaravelHtml\Contracts
  * @author    ARCANEDEV <arcanedev.maroc@gmail.com>
  */
-interface HtmlBuilderInterface
+interface HtmlBuilder
 {
     /* ------------------------------------------------------------------------------------------------
      |  Main Functions
@@ -20,6 +20,15 @@ interface HtmlBuilderInterface
      * @return string
      */
     public function entities($value);
+
+    /**
+     * Convert all applicable characters to HTML entities.
+     *
+     * @param  string  $value
+     *
+     * @return string
+     */
+    public function escape($value);
 
     /**
      * Convert entities to HTML characters.

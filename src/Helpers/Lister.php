@@ -121,7 +121,7 @@ class Lister
     {
         return is_array($value)
             ? static::makeNestedElements($key, $type, $value)
-            : '<li>' . e($value) . '</li>';
+            : '<li>'.Str::escape($value).'</li>';
     }
 
     /**
@@ -137,6 +137,6 @@ class Lister
     {
         return is_int($key)
             ? static::make($type, $value)
-            : '<li>' . $key . static::make($type, $value) . '</li>';
+            : '<li>'.$key.static::make($type, $value).'</li>';
     }
 }

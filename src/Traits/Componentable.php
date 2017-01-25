@@ -1,5 +1,6 @@
 <?php namespace Arcanedev\LaravelHtml\Traits;
 
+use Illuminate\Support\Arr;
 use Illuminate\Support\HtmlString;
 use BadMethodCallException;
 
@@ -60,7 +61,7 @@ trait Componentable
      * @param  string  $name
      * @param  array   $arguments
      *
-     * @return \Illuminate\Contracts\View\View
+     * @return \Illuminate\Support\HtmlString
      */
     protected function renderComponent($name, array $arguments)
     {
@@ -91,7 +92,7 @@ trait Componentable
                 $default  = null;
             }
 
-            $data[$variable] = array_get($arguments, $i, $default);
+            $data[$variable] = Arr::get($arguments, $i, $default);
             $i++;
         }
 
@@ -104,16 +105,15 @@ trait Componentable
      * @param  string  $method
      * @param  array   $parameters
      *
-     * @return \Illuminate\Contracts\View\View|mixed
+     * @return \Illuminate\Support\HtmlString|mixed
      *
      * @throws \BadMethodCallException
      */
     public function __call($method, $parameters)
     {
-        if (static::hasComponent($method)) {
-            return $this->renderComponent($method, $parameters);
-        }
+        if ( ! static::hasComponent($method))
+            throw new BadMethodCallException("Method {$method} does not exist.");
 
-        throw new BadMethodCallException("Method {$method} does not exist.");
+        return $this->renderComponent($method, $parameters);
     }
 }

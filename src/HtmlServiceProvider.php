@@ -42,8 +42,8 @@ class HtmlServiceProvider extends ServiceProvider
     public function provides()
     {
         return [
-            'html', HtmlBuilder::class, Contracts\HtmlBuilderInterface::class,
-            'form', FormBuilder::class, Contracts\FormBuilderInterface::class,
+            'html', HtmlBuilder::class, Contracts\HtmlBuilder::class,
+            'form', FormBuilder::class, Contracts\FormBuilder::class,
         ];
     }
 
@@ -56,12 +56,8 @@ class HtmlServiceProvider extends ServiceProvider
      */
     protected function registerHtmlBuilder()
     {
-        $this->app->singleton('html', function($app) {
-            return new HtmlBuilder($app['url']);
-        });
-
-        $this->app->alias('html', HtmlBuilder::class);
-        $this->app->bind(Contracts\HtmlBuilderInterface::class, 'html');
+        $this->app->singleton(Contracts\HtmlBuilder::class, HtmlBuilder::class);
+        $this->app->singleton('html', Contracts\HtmlBuilder::class);
     }
 
     /**
@@ -69,24 +65,7 @@ class HtmlServiceProvider extends ServiceProvider
      */
     protected function registerFormBuilder()
     {
-        $this->app->singleton('form', function($app) {
-            /**
-             * @var HtmlBuilder                       $html
-             * @var \Illuminate\Routing\UrlGenerator  $url
-             * @var \Illuminate\Session\Store         $session
-             */
-            $html    = $app['html'];
-            $url     = $app['url'];
-            $session = $app['session.store'];
-
-            $form = new FormBuilder($html, $url, $session->getToken());
-
-            $form->setSessionStore($session);
-
-            return $form;
-        });
-
-        $this->app->alias('form', FormBuilder::class);
-        $this->app->bind(Contracts\FormBuilderInterface::class, 'form');
+        $this->app->singleton(Contracts\FormBuilder::class, FormBuilder::class);
+        $this->app->singleton('form', Contracts\FormBuilder::class);
     }
 }

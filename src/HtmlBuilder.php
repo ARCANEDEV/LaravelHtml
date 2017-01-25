@@ -1,7 +1,8 @@
 <?php namespace Arcanedev\LaravelHtml;
 
 use Arcanedev\LaravelHtml\Bases\Builder;
-use Arcanedev\LaravelHtml\Contracts\HtmlBuilderInterface;
+use Arcanedev\LaravelHtml\Contracts\HtmlBuilder as HtmlBuilderContract;
+use Arcanedev\LaravelHtml\Helpers\Str;
 use Illuminate\Contracts\Routing\UrlGenerator;
 
 /**
@@ -10,7 +11,7 @@ use Illuminate\Contracts\Routing\UrlGenerator;
  * @package  Arcanedev\LaravelHtml
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
-class HtmlBuilder extends Builder implements HtmlBuilderInterface
+class HtmlBuilder extends Builder implements HtmlBuilderContract
 {
     /* ------------------------------------------------------------------------------------------------
      |  Properties
@@ -50,7 +51,19 @@ class HtmlBuilder extends Builder implements HtmlBuilderInterface
      */
     public function entities($value)
     {
-        return htmlentities($value, ENT_QUOTES, 'UTF-8', false);
+        return Str::escape($value, false);
+    }
+
+    /**
+     * Convert all applicable characters to HTML entities.
+     *
+     * @param  string  $value
+     *
+     * @return string
+     */
+    public function escape($value)
+    {
+        return Str::escape($value);
     }
 
     /**
