@@ -19,7 +19,7 @@ This package is inspired/based on [illuminate/html](https://github.com/illuminat
   * Easy setup &amp; configuration.
   * Well documented &amp; IDE Friendly.
   * Well tested with maximum code quality.
-  * Laravel `5.1 | 5.2 | 5.3` are supported.
+  * Laravel `5.1 | 5.2 | 5.3 | 5.4` are supported.
   * Made with :heart: &amp; :coffee:.
   
 ## Table of contents
