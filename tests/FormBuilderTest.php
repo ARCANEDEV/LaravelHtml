@@ -34,10 +34,14 @@ class FormBuilderTest extends TestCase
     {
         parent::setUp();
 
+        /** @var \Illuminate\Contracts\Session\Session  $session */
+        $session = $this->app['session.store'];
+        $session->put('_token', 'abc');
+
         $this->form  = new FormBuilder(
-            $this->htmlBuilder,
+            $this->html,
             $this->urlGenerator,
-            'abc'
+            $session
         );
     }
 
@@ -718,6 +722,9 @@ class FormBuilderTest extends TestCase
             ],[
                 '<textarea name="foo" cols="60" rows="15"></textarea>',
                 'foo', null, ['size' => '60x15']
+            ],[
+                '<textarea name="encoded_html" cols="50" rows="10">&amp;amp;</textarea>',
+                'encoded_html', '&amp;', []
             ]
         ];
     }
@@ -733,7 +740,7 @@ class FormBuilderTest extends TestCase
      * @param  mixed   $selected
      * @param  array   $options
      */
-    public function it_can_make_select_inputs($expected, $name, $list, $selected, $options)
+    public function it_can_make_select_inputs($expected, $name, $list, $selected, array $options)
     {
         $this->assertEquals(
             $expected,
@@ -799,6 +806,13 @@ class FormBuilderTest extends TestCase
                     '<option value="S" selected="selected">Small</option>'.
                 '</select>',
                 'sizes', $list, new Collection($selected), $options
+            ],[
+                '<select name="encoded_html">'.
+                    '<option value="no_break_space">&amp;nbsp;</option>'.
+                    '<option value="ampersand">&amp;amp;</option>'.
+                    '<option value="lower_than">&amp;lt;</option>'.
+                '</select>',
+                'encoded_html', ['no_break_space' => '&nbsp;', 'ampersand' => '&amp;', 'lower_than' => '&lt;'], null, []
             ]
         ];
     }
@@ -910,6 +924,21 @@ class FormBuilderTest extends TestCase
                 '</select>'
             ]),
             $this->form->select('size', $list, 'L', $options)
+        );
+
+        $this->assertEquals(
+            '<select name="encoded_html">'.
+                '<option selected="selected" value="">Select the &amp;nbsp;</option>'.
+                '<option value="no_break_space">&amp;nbsp;</option>'.
+                '<option value="ampersand">&amp;amp;</option>'.
+                '<option value="lower_than">&amp;lt;</option>'.
+            '</select>',
+            $this->form->select(
+                'encoded_html',
+                ['no_break_space' => '&nbsp;', 'ampersand' => '&amp;', 'lower_than' => '&lt;'],
+                null,
+                ['placeholder' => 'Select the &nbsp;']
+            )
         );
     }
 

@@ -4,11 +4,11 @@ if ( ! function_exists('html')) {
     /**
      * Get the HTML Builder instance.
      *
-     * @return \Arcanedev\LaravelHtml\Contracts\HtmlBuilderInterface
+     * @return \Arcanedev\LaravelHtml\Contracts\HtmlBuilder
      */
     function html()
     {
-        return app(\Arcanedev\LaravelHtml\Contracts\HtmlBuilderInterface::class);
+        return app(\Arcanedev\LaravelHtml\Contracts\HtmlBuilder::class);
     }
 }
 

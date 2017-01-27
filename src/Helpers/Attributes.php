@@ -57,6 +57,6 @@ class Attributes
             $key = $value;
         }
 
-        return $key . '="' . e($value) . '"';
+        return $key.'="'.Str::escape($value).'"';
     }
 }

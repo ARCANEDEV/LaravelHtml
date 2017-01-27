@@ -26,7 +26,7 @@ abstract class TestCase extends BaseTestCase
     /**
      * @var HtmlBuilder
      */
-    protected $htmlBuilder;
+    protected $html;
 
     /* ------------------------------------------------------------------------------------------------
      |  Main Functions
@@ -39,13 +39,13 @@ abstract class TestCase extends BaseTestCase
         $this->app->loadDeferredProviders();
         $router             = $this->registerRoutes();
         $this->urlGenerator = new UrlGenerator($router->getRoutes(), Request::create('/foo', 'GET'));
-        $this->htmlBuilder  = new HtmlBuilder($this->urlGenerator);
+        $this->html         = new HtmlBuilder($this->urlGenerator);
     }
 
     public function tearDown()
     {
         unset($this->urlGenerator);
-        unset($this->htmlBuilder);
+        unset($this->html);
 
         parent::tearDown();
     }

@@ -1,14 +1,14 @@
 <?php namespace Arcanedev\LaravelHtml\Contracts;
 
-use Illuminate\Session\SessionInterface as Session;
+use Illuminate\Contracts\Session\Session;
 
 /**
- * Interface  FormBuilderInterface
+ * Interface  FormBuilder
  *
  * @package   Arcanedev\LaravelHtml\Contracts
  * @author    ARCANEDEV <arcanedev.maroc@gmail.com>
  */
-interface FormBuilderInterface
+interface FormBuilder
 {
     /* ------------------------------------------------------------------------------------------------
      |  Getters & Setters
@@ -17,14 +17,14 @@ interface FormBuilderInterface
     /**
      * Get the session store implementation.
      *
-     * @return \Illuminate\Session\SessionInterface
+     * @return \Illuminate\Contracts\Session\Session
      */
     public function getSessionStore();
 
     /**
      * Set the session store implementation.
      *
-     * @param  \Illuminate\Session\SessionInterface  $session
+     * @param  \Illuminate\Contracts\Session\Session  $session
      *
      * @return self
      */
