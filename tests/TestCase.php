@@ -64,7 +64,8 @@ abstract class TestCase extends BaseTestCase
     protected function getPackageProviders($app)
     {
         return [
-            \Arcanedev\LaravelHtml\HtmlServiceProvider::class
+            \Orchestra\Database\ConsoleServiceProvider::class,
+            \Arcanedev\LaravelHtml\HtmlServiceProvider::class,
         ];
     }
 
@@ -79,7 +80,7 @@ abstract class TestCase extends BaseTestCase
     {
         return [
             'Form'  => \Arcanedev\LaravelHtml\Facades\Form::class,
-            'Html'  => \Arcanedev\LaravelHtml\Facades\Html::class
+            'Html'  => \Arcanedev\LaravelHtml\Facades\Html::class,
         ];
     }
 
