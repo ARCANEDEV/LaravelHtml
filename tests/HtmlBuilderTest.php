@@ -491,4 +491,25 @@ class HtmlBuilderTest extends TestCase
         $this->assertEquals($nbsp, $this->html->nbsp());
         $this->assertEquals(str_repeat($nbsp, 5), $this->html->nbsp(5));
     }
+
+    /** @test */
+    public function it_can_make_tel_link()
+    {
+        $phone = '+123-456-789';
+
+        $this->assertSame(
+            '<a href="tel:'.$phone.'">'.$phone.'</a>',
+            $this->html->tel($phone)->toHtml()
+        );
+
+        $this->assertSame(
+            '<a href="tel:'.$phone.'">Call us!</a>',
+            $this->html->tel($phone, 'Call us!')->toHtml()
+        );
+
+        $this->assertSame(
+            '<a href="tel:'.$phone.'">Call us!</a>',
+            $this->html->tel($phone, 'Call us!')->toHtml()
+        );
+    }
 }

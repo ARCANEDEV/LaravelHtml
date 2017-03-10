@@ -398,4 +398,25 @@ class HtmlBuilder extends Builder implements HtmlBuilderContract
             Helpers\Meta::make($name, $content, $attributes)
         );
     }
+
+    /**
+     * Generate a HTML link to an phone number (call).
+     *
+     * @param  string  $phone
+     * @param  string  $title
+     * @param  array   $attributes
+     * @param  bool    $escaped
+     *
+     * @return \Illuminate\Support\HtmlString
+     */
+    public function tel($phone, $title = null, $attributes = [], $escaped = true)
+    {
+        $title = $title ?: $phone;
+
+        return $this->toHtmlString(
+            '<a href="tel:'.$phone.'"'.$this->attributes($attributes).'>'.
+                ($escaped ? $this->entities($title):$title).
+            '</a>'
+        );
+    }
 }

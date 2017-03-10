@@ -246,4 +246,14 @@ interface HtmlBuilder
      * @return \Illuminate\Support\HtmlString
      */
     public function meta($name, $content, array $attributes = []);
+
+    /**
+     * Generate a HTML link to an phone number (call).
+     *
+     * @param  string  $phone
+     * @param  string  $title
+     * @param  array   $attributes
+     * @param  bool    $escaped
+     */
+    public function tel($phone, $title = null, $attributes = [], $escaped = true);
 }
