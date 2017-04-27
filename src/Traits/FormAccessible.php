@@ -1,5 +1,6 @@
 <?php namespace Arcanedev\LaravelHtml\Traits;
 
+use Illuminate\Support\Str;
 use ReflectionClass;
 use ReflectionMethod;
 
@@ -128,7 +129,7 @@ trait FormAccessible
      */
     private function getMutateFromMethodName($key)
     {
-        return 'form' . str_studly($key) . 'Attribute';
+        return 'form'.Str::studly($key).'Attribute';
     }
 
     /**
