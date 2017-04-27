@@ -1,5 +1,6 @@
 <?php namespace Arcanedev\LaravelHtml\Traits;
 
+use Illuminate\Support\Str;
 use ReflectionClass;
 use ReflectionMethod;
 
@@ -11,10 +12,11 @@ use ReflectionMethod;
  */
 trait FormAccessible
 {
-    /* ------------------------------------------------------------------------------------------------
+    /* -----------------------------------------------------------------
      |  Properties
-     | ------------------------------------------------------------------------------------------------
+     | -----------------------------------------------------------------
      */
+
     /**
      * A cached ReflectionClass instance for $this.
      *
@@ -22,10 +24,11 @@ trait FormAccessible
      */
     protected $reflection;
 
-    /* ------------------------------------------------------------------------------------------------
-     |  Main Functions
-     | ------------------------------------------------------------------------------------------------
+    /* -----------------------------------------------------------------
+     |  Main Methods
+     | -----------------------------------------------------------------
      */
+
     /**
      * Get form value from the eloquent model.
      *
@@ -51,10 +54,11 @@ trait FormAccessible
         return $value;
     }
 
-    /* ------------------------------------------------------------------------------------------------
-     |  Eloquent Functions
-     | ------------------------------------------------------------------------------------------------
+    /* -----------------------------------------------------------------
+     |  Eloquent Methods
+     | -----------------------------------------------------------------
      */
+
     /**
      * Get an attribute from the $attributes array.
      *
@@ -80,10 +84,11 @@ trait FormAccessible
      */
     abstract protected function asDateTime($value);
 
-    /* ------------------------------------------------------------------------------------------------
-     |  Other Functions
-     | ------------------------------------------------------------------------------------------------
+    /* -----------------------------------------------------------------
+     |  Other Methods
+     | -----------------------------------------------------------------
      */
+
     /**
      * Check if has a form mutator.
      *
@@ -124,13 +129,13 @@ trait FormAccessible
      */
     private function getMutateFromMethodName($key)
     {
-        return 'form' . str_studly($key) . 'Attribute';
+        return 'form'.Str::studly($key).'Attribute';
     }
 
     /**
      * Get a ReflectionClass Instance.
      *
-     * @return ReflectionClass
+     * @return \ReflectionClass
      */
     protected function getReflection()
     {

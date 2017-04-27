@@ -13,10 +13,11 @@ use Illuminate\Contracts\Routing\UrlGenerator;
  */
 class HtmlBuilder extends Builder implements HtmlBuilderContract
 {
-    /* ------------------------------------------------------------------------------------------------
+    /* -----------------------------------------------------------------
      |  Properties
-     | ------------------------------------------------------------------------------------------------
+     | -----------------------------------------------------------------
      */
+
     /**
      * The URL generator instance.
      *
@@ -24,10 +25,11 @@ class HtmlBuilder extends Builder implements HtmlBuilderContract
      */
     protected $url;
 
-    /* ------------------------------------------------------------------------------------------------
+    /* -----------------------------------------------------------------
      |  Constructor
-     | ------------------------------------------------------------------------------------------------
+     | -----------------------------------------------------------------
      */
+
     /**
      * Create a new HTML builder instance.
      *
@@ -38,10 +40,11 @@ class HtmlBuilder extends Builder implements HtmlBuilderContract
         $this->url = $url;
     }
 
-    /* ------------------------------------------------------------------------------------------------
-     |  Main Functions
-     | ------------------------------------------------------------------------------------------------
+    /* -----------------------------------------------------------------
+     |  Main Methods
+     | -----------------------------------------------------------------
      */
+
     /**
      * Convert an HTML string to entities.
      *
@@ -51,7 +54,7 @@ class HtmlBuilder extends Builder implements HtmlBuilderContract
      */
     public function entities($value)
     {
-        return Str::escape($value, false);
+        return e($value);
     }
 
     /**
@@ -63,7 +66,7 @@ class HtmlBuilder extends Builder implements HtmlBuilderContract
      */
     public function escape($value)
     {
-        return Str::escape($value);
+        return e($value);
     }
 
     /**
@@ -179,7 +182,7 @@ class HtmlBuilder extends Builder implements HtmlBuilderContract
             $title = $url;
 
         return $this->toHtmlString(
-            '<a href="' . $url . '"' . $this->attributes($attributes) . '>' .
+            '<a href="'.$url.'"'.$this->attributes($attributes).'>'.
                 ($escaped ? $this->entities($title) : $title).
             '</a>'
         );
@@ -284,8 +287,8 @@ class HtmlBuilder extends Builder implements HtmlBuilderContract
         $email = $this->obfuscate('mailto:') . $email;
 
         return $this->toHtmlString(
-            '<a href="' . $email . '"' . $this->attributes($attributes) . '>' .
-                ($escaped ? $this->entities($title) : $title) .
+            '<a href="'.$email.'"'.$this->attributes($attributes).'>'.
+                ($escaped ? $this->entities($title) : $title).
             '</a>'
         );
     }
