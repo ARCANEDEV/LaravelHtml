@@ -268,16 +268,6 @@ class HtmlBuilderTest extends TestCase
         $this->assertEmpty(
             $this->html->ol([])->toHtml()
         );
-
-        // Escaped list
-        $this->assertEquals(
-            '<ol class="example">'.
-                '<li>foo</li>'.
-                '<li>bar</li>'.
-                '<li>&amp;amp;</li>'.
-            '</ol>',
-            $this->html->ol(['foo', 'bar', '&amp;'], ['class' => 'example'])
-        );
     }
 
     /** @test */
@@ -303,16 +293,6 @@ class HtmlBuilderTest extends TestCase
         // Empty list
         $this->assertEmpty(
             $this->html->ul([])->toHtml()
-        );
-
-        // Escaped list
-        $this->assertEquals(
-            '<ul class="example">'.
-                '<li>foo</li>'.
-                '<li>bar</li>'.
-                '<li>&amp;amp;</li>'.
-            '</ul>',
-            $this->html->ul(['foo', 'bar', '&amp;'], ['class' => 'example'])
         );
     }
 

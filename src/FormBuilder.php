@@ -16,10 +16,11 @@ use Illuminate\Support\Collection;
  */
 class FormBuilder extends Builder implements FormBuilderContract
 {
-    /* ------------------------------------------------------------------------------------------------
+    /* -----------------------------------------------------------------
      |  Properties
-     | ------------------------------------------------------------------------------------------------
+     | -----------------------------------------------------------------
      */
+
     /**
     * The HTML builder instance.
     *
@@ -83,10 +84,11 @@ class FormBuilder extends Builder implements FormBuilderContract
     */
     protected $skipValueTypes = ['file', 'password', 'checkbox', 'radio'];
 
-    /* ------------------------------------------------------------------------------------------------
+    /* -----------------------------------------------------------------
      |  Constructor
-     | ------------------------------------------------------------------------------------------------
+     | -----------------------------------------------------------------
      */
+
     /**
     * Create a new form builder instance.
     *
@@ -106,10 +108,11 @@ class FormBuilder extends Builder implements FormBuilderContract
         $this->setSessionStore($session);
     }
 
-    /* ------------------------------------------------------------------------------------------------
+    /* -----------------------------------------------------------------
      |  Getters & Setters
-     | ------------------------------------------------------------------------------------------------
+     | -----------------------------------------------------------------
      */
+
     /**
      * Get the session store implementation.
      *
@@ -158,13 +161,11 @@ class FormBuilder extends Builder implements FormBuilderContract
      */
     public function getIdAttribute($name, array $attributes)
     {
-        if (array_key_exists('id', $attributes)) {
+        if (array_key_exists('id', $attributes))
             return $attributes['id'];
-        }
 
-        if (in_array($name, $this->labels)) {
+        if (in_array($name, $this->labels))
             return $name;
-        }
 
         return null;
     }
@@ -179,17 +180,14 @@ class FormBuilder extends Builder implements FormBuilderContract
      */
     public function getValueAttribute($name, $value = null)
     {
-        if (is_null($name)) {
+        if (is_null($name))
             return $value;
-        }
 
-        if ( ! is_null($this->old($name)) && $name !== '_method') {
+        if ( ! is_null($this->old($name)) && $name !== '_method')
             return $this->old($name);
-        }
 
-        if ( ! is_null($value)) {
+        if ( ! is_null($value))
             return $value;
-        }
 
         return isset($this->model)
             ? $this->getModelValueAttribute($name)
@@ -262,10 +260,11 @@ class FormBuilder extends Builder implements FormBuilderContract
         return $method !== 'GET' ? 'POST' : $method;
     }
 
-    /* ------------------------------------------------------------------------------------------------
-     |  Main Functions
-     | ------------------------------------------------------------------------------------------------
+    /* -----------------------------------------------------------------
+     |  Main Methods
+     | -----------------------------------------------------------------
      */
+
     /**
      * Open up a new HTML form.
      *
@@ -938,11 +937,7 @@ class FormBuilder extends Builder implements FormBuilderContract
      */
     private function getCheckboxCheckedState($name, $value, $checked)
     {
-        if (
-            isset($this->session) &&
-            ! $this->oldInputIsEmpty() &&
-            is_null($this->old($name))
-        ) {
+        if (isset($this->session) && ! $this->oldInputIsEmpty() && is_null($this->old($name))) {
             return false;
         }
 
@@ -1066,10 +1061,11 @@ class FormBuilder extends Builder implements FormBuilderContract
         return $this->input('color', $name, $value, $options);
     }
 
-    /* ------------------------------------------------------------------------------------------------
-     |  Other Functions
-     | ------------------------------------------------------------------------------------------------
+    /* -----------------------------------------------------------------
+     |  Other Methods
+     | -----------------------------------------------------------------
      */
+
     /**
      * Get the form action from the options.
      *

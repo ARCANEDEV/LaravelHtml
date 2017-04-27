@@ -1,5 +1,6 @@
 <?php namespace Arcanedev\LaravelHtml\Facades;
 
+use Arcanedev\LaravelHtml\Contracts\FormBuilder;
 use Illuminate\Support\Facades\Facade;
 
 /**
@@ -15,5 +16,5 @@ class Form extends Facade {
      *
      * @return string
      */
-    protected static function getFacadeAccessor() { return 'form'; }
+    protected static function getFacadeAccessor() { return FormBuilder::class; }
 }

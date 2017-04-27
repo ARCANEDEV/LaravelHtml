@@ -701,7 +701,7 @@ class FormBuilderTest extends TestCase
      */
     public function it_can_make_textarea_inputs($expected, $name, $value, $options)
     {
-        $this->assertEquals($expected, $this->form->textarea($name, $value, $options));
+        $this->assertEquals($expected, $this->form->textarea($name, $value, $options)->toHtml());
     }
 
     /**
@@ -723,9 +723,12 @@ class FormBuilderTest extends TestCase
                 '<textarea name="foo" cols="60" rows="15"></textarea>',
                 'foo', null, ['size' => '60x15']
             ],[
-                '<textarea name="encoded_html" cols="50" rows="10">&amp;amp;</textarea>',
-                'encoded_html', '&amp;', []
-            ]
+                '<textarea name="encoded_html" cols="60" rows="60">Eggs &amp; Sausage</textarea>',
+                'encoded_html', 'Eggs & Sausage', ['size' => '60x60']
+            ],[
+                '<textarea name="encoded_html" cols="60" rows="60">Eggs &amp;&amp; Sausage</textarea>',
+                'encoded_html', 'Eggs &amp;&amp; Sausage', ['size' => '60x60']
+            ],
         ];
     }
 
@@ -744,7 +747,7 @@ class FormBuilderTest extends TestCase
     {
         $this->assertEquals(
             $expected,
-            $this->form->select($name, $list, $selected, $options)
+            $this->form->select($name, $list, $selected, $options)->toHtml()
         );
     }
 
@@ -806,14 +809,7 @@ class FormBuilderTest extends TestCase
                     '<option value="S" selected="selected">Small</option>'.
                 '</select>',
                 'sizes', $list, new Collection($selected), $options
-            ],[
-                '<select name="encoded_html">'.
-                    '<option value="no_break_space">&amp;nbsp;</option>'.
-                    '<option value="ampersand">&amp;amp;</option>'.
-                    '<option value="lower_than">&amp;lt;</option>'.
-                '</select>',
-                'encoded_html', ['no_break_space' => '&nbsp;', 'ampersand' => '&amp;', 'lower_than' => '&lt;'], null, []
-            ]
+            ],
         ];
     }
 
@@ -912,7 +908,7 @@ class FormBuilderTest extends TestCase
                     '<option value="S">Small</option>',
                 '</select>'
             ]),
-            $this->form->select('size', $list, null, $options)
+            $this->form->select('size', $list, null, $options)->toHtml()
         );
 
         $this->assertEquals(
@@ -923,22 +919,7 @@ class FormBuilderTest extends TestCase
                 '<option value="S">Small</option>',
                 '</select>'
             ]),
-            $this->form->select('size', $list, 'L', $options)
-        );
-
-        $this->assertEquals(
-            '<select name="encoded_html">'.
-                '<option selected="selected" value="">Select the &amp;nbsp;</option>'.
-                '<option value="no_break_space">&amp;nbsp;</option>'.
-                '<option value="ampersand">&amp;amp;</option>'.
-                '<option value="lower_than">&amp;lt;</option>'.
-            '</select>',
-            $this->form->select(
-                'encoded_html',
-                ['no_break_space' => '&nbsp;', 'ampersand' => '&amp;', 'lower_than' => '&lt;'],
-                null,
-                ['placeholder' => 'Select the &nbsp;']
-            )
+            $this->form->select('size', $list, 'L', $options)->toHtml()
         );
     }
 

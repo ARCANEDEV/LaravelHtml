@@ -1,5 +1,6 @@
 <?php namespace Arcanedev\LaravelHtml\Facades;
 
+use Arcanedev\LaravelHtml\Contracts\HtmlBuilder;
 use Illuminate\Support\Facades\Facade;
 
 /**
@@ -14,5 +15,5 @@ class Html extends Facade {
      *
      * @return string
      */
-    protected static function getFacadeAccessor() { return 'html'; }
+    protected static function getFacadeAccessor() { return HtmlBuilder::class; }
 }
