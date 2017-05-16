@@ -657,11 +657,12 @@ class FormBuilder extends Builder implements FormBuilderContract
      * @param  string  $name
      * @param  array   $list
      * @param  string  $selected
+     * @param  array   $attributes
      * @param  array   $options
      *
      * @return \Illuminate\Support\HtmlString
      */
-    public function select($name, $list = [], $selected = null, array $options = [])
+    public function select($name, $list = [], $selected = null, array $attributes = [], array $options = [])
     {
         // When building a select box the "value" attribute is really the selected one
         // so we will use that when checking the model or session for a value which
@@ -673,10 +674,10 @@ class FormBuilder extends Builder implements FormBuilderContract
             $selected = $selected->all();
         }
 
-        $options['id'] = $this->getIdAttribute($name, $options);
+        $attributes['id'] = $this->getIdAttribute($name, $attributes);
 
-        if ( ! isset($options['name'])) {
-            $options['name'] = $name;
+        if ( ! isset($attributes['name'])) {
+            $attributes['name'] = $name;
         }
 
         // We will simply loop through the options and build an HTML value for each of
@@ -684,21 +685,23 @@ class FormBuilder extends Builder implements FormBuilderContract
         // all together into one single HTML element that can be put on the form.
         $html = [];
 
-        if (isset($options['placeholder'])) {
-            $html[] = $this->placeholderOption($options['placeholder'], $selected);
-            unset($options['placeholder']);
+        if (isset($attributes['placeholder'])) {
+            $html[] = $this->placeholderOption($attributes['placeholder'], $selected);
+            unset($attributes['placeholder']);
         }
 
         foreach($list as $value => $display) {
-            $html[] = $this->getSelectOption($display, $value, $selected);
+            $html[] = $this->getSelectOption(
+                $display, $value, $selected, isset($options[$value]) ? $options[$value] : []
+            );
         }
 
         // Once we have all of this HTML, we can join this into a single element after
         // formatting the attributes into an HTML "attributes" string, then we will
         // build out a final select statement, which will contain all the values.
-        $options = $this->html->attributes($options);
+        $attributes = $this->html->attributes($attributes);
 
-        return $this->toHtmlString("<select{$options}>".implode('', $html).'</select>');
+        return $this->toHtmlString("<select{$attributes}>".implode('', $html).'</select>');
     }
 
     /**
@@ -765,14 +768,15 @@ class FormBuilder extends Builder implements FormBuilderContract
      * @param  string  $display
      * @param  string  $value
      * @param  string  $selected
+     * @param  array   $attributes
      *
      * @return string
      */
-    private function getSelectOption($display, $value, $selected)
+    private function getSelectOption($display, $value, $selected, array $attributes = [])
     {
         return is_array($display)
-            ? $this->optionGroup($display, $value, $selected)
-            : $this->option($display, $value, $selected);
+            ? $this->optionGroup($display, $value, $selected, $attributes)
+            : $this->option($display, $value, $selected, $attributes);
     }
 
     /**
@@ -781,15 +785,16 @@ class FormBuilder extends Builder implements FormBuilderContract
      * @param  array   $list
      * @param  string  $label
      * @param  string  $selected
+     * @param  array   $attributes
      *
      * @return string
      */
-    private function optionGroup(array $list, $label, $selected)
+    private function optionGroup(array $list, $label, $selected, array $attributes = [])
     {
         $html = [];
 
         foreach($list as $value => $display) {
-            $html[] = $this->option($display, $value, $selected);
+            $html[] = $this->option($display, $value, $selected, $attributes);
         }
 
         return '<optgroup label="'.$this->html->escape($label).'">'.implode('', $html).'</optgroup>';
@@ -801,13 +806,14 @@ class FormBuilder extends Builder implements FormBuilderContract
      * @param  string  $display
      * @param  string  $value
      * @param  string  $selected
+     * @param  array   $attributes
      *
      * @return string
      */
-    private function option($display, $value, $selected)
+    private function option($display, $value, $selected, array $attributes = [])
     {
         $selected = $this->getSelectedValue($value, $selected);
-        $options  = compact('value', 'selected');
+        $options  = compact('value', 'selected') + $attributes;
 
         return '<option'.$this->html->attributes($options).'>'.$this->html->escape($display).'</option>';
     }

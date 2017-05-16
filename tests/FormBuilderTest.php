@@ -895,6 +895,25 @@ class FormBuilderTest extends TestCase
     }
 
     /** @test */
+    public function it_can_make_select_options_with_attributes()
+    {
+        $this->assertEquals(
+            '<select name="size">'.
+                '<option value="L" data-foo="bar" disabled="disabled">Large</option>'.
+                '<option value="S">Small</option>'.
+            '</select>',
+            $this->form->select(
+                'size',
+                ['L' => 'Large', 'S' => 'Small'],
+                null,
+                [],
+                ['L' => ['data-foo' => 'bar', 'disabled']]
+            )
+        );
+    }
+
+
+    /** @test */
     public function it_can_make_select_inputs_with_optional_placeholder()
     {
         $list    = ['L' => 'Large', 'S' => 'Small'];
