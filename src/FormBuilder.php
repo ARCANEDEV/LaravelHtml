@@ -197,17 +197,30 @@ class FormBuilder extends Builder implements FormBuilderContract
     /**
      * Get the model value that should be assigned to the field.
      *
-     * @param  string  $name
+     * @param  string                               $name
+     * @param  \Illuminate\Database\Eloquent\Model  $model
      *
      * @return mixed
      */
-    private function getModelValueAttribute($name)
+    private function getModelValueAttribute($name, $model = null)
     {
+        if (is_null($model)) {
+            $model = $this->model;
+        }
+
         $key = $this->transformKey($name);
 
-        return method_exists($this->model, 'getFormValue')
-            ? $this->model->getFormValue($key)
-            : data_get($this->model, $key);
+        if (strpos($key, '.') !== false) {
+            $keys = explode('.', $key, 2);
+
+            return $this->getModelValueAttribute($keys[1],
+                $this->getModelValueAttribute($keys[0], $model)
+            );
+        }
+
+        return method_exists($model, 'getFormValue')
+            ? $model->getFormValue($key)
+            : data_get($model, $key);
     }
 
     /**
