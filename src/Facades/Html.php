@@ -9,7 +9,8 @@ use Illuminate\Support\Facades\Facade;
  * @package  Arcanedev\LaravelHtml\Facades
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
-class Html extends Facade {
+class Html extends Facade
+{
     /**
      * Get the registered name of the component.
      *

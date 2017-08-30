@@ -251,9 +251,9 @@ interface FormBuilder
     /**
      * Create a select box field.
      *
-     * @param  string  $name
-     * @param  array   $list
-     * @param  string  $selected
+     * @param  string                                $name
+     * @param  array|\Illuminate\Support\Collection  $list
+     * @param  string                                $selected
      * @param  array   $attributes
      * @param  array   $options
      *
