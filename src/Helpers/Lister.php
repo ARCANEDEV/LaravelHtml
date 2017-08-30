@@ -75,7 +75,8 @@ class Lister
      */
     public static function make($type, array $list, array $attributes = [])
     {
-        if (count($list) == 0) return '';
+        if (count($list) == 0)
+            return '';
 
         $html       = static::makeElements($type, $list);
         $attributes = Attributes::make($attributes);
@@ -137,8 +138,8 @@ class Lister
      */
     private static function makeNestedElements($key, $type, $value)
     {
-        return is_int($key)
-            ? static::make($type, $value)
-            : '<li>'.$key.static::make($type, $value).'</li>';
+        $output = static::make($type, $value);
+
+        return is_int($key) ? $output : '<li>'.$key.$output.'</li>';
     }
 }

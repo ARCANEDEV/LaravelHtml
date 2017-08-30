@@ -50,14 +50,14 @@ class Attributes
      */
     private static function makeAttributeElement($key, $value)
     {
-        if (is_null($value)) return null;
+        if (is_null($value))
+            return null;
 
         // For numeric keys we will assume that the key and the value are the same
         // as this will convert HTML attributes such as "required" to a correct
         // form like required="required" instead of using incorrect numerics.
-        if (is_numeric($key)) {
+        if (is_numeric($key))
             $key = $value;
-        }
 
         return $key.'="'.e($value).'"';
     }

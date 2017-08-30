@@ -9,8 +9,8 @@ use Illuminate\Support\Facades\Facade;
  * @package  Arcanedev\LaravelHtml\Facades
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
-class Form extends Facade {
-
+class Form extends Facade
+{
     /**
      * Get the registered name of the component.
      *
