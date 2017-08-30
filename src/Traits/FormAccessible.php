@@ -20,7 +20,7 @@ trait FormAccessible
     /**
      * A cached ReflectionClass instance for $this.
      *
-     * @var ReflectionClass
+     * @var \ReflectionClass
      */
     protected $reflection;
 
@@ -40,18 +40,12 @@ trait FormAccessible
     {
         $value = $this->getAttributeFromArray($key);
 
-        if (in_array($key, $this->getDates()) && ! is_null($value)) {
+        if (in_array($key, $this->getDates()) && ! is_null($value))
             $value = $this->asDateTime($value);
-        }
 
-        if ($this->hasFormMutator($key)) {
-            $value = $this->mutateFormAttribute($key, $value);
-        } else {
-            // No form mutator, let the model resolve this
-            $value = data_get($this, $key);
-        }
-
-        return $value;
+        return $this->hasFormMutator($key)
+            ? $this->mutateFormAttribute($key, $value)
+            : data_get($this, $key); // No form mutator, let the model resolve this
     }
 
     /* -----------------------------------------------------------------

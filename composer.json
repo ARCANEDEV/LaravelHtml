@@ -14,12 +14,12 @@
     "type":    "library",
     "license": "MIT",
     "require": {
-        "php":               ">=5.6.4",
+        "php":               ">=7.0",
         "arcanedev/support": "~4.0"
     },
     "require-dev": {
-        "phpunit/phpcov":    "~3.0",
-        "phpunit/phpunit":   "~5.0"
+        "phpunit/phpunit":   "~6.0",
+        "phpunit/phpcov":    "~4.0"
     },
     "autoload": {
         "psr-4": {
@@ -33,11 +33,20 @@
         }
     },
     "scripts": {
-        "testbench": "composer require --dev \"orchestra/testbench=~3.4\" \"orchestra/database=~3.4\""
+        "testbench": "composer require --dev \"orchestra/testbench=~3.5\" \"orchestra/database=~3.5\""
     },
     "extra": {
+        "laravel": {
+            "providers": [
+                "Arcanedev\\LaravelHtml\\HtmlServiceProvider"
+            ],
+            "aliases": {
+                "Form": "Arcanedev\\LaravelHtml\\Facades\\Form",
+                "Html": "Arcanedev\\LaravelHtml\\Facades\\Html"
+            }
+        },
         "branch-alias": {
-            "dev-master": "5.4-dev"
+            "dev-master": "5.5-dev"
         }
     },
     "minimum-stability": "dev",

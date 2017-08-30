@@ -32,6 +32,8 @@ class HtmlServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        parent::register();
+
         $this->registerHtmlBuilder();
         $this->registerFormBuilder();
     }
@@ -44,8 +46,10 @@ class HtmlServiceProvider extends ServiceProvider
     public function provides()
     {
         return [
-            'html', HtmlBuilder::class, Contracts\HtmlBuilder::class,
-            'form', FormBuilder::class, Contracts\FormBuilder::class,
+            HtmlBuilder::class,
+            Contracts\HtmlBuilder::class,
+            FormBuilder::class,
+            Contracts\FormBuilder::class,
         ];
     }
 
@@ -59,8 +63,7 @@ class HtmlServiceProvider extends ServiceProvider
      */
     protected function registerHtmlBuilder()
     {
-        $this->app->singleton(Contracts\HtmlBuilder::class, HtmlBuilder::class);
-        $this->app->singleton('html', Contracts\HtmlBuilder::class);
+        $this->singleton(Contracts\HtmlBuilder::class, HtmlBuilder::class);
     }
 
     /**
@@ -68,7 +71,6 @@ class HtmlServiceProvider extends ServiceProvider
      */
     protected function registerFormBuilder()
     {
-        $this->app->singleton(Contracts\FormBuilder::class, FormBuilder::class);
-        $this->app->singleton('form', Contracts\FormBuilder::class);
+        $this->singleton(Contracts\FormBuilder::class, FormBuilder::class);
     }
 }

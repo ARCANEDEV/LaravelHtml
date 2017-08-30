@@ -10,17 +10,19 @@ use Arcanedev\LaravelHtml\HtmlServiceProvider;
  */
 class HtmlServiceProviderTest extends TestCase
 {
-    /* ------------------------------------------------------------------------------------------------
+    /* -----------------------------------------------------------------
      |  Properties
-     | ------------------------------------------------------------------------------------------------
+     | -----------------------------------------------------------------
      */
-    /** @var  HtmlServiceProvider */
+
+    /** @var  \Arcanedev\LaravelHtml\HtmlServiceProvider */
     private $provider;
 
-    /* ------------------------------------------------------------------------------------------------
-     |  Main Functions
-     | ------------------------------------------------------------------------------------------------
+    /* -----------------------------------------------------------------
+     |  Main Methods
+     | -----------------------------------------------------------------
      */
+
     public function setUp()
     {
         parent::setUp();
@@ -36,10 +38,11 @@ class HtmlServiceProviderTest extends TestCase
         parent::tearDown();
     }
 
-    /* ------------------------------------------------------------------------------------------------
-     |  Test Functions
-     | ------------------------------------------------------------------------------------------------
+    /* -----------------------------------------------------------------
+     |  Tests
+     | -----------------------------------------------------------------
      */
+
     /** @test */
     public function it_can_be_instantiated()
     {
@@ -58,8 +61,10 @@ class HtmlServiceProviderTest extends TestCase
     public function it_can_get_provides()
     {
         $expected = [
-            'html', \Arcanedev\LaravelHtml\HtmlBuilder::class, \Arcanedev\LaravelHtml\Contracts\HtmlBuilder::class,
-            'form', \Arcanedev\LaravelHtml\FormBuilder::class, \Arcanedev\LaravelHtml\Contracts\FormBuilder::class,
+            \Arcanedev\LaravelHtml\HtmlBuilder::class,
+            \Arcanedev\LaravelHtml\Contracts\HtmlBuilder::class,
+            \Arcanedev\LaravelHtml\FormBuilder::class,
+            \Arcanedev\LaravelHtml\Contracts\FormBuilder::class,
         ];
 
         $this->assertEquals($expected, $this->provider->provides());
