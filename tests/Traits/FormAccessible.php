@@ -15,10 +15,11 @@ use Illuminate\Database\Eloquent\Model;
  */
 class FormAccessible extends TestCase
 {
-    /* ------------------------------------------------------------------------------------------------
+    /* -----------------------------------------------------------------
      |  Properties
-     | ------------------------------------------------------------------------------------------------
+     | -----------------------------------------------------------------
      */
+
     /**
      * The model data.
      *
@@ -40,10 +41,11 @@ class FormAccessible extends TestCase
      */
     protected $form;
 
-    /* ------------------------------------------------------------------------------------------------
-     |  Main Functions
-     | ------------------------------------------------------------------------------------------------
+    /* -----------------------------------------------------------------
+     |  Main Methods
+     | -----------------------------------------------------------------
      */
+
     public function setUp()
     {
         parent::setUp();
@@ -70,10 +72,11 @@ class FormAccessible extends TestCase
         $this->form = new FormBuilder($this->html, $this->urlGenerator, $session);
     }
 
-    /* ------------------------------------------------------------------------------------------------
-     |  Test Functions
-     | ------------------------------------------------------------------------------------------------
+    /* -----------------------------------------------------------------
+     |  Tests
+     | -----------------------------------------------------------------
      */
+
     /** @test */
     public function it_can_mutate_values_for_forms()
     {
@@ -95,7 +98,7 @@ class FormAccessible extends TestCase
     }
 
     /** @test */
-    public function it_doesnt_require_the_use_of_this_feature()
+    public function it_does_not_require_the_use_of_this_feature()
     {
         $model = new ModelThatDoesntUseForms($this->modelData);
         $this->form->setModel($model);
