@@ -2,7 +2,6 @@
 
 use Arcanedev\LaravelHtml\Bases\Builder;
 use Arcanedev\LaravelHtml\Contracts\HtmlBuilder as HtmlBuilderContract;
-use Arcanedev\LaravelHtml\Helpers\Str;
 use Illuminate\Contracts\Routing\UrlGenerator;
 
 /**

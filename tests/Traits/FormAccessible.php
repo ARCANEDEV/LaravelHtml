@@ -42,7 +42,7 @@ class FormAccessible extends TestCase
     protected $form;
 
     /* -----------------------------------------------------------------
-     |  Main Functions
+     |  Main Methods
      | -----------------------------------------------------------------
      */
 
@@ -98,7 +98,7 @@ class FormAccessible extends TestCase
     }
 
     /** @test */
-    public function it_doesnt_require_the_use_of_this_feature()
+    public function it_does_not_require_the_use_of_this_feature()
     {
         $model = new ModelThatDoesntUseForms($this->modelData);
         $this->form->setModel($model);

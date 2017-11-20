@@ -14,19 +14,19 @@ use StdClass;
  */
 class FormBuilderTest extends TestCase
 {
-    /* ------------------------------------------------------------------------------------------------
+    /* -----------------------------------------------------------------
      |  Properties
-     | ------------------------------------------------------------------------------------------------
+     | -----------------------------------------------------------------
      */
-    /**
-     * @var FormBuilder
-     */
+
+    /** @var \Arcanedev\LaravelHtml\FormBuilder */
     private $form;
 
-    /* ------------------------------------------------------------------------------------------------
-     |  Main Functions
-     | ------------------------------------------------------------------------------------------------
+    /* -----------------------------------------------------------------
+     |  Main Methods
+     | -----------------------------------------------------------------
      */
+
     /**
      * Setup the test environment.
      */
@@ -55,10 +55,11 @@ class FormBuilderTest extends TestCase
         parent::tearDown();
     }
 
-    /* ------------------------------------------------------------------------------------------------
-     |  Test Functions
-     | ------------------------------------------------------------------------------------------------
+    /* -----------------------------------------------------------------
+     |  Tests
+     | -----------------------------------------------------------------
      */
+
     /** @test */
     public function it_can_be_instantiated()
     {
@@ -1380,20 +1381,19 @@ class FormBuilderTest extends TestCase
         ];
     }
 
-    /* ------------------------------------------------------------------------------------------------
-     |  Other Functions
-     | ------------------------------------------------------------------------------------------------
+    /* -----------------------------------------------------------------
+     |  Other Methods
+     | -----------------------------------------------------------------
      */
+
     /**
      * @return \Prophecy\Prophecy\ObjectProphecy
      */
     protected function mockSession()
     {
-        /** @var \Prophecy\Prophecy\ObjectProphecy $session */
-        $session = $this->prophesize(\Illuminate\Session\Store::class);
-        $this->form->setSessionStore($session->reveal());
-
-        return $session;
+        return tap($this->prophesize(\Illuminate\Session\Store::class), function ($session) {
+            $this->form->setSessionStore($session->reveal());
+        });
     }
 
     /**
@@ -1404,10 +1404,6 @@ class FormBuilderTest extends TestCase
      */
     protected function setModel(array $data, $object = true)
     {
-        if ($object) {
-            $data = new FormBuilderModelStub($data);
-        }
-
-        $this->form->model($data, ['method' => 'GET']);
+        $this->form->model($object ? new FormBuilderModelStub($data) : $data, ['method' => 'GET']);
     }
 }
