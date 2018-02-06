@@ -1,5 +1,20 @@
 <?php
 
+use Arcanedev\LaravelHtml\Contracts\FormBuilder;
+use Arcanedev\LaravelHtml\Contracts\HtmlBuilder;
+
+if ( ! function_exists('form')) {
+    /**
+     * Get the Form Builder instance.
+     *
+     * @return \Arcanedev\LaravelHtml\Contracts\FormBuilder
+     */
+    function form()
+    {
+        return app(Arcanedev\LaravelHtml\Contracts\FormBuilder::class);
+    }
+}
+
 if ( ! function_exists('html')) {
     /**
      * Get the HTML Builder instance.
@@ -8,7 +23,7 @@ if ( ! function_exists('html')) {
      */
     function html()
     {
-        return app(\Arcanedev\LaravelHtml\Contracts\HtmlBuilder::class);
+        return app(HtmlBuilder::class);
     }
 }
 

@@ -93,9 +93,7 @@ class HtmlBuilder extends Builder implements HtmlBuilderContract
     {
         $attributes['src'] = $this->url->asset($url, $secure);
 
-        return $this->toHtmlString(
-            '<script' . $this->attributes($attributes) . '></script>' . PHP_EOL
-        );
+        return $this->toHtmlString('<script'.$this->attributes($attributes).'></script>');
     }
 
     /**
@@ -109,16 +107,14 @@ class HtmlBuilder extends Builder implements HtmlBuilderContract
      */
     public function style($url, $attributes = [], $secure = null)
     {
-        $attributes         = $attributes + [
+        $attributes = array_merge($attributes, [
             'media' => 'all',
             'type'  => 'text/css',
-            'rel'   => 'stylesheet'
-        ];
-        $attributes['href'] = $this->url->asset($url, $secure);
+            'rel'   => 'stylesheet',
+            'href'  => $this->url->asset($url, $secure),
+        ]);
 
-        return $this->toHtmlString(
-            '<link' . $this->attributes($attributes) . '>' . PHP_EOL
-        );
+        return $this->toHtmlString('<link'.$this->attributes($attributes).'>');
     }
 
     /**
@@ -136,7 +132,7 @@ class HtmlBuilder extends Builder implements HtmlBuilderContract
         $attributes['alt'] = $alt;
 
         return $this->toHtmlString(
-            '<img src="' . $this->url->asset($url, $secure) . '"' . $this->attributes($attributes) . '>'
+            '<img src="'.$this->url->asset($url, $secure).'"'.$this->attributes($attributes).'>'
         );
     }
 
@@ -157,9 +153,7 @@ class HtmlBuilder extends Builder implements HtmlBuilderContract
             'href' => $this->url->asset($url, $secure)
         ]);
 
-        return $this->toHtmlString(
-            '<link' . $this->attributes($attributes) . '>' . PHP_EOL
-        );
+        return $this->toHtmlString('<link'.$this->attributes($attributes).'>');
     }
 
     /**
@@ -181,7 +175,7 @@ class HtmlBuilder extends Builder implements HtmlBuilderContract
             $title = $url;
 
         return $this->toHtmlString(
-            '<a href="'.$url.'"'.$this->attributes($attributes).'>'.
+            '<a href="'.$this->entities($url).'"'.$this->attributes($attributes).'>'.
                 ($escaped ? $this->entities($title) : $title).
             '</a>'
         );

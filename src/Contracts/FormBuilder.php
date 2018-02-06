@@ -41,6 +41,13 @@ interface FormBuilder
     public function setModel($model);
 
     /**
+     * Get the model instance on the form builder.
+     *
+     * @return \Illuminate\Database\Eloquent\Model
+     */
+    public function getModel();
+
+    /**
      * Get the ID attribute for a field name.
      *
      * @param  string  $name
