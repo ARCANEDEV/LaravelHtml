@@ -11,7 +11,7 @@ if ( ! function_exists('form')) {
      */
     function form()
     {
-        return app(Arcanedev\LaravelHtml\Contracts\FormBuilder::class);
+        return app(FormBuilder::class);
     }
 }
 

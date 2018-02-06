@@ -834,7 +834,7 @@ class FormBuilder extends Builder implements FormBuilderContract
     private function option($display, $value, $selected, array $attributes = [])
     {
         $selected = $this->getSelectedValue($value, $selected);
-        $options  = compact('value', 'selected') + $attributes;
+        $options  = array_merge(compact('value', 'selected'), $attributes);
 
         return '<option'.$this->html->attributes($options).'>'.$this->html->escape($display).'</option>';
     }
