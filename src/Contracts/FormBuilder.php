@@ -254,8 +254,8 @@ interface FormBuilder
      * @param  string                                $name
      * @param  array|\Illuminate\Support\Collection  $list
      * @param  string                                $selected
-     * @param  array   $attributes
-     * @param  array   $options
+     * @param  array                                 $attributes
+     * @param  array                                 $options
      *
      * @return \Illuminate\Support\HtmlString
      */

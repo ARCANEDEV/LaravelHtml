@@ -667,11 +667,11 @@ class FormBuilder extends Builder implements FormBuilderContract
     /**
      * Create a select box field.
      *
-     * @param  string  $name
+     * @param  string                                $name
      * @param  array|\Illuminate\Support\Collection  $list
-     * @param  string  $selected
-     * @param  array   $attributes
-     * @param  array   $options
+     * @param  string                                $selected
+     * @param  array                                 $attributes
+     * @param  array                                 $options
      *
      * @return \Illuminate\Support\HtmlString
      */
