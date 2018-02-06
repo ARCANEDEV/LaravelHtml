@@ -318,7 +318,7 @@ class FormBuilder extends Builder implements FormBuilderContract
         // different method than it actually is, for convenience from the forms.
         $append = $this->getAppendage($method);
 
-        return $this->toHtmlString('<form' . $attributes . '>' . $append);
+        return $this->toHtmlString('<form'.$attributes.'>' . $append);
     }
 
     /**
@@ -412,7 +412,7 @@ class FormBuilder extends Builder implements FormBuilderContract
         // when creating the HTML element. Then, we will return the entire input.
         $options = array_merge($options, compact('type', 'value', 'id'));
 
-        return $this->toHtmlString('<input' . $this->html->attributes($options) . '>');
+        return $this->toHtmlString('<input'.$this->html->attributes($options).'>');
     }
 
     /**
@@ -622,7 +622,7 @@ class FormBuilder extends Builder implements FormBuilderContract
         // the element. Then we'll create the final textarea elements HTML for us.
         $options = $this->html->attributes($options);
 
-        return $this->toHtmlString('<textarea' . $options . '>' . $this->html->escape($value) . '</textarea>');
+        return $this->toHtmlString('<textarea'.$options.'>'.$this->html->escape($value).'</textarea>');
     }
 
     /**
@@ -658,10 +658,7 @@ class FormBuilder extends Builder implements FormBuilderContract
     {
         list($cols, $rows) = explode('x', $options['size']);
 
-        return array_merge($options, [
-            'cols' => $cols,
-            'rows' => $rows
-        ]);
+        return array_merge($options, compact('cols', 'rows'));
     }
 
     /**
@@ -841,9 +838,8 @@ class FormBuilder extends Builder implements FormBuilderContract
      */
     private function placeholderOption($display, $selected)
     {
-        $selected         = $this->getSelectedValue(null, $selected);
-        $options          = compact('selected');
-        $options['value'] = '';
+        $selected = $this->getSelectedValue(null, $selected);
+        $options  = array_merge(compact('selected'), ['value' => '']);
 
         return '<option'.$this->html->attributes($options).'>'.$this->html->escape($display).'</option>';
     }
@@ -1062,7 +1058,7 @@ class FormBuilder extends Builder implements FormBuilderContract
         }
 
         return $this->toHtmlString(
-            '<button' . $this->html->attributes($options) . '>' . $value . '</button>'
+            '<button'.$this->html->attributes($options).'>'.$value.'</button>'
         );
     }
 

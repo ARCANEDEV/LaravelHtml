@@ -28,6 +28,6 @@ class Meta
             compact('name', 'content'), $attributes
         ));
 
-        return "<meta{$attributes}>" . PHP_EOL;
+        return "<meta{$attributes}>";
     }
 }
