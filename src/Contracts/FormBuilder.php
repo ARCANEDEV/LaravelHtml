@@ -254,11 +254,12 @@ interface FormBuilder
      * @param  string  $name
      * @param  array   $list
      * @param  string  $selected
+     * @param  array   $attributes
      * @param  array   $options
      *
      * @return \Illuminate\Support\HtmlString
      */
-    public function select($name, $list = [], $selected = null, array $options = []);
+    public function select($name, $list = [], $selected = null, array $attributes = [], array $options = []);
 
     /**
      * Create a select range field.
