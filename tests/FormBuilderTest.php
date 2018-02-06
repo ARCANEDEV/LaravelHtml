@@ -67,6 +67,12 @@ class FormBuilderTest extends TestCase
     }
 
     /** @test */
+    public function it_can_be_instantiated_via_helper()
+    {
+        $this->assertInstanceOf(FormBuilder::class, form());
+    }
+
+    /** @test */
     public function it_can_set_and_get_session()
     {
         $this->assertEquals(
