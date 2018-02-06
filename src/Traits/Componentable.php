@@ -1,8 +1,8 @@
 <?php namespace Arcanedev\LaravelHtml\Traits;
 
+use BadMethodCallException;
 use Illuminate\Support\Arr;
 use Illuminate\Support\HtmlString;
-use BadMethodCallException;
 
 /**
  * Class     Componentable
