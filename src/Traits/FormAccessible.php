@@ -93,12 +93,10 @@ trait FormAccessible
     protected function hasFormMutator($key)
     {
         $methods  = $this->getReflection()->getMethods(ReflectionMethod::IS_PUBLIC);
-        $mutators = collect($methods)
-            ->filter(function (ReflectionMethod $method) use ($key) {
-                return $method->name === $this->getMutateFromMethodName($key);
-            });
 
-        return ! $mutators->isEmpty();
+        return collect($methods)->filter(function (ReflectionMethod $method) use ($key) {
+            return $method->name === $this->getMutateFromMethodName($key);
+        })->isNotEmpty();
     }
 
     /**
@@ -130,10 +128,12 @@ trait FormAccessible
      * Get a ReflectionClass Instance.
      *
      * @return \ReflectionClass
+     *
+     * @throws \ReflectionException
      */
     protected function getReflection()
     {
-        if ( ! $this->reflection) {
+        if (is_null($this->reflection)) {
             $this->reflection = new ReflectionClass($this);
         }
 

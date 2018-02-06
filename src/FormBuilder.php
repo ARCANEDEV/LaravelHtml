@@ -152,6 +152,16 @@ class FormBuilder extends Builder implements FormBuilderContract
     }
 
     /**
+     * Get the model instance on the form builder.
+     *
+     * @return \Illuminate\Database\Eloquent\Model
+     */
+    public function getModel()
+    {
+        return $this->model;
+    }
+
+    /**
      * Get the ID attribute for a field name.
      *
      * @param  string  $name
@@ -292,10 +302,11 @@ class FormBuilder extends Builder implements FormBuilderContract
         // We need to extract the proper method from the attributes. If the method is
         // something other than GET or POST we'll use POST since we will spoof the
         // actual method since forms don't support the reserved methods in HTML.
-        $attributes = [];
-        $attributes['method']         = $this->getMethod($method);
-        $attributes['action']         = $this->getAction($options);
-        $attributes['accept-charset'] = 'UTF-8';
+        $attributes = [
+            'method'         => $this->getMethod($method),
+            'action'         => $this->getAction($options),
+            'accept-charset' => 'UTF-8',
+        ];
 
         if (isset($options['files']) && $options['files']) {
             $options['enctype'] = 'multipart/form-data';
@@ -858,7 +869,7 @@ class FormBuilder extends Builder implements FormBuilderContract
             return in_array($value, $selected) ? 'selected' : null;
         }
 
-        return ((string) $value == (string) $selected) ? 'selected' : null;
+        return ((string) $value === (string) $selected) ? 'selected' : null;
     }
 
     /**
@@ -888,9 +899,7 @@ class FormBuilder extends Builder implements FormBuilderContract
      */
     public function radio($name, $value = null, $checked = null, array $options = [])
     {
-        if (is_null($value)) {
-            $value = $name;
-        }
+        $value = $value ?? $name;
 
         return $this->checkable('radio', $name, $value, $checked, $options);
     }
@@ -937,7 +946,7 @@ class FormBuilder extends Builder implements FormBuilderContract
                 return $this->getRadioCheckedState($name, $value, $checked);
 
             default:
-                return $this->getValueAttribute($name) == $value;
+                return $this->getValueAttribute($name) === $value;
         }
     }
 
@@ -986,7 +995,7 @@ class FormBuilder extends Builder implements FormBuilderContract
     {
         return $this->missingOldAndModel($name)
             ? $checked
-            : $this->getValueAttribute($name) == $value;
+            : $this->getValueAttribute($name) === $value;
     }
 
     /**
@@ -1172,7 +1181,7 @@ class FormBuilder extends Builder implements FormBuilderContract
         // If the method is something other than GET we will go ahead and attach the
         // CSRF token to the form, as this can't hurt and is convenient to simply
         // always have available on every form the developers creates for them.
-        if ($method != 'GET') {
+        if ($method !== 'GET') {
             $appendage .= $this->token();
         }
 

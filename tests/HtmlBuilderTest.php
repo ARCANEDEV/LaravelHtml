@@ -137,6 +137,15 @@ class HtmlBuilderTest extends TestCase
     }
 
     /** @test */
+    public function it_must_escape_link_urls()
+    {
+        $this->assertEquals(
+            '<a href="https://localhost/b?id=4&amp;not_id=5">Escaped url</a>',
+            $this->html->link('https://localhost/b?id=4&not_id=5', 'Escaped url')
+        );
+    }
+
+    /** @test */
     public function it_can_make_link_tags_for_assets()
     {
         $file = 'assets/img/logo.png';

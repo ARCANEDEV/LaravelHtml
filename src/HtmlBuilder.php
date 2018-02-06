@@ -175,7 +175,7 @@ class HtmlBuilder extends Builder implements HtmlBuilderContract
             $title = $url;
 
         return $this->toHtmlString(
-            '<a href="'.$url.'"'.$this->attributes($attributes).'>'.
+            '<a href="'.$this->entities($url).'"'.$this->attributes($attributes).'>'.
                 ($escaped ? $this->entities($title) : $title).
             '</a>'
         );
