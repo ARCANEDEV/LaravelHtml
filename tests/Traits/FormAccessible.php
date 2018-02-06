@@ -15,10 +15,11 @@ use Illuminate\Database\Eloquent\Model;
  */
 class FormAccessible extends TestCase
 {
-    /* ------------------------------------------------------------------------------------------------
+    /* -----------------------------------------------------------------
      |  Properties
-     | ------------------------------------------------------------------------------------------------
+     | -----------------------------------------------------------------
      */
+
     /**
      * The model data.
      *
@@ -40,10 +41,11 @@ class FormAccessible extends TestCase
      */
     protected $form;
 
-    /* ------------------------------------------------------------------------------------------------
+    /* -----------------------------------------------------------------
      |  Main Functions
-     | ------------------------------------------------------------------------------------------------
+     | -----------------------------------------------------------------
      */
+
     public function setUp()
     {
         parent::setUp();
@@ -70,10 +72,11 @@ class FormAccessible extends TestCase
         $this->form = new FormBuilder($this->html, $this->urlGenerator, $session);
     }
 
-    /* ------------------------------------------------------------------------------------------------
-     |  Test Functions
-     | ------------------------------------------------------------------------------------------------
+    /* -----------------------------------------------------------------
+     |  Tests
+     | -----------------------------------------------------------------
      */
+
     /** @test */
     public function it_can_mutate_values_for_forms()
     {
@@ -111,5 +114,19 @@ class FormAccessible extends TestCase
         $this->form->setModel($model);
 
         $this->assertSame('abcde st', $model->getFormValue('address.street'));
+    }
+
+    /** @test */
+    public function it_can_mutate_related_values_for_forms()
+    {
+        $model = new ModelThatUsesForms($this->modelData);
+        $model->setRelation(
+            'related',
+            new ModelThatUsesForms($this->modelData)
+        );
+        $this->form->setModel($model);
+
+        $this->assertSame($this->form->getValueAttribute('related[string]'), 'ponmlkjihgfedcba');
+        $this->assertSame($this->form->getValueAttribute('related[created_at]'), $this->now->timestamp);
     }
 }
