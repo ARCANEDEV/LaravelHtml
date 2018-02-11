@@ -53,7 +53,7 @@ class HtmlServiceProviderTest extends TestCase
         ];
 
         foreach ($expectations as $expected) {
-            $this->assertInstanceOf($expected, $this->provider);
+            static::assertInstanceOf($expected, $this->provider);
         }
     }
 
@@ -67,6 +67,6 @@ class HtmlServiceProviderTest extends TestCase
             \Arcanedev\LaravelHtml\Contracts\FormBuilder::class,
         ];
 
-        $this->assertEquals($expected, $this->provider->provides());
+        static::assertEquals($expected, $this->provider->provides());
     }
 }

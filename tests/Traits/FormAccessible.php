@@ -83,8 +83,8 @@ class FormAccessible extends TestCase
         $model = new ModelThatUsesForms($this->modelData);
         $this->form->setModel($model);
 
-        $this->assertSame('ponmlkjihgfedcba', $model->getFormValue('string'));
-        $this->assertSame($this->now->timestamp, $model->getFormValue('created_at'));
+        static::assertSame('ponmlkjihgfedcba', $model->getFormValue('string'));
+        static::assertSame($this->now->timestamp, $model->getFormValue('created_at'));
     }
 
     /** @test */
@@ -93,8 +93,8 @@ class FormAccessible extends TestCase
         $model = new ModelThatUsesForms($this->modelData);
         $this->form->setModel($model);
 
-        $this->assertSame('ABCDEFGHIJKLMNOP', $model->string);
-        $this->assertSame('1 second ago', $model->created_at);
+        static::assertSame('ABCDEFGHIJKLMNOP', $model->string);
+        static::assertSame('1 second ago', $model->created_at);
     }
 
     /** @test */
@@ -103,8 +103,8 @@ class FormAccessible extends TestCase
         $model = new ModelThatDoesntUseForms($this->modelData);
         $this->form->setModel($model);
 
-        $this->assertSame('ABCDEFGHIJKLMNOP', $model->string);
-        $this->assertSame('1 second ago', $model->created_at);
+        static::assertSame('ABCDEFGHIJKLMNOP', $model->string);
+        static::assertSame('1 second ago', $model->created_at);
     }
 
     /** @test */
@@ -113,7 +113,7 @@ class FormAccessible extends TestCase
         $model = new ModelThatUsesForms($this->modelData);
         $this->form->setModel($model);
 
-        $this->assertSame('abcde st', $model->getFormValue('address.street'));
+        static::assertSame('abcde st', $model->getFormValue('address.street'));
     }
 
     /** @test */
@@ -126,7 +126,7 @@ class FormAccessible extends TestCase
         );
         $this->form->setModel($model);
 
-        $this->assertSame($this->form->getValueAttribute('related[string]'), 'ponmlkjihgfedcba');
-        $this->assertSame($this->form->getValueAttribute('related[created_at]'), $this->now->timestamp);
+        static::assertSame($this->form->getValueAttribute('related[string]'), 'ponmlkjihgfedcba');
+        static::assertSame($this->form->getValueAttribute('related[created_at]'), $this->now->timestamp);
     }
 }
