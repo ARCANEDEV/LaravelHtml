@@ -26,13 +26,13 @@ class FormTest extends TestCase
      */
     public function it_can_open_form($expected, $options)
     {
-        $this->assertEquals($expected, Form::open($options));
+        static::assertEquals($expected, Form::open($options));
     }
 
     /** @test */
     public function it_can_close_form()
     {
-        $this->assertEquals('</form>', Form::close());
+        static::assertEquals('</form>', Form::close());
     }
 
     /* -----------------------------------------------------------------

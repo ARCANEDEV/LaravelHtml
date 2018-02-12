@@ -22,7 +22,7 @@ class HtmlTest extends TestCase
         $value  = 'Un \'apostrophe\' en <strong>gras</strong>';
         $result = 'Un &#039;apostrophe&#039; en &lt;strong&gt;gras&lt;/strong&gt;';
 
-        $this->assertEquals($result, Html::entities($value));
+        static::assertEquals($result, Html::entities($value));
 
     }
 
@@ -32,7 +32,7 @@ class HtmlTest extends TestCase
         $value  = 'Un \'apostrophe\' en <strong>gras</strong>';
         $result = 'Un &#039;apostrophe&#039; en &lt;strong&gt;gras&lt;/strong&gt;';
 
-        $this->assertEquals($value, Html::decode($result));
+        static::assertEquals($value, Html::decode($result));
     }
 
     /** @test */
@@ -40,7 +40,7 @@ class HtmlTest extends TestCase
     {
         $url = $this->urlTo($file = 'bootstrap.min.js');
 
-        $this->assertEquals(
+        static::assertEquals(
             '<script src="'.$url.'"></script>',
             Html::script($file)
         );
@@ -51,7 +51,7 @@ class HtmlTest extends TestCase
     {
         $url = $this->urlTo($file = 'bootstrap.min.css');
 
-        $this->assertEquals(
+        static::assertEquals(
             '<link media="all" type="text/css" rel="stylesheet" href="'.$url.'">',
             Html::style($file)
         );
@@ -63,7 +63,7 @@ class HtmlTest extends TestCase
         $file = 'avatar.png';
         $url   = $this->urlTo($file);
 
-        $this->assertEquals(
+        static::assertEquals(
             '<img src="'.$url.'">',
             Html::image($file)
         );
@@ -74,7 +74,7 @@ class HtmlTest extends TestCase
     {
         $url = $this->urlTo('bar.ico');
 
-        $this->assertEquals(
+        static::assertEquals(
             '<link rel="shortcut icon" type="image/x-icon" href="'.$url.'">',
             Html::favicon($url)
         );
@@ -86,7 +86,7 @@ class HtmlTest extends TestCase
         $title = null;
         $url   = $this->urlTo('hello');
 
-        $this->assertEquals(
+        static::assertEquals(
             '<a href="'.$url.'">'.$url.'</a>',
             Html::link($url, $title)
         );
@@ -98,7 +98,7 @@ class HtmlTest extends TestCase
         $title = null;
         $url   = $this->urlTo('hello', [], true);
 
-        $this->assertEquals(
+        static::assertEquals(
             '<a href="'.$url.'">'.$url.'</a>',
             Html::secureLink($url, $title)
         );
@@ -110,7 +110,7 @@ class HtmlTest extends TestCase
         $file = 'style.min.css';
         $url  = "{$this->baseUrl}/style.min.css";
 
-        $this->assertEquals(
+        static::assertEquals(
             '<a href="'.$url.'">'.$url.'</a>',
             Html::linkAsset($file)
         );
@@ -128,7 +128,7 @@ class HtmlTest extends TestCase
             'class' => 'example'
         ];
 
-        $this->assertEquals(
+        static::assertEquals(
             '<dl class="example">' .
                 '<dt>foo</dt><dd>bar</dd>' .
                 '<dt>bing</dt><dd>baz</dd>' .
@@ -140,7 +140,7 @@ class HtmlTest extends TestCase
     /** @test */
     public function it_can_make_meta_tags()
     {
-        $this->assertEquals(
+        static::assertEquals(
             '<meta name="description" content="Lorem ipsum dolor sit amet.">',
             Html::meta('description', 'Lorem ipsum dolor sit amet.')
         );
@@ -149,7 +149,7 @@ class HtmlTest extends TestCase
     /** @test */
     public function it_can_make_meta_open_graph_tags()
     {
-        $this->assertEquals(
+        static::assertEquals(
             '<meta content="website" property="og:type">',
             Html::meta(null, 'website', [
                 'property' => 'og:type'

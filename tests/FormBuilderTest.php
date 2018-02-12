@@ -63,19 +63,21 @@ class FormBuilderTest extends TestCase
     /** @test */
     public function it_can_be_instantiated()
     {
-        $this->assertInstanceOf(FormBuilder::class, $this->form);
+        static::assertInstanceOf(FormBuilder::class, $this->form);
+        static::assertNull($this->form->getModel());
     }
 
     /** @test */
     public function it_can_be_instantiated_via_helper()
     {
-        $this->assertInstanceOf(FormBuilder::class, form());
+        static::assertInstanceOf(FormBuilder::class, form());
+        static::assertNull(form()->getModel());
     }
 
     /** @test */
     public function it_can_set_and_get_session()
     {
-        $this->assertEquals(
+        static::assertEquals(
             $this->mockSession()->reveal(),
             $this->form->getSessionStore()
         );
@@ -91,7 +93,7 @@ class FormBuilderTest extends TestCase
      */
     public function it_can_open_form($expected, $options)
     {
-        $this->assertEquals($expected, $this->form->open($options));
+        static::assertEquals($expected, $this->form->open($options));
     }
 
     /** @test */
@@ -108,14 +110,56 @@ class FormBuilderTest extends TestCase
         ];
 
         foreach ($options as $option) {
-            $this->assertEquals($expected, $this->form->open($option));
+            static::assertEquals($expected, $this->form->open($option));
         }
+    }
+
+    /** @test */
+    public function it_can_open_form_with_route_name_and_parameters()
+    {
+        static::assertEquals(
+            '<form method="POST" action="http://localhost?hello" accept-charset="UTF-8"><input name="_token" type="hidden" value="abc">',
+            $this->form->open(['route'  => ['home', 'hello']])
+        );
+
+        static::assertEquals(
+            '<form method="POST" action="http://localhost?hello&amp;world" accept-charset="UTF-8"><input name="_token" type="hidden" value="abc">',
+            $this->form->open(['route'  => ['home', 'hello', 'world']])
+        );
+    }
+
+    /** @test */
+    public function it_can_open_form_with_action_name_and_parameters()
+    {
+        static::assertEquals(
+            '<form method="POST" action="http://localhost?hello" accept-charset="UTF-8"><input name="_token" type="hidden" value="abc">',
+            $this->form->open(['action' => ['Arcanedev\LaravelHtml\Tests\Stubs\DummyController@index', 'hello']])
+        );
+
+        static::assertEquals(
+            '<form method="POST" action="http://localhost?hello&amp;world" accept-charset="UTF-8"><input name="_token" type="hidden" value="abc">',
+            $this->form->open(['action' => ['Arcanedev\LaravelHtml\Tests\Stubs\DummyController@index', 'hello', 'world']])
+        );
+    }
+
+    /** @test */
+    public function it_can_open_form_with_url_and_parameters()
+    {
+        static::assertEquals(
+            '<form method="POST" action="http://localhost/hello" accept-charset="UTF-8"><input name="_token" type="hidden" value="abc">',
+            $this->form->open(['url' => ['/', 'hello']])
+        );
+
+        static::assertEquals(
+            '<form method="POST" action="http://localhost/hello/world" accept-charset="UTF-8"><input name="_token" type="hidden" value="abc">',
+            $this->form->open(['url' => ['/', 'hello', 'world']])
+        );
     }
 
     /** @test */
     public function it_can_close_form()
     {
-        $this->assertEquals('</form>', $this->form->close());
+        static::assertEquals('</form>', $this->form->close());
     }
 
     /**
@@ -131,7 +175,7 @@ class FormBuilderTest extends TestCase
      */
     public function it_can_make_label($expected, $name, $value, $options, $escaped = true)
     {
-        $this->assertEquals(
+        static::assertEquals(
             $expected,
             $this->form->label($name, $value, $options, $escaped)
         );
@@ -150,7 +194,7 @@ class FormBuilderTest extends TestCase
      */
     public function it_can_make_form_inputs($expected, $type, $name, $value, $options)
     {
-        $this->assertEquals(
+        static::assertEquals(
             $expected,
             $this->form->input($type, $name, $value, $options)
         );
@@ -195,7 +239,7 @@ class FormBuilderTest extends TestCase
      */
     public function it_can_make_password_inputs($expected, $name, $options)
     {
-        $this->assertEquals($expected, $this->form->password($name, $options));
+        static::assertEquals($expected, $this->form->password($name, $options));
     }
 
     /**
@@ -222,7 +266,7 @@ class FormBuilderTest extends TestCase
         $session = $this->mockSession();
         $session->getOldInput()->shouldNotBeCalled();
 
-        $this->assertEquals(
+        static::assertEquals(
             '<input name="password" type="password" value="">',
             $this->form->password('password')
         );
@@ -234,7 +278,7 @@ class FormBuilderTest extends TestCase
         $session = $this->mockSession();
         $session->getOldInput()->shouldNotBeCalled();
 
-        $this->assertEquals(
+        static::assertEquals(
             '<input name="img" type="file">',
             $this->form->file('img')
         );
@@ -252,7 +296,7 @@ class FormBuilderTest extends TestCase
      */
     public function it_can_make_text_inputs($expected, $name, $value, $options)
     {
-        $this->assertEquals(
+        static::assertEquals(
             $expected,
             $this->form->text($name, $value, $options)
         );
@@ -300,7 +344,7 @@ class FormBuilderTest extends TestCase
             'other'     => 'val'
         ]);
 
-        $this->assertEquals(
+        static::assertEquals(
             '<input name="name.with.dots" type="text" value="some value">',
             $this->form->text('name.with.dots', 'default value')
         );
@@ -309,7 +353,7 @@ class FormBuilderTest extends TestCase
             ->shouldBeCalled()
             ->willReturn(null);
 
-        $this->assertEquals(
+        static::assertEquals(
             '<input name="text[key][sub]" type="text" value="default value">',
             $this->form->text('text[key][sub]', 'default value')
         );
@@ -318,13 +362,13 @@ class FormBuilderTest extends TestCase
 
         $textInput = $this->form->text('relation[key]');
 
-        $this->assertEquals(
+        static::assertEquals(
             '<input name="relation[key]" type="text" value="attribute">',
             $textInput
         );
 
         $this->setModel($model, false);
-        $this->assertEquals($textInput, $this->form->text('relation[key]'));
+        static::assertEquals($textInput, $this->form->text('relation[key]'));
     }
 
     /**
@@ -336,7 +380,7 @@ class FormBuilderTest extends TestCase
     {
         $this->form->model($model);
 
-        $this->assertEquals($expected, $this->form->text($name));
+        static::assertEquals($expected, $this->form->text($name));
     }
 
     /**
@@ -375,7 +419,7 @@ class FormBuilderTest extends TestCase
      */
     public function it_can_make_hidden_inputs($expected, $name, $value, $options)
     {
-        $this->assertEquals($expected, $this->form->hidden($name, $value, $options));
+        static::assertEquals($expected, $this->form->hidden($name, $value, $options));
     }
 
     /**
@@ -398,9 +442,9 @@ class FormBuilderTest extends TestCase
      */
     public function it_can_make_email_inputs($expected, $name, $value, $options)
     {
-        $this->assertEquals($expected, $this->form->email($name, $value, $options));
+        static::assertEquals($expected, $this->form->email($name, $value, $options));
 
-        $this->assertEquals(
+        static::assertEquals(
             '<input class="span2" name="foo" type="email">',
             $this->form->email('foo', null, ['class' => 'span2'])
         );
@@ -426,7 +470,7 @@ class FormBuilderTest extends TestCase
      */
     public function it_can_make_tel_inputs($expected, $name, $value, $options)
     {
-        $this->assertEquals($expected, $this->form->tel($name, $value, $options));
+        static::assertEquals($expected, $this->form->tel($name, $value, $options));
     }
 
     /**
@@ -449,7 +493,7 @@ class FormBuilderTest extends TestCase
      */
     public function it_can_make_number_inputs($expected, $name, $value, $options)
     {
-        $this->assertEquals($expected, $this->form->number($name, $value, $options));
+        static::assertEquals($expected, $this->form->number($name, $value, $options));
     }
 
     /**
@@ -472,7 +516,7 @@ class FormBuilderTest extends TestCase
      */
     public function it_can_make_date_inputs($expected, $name, $value, $options)
     {
-        $this->assertEquals($expected, $this->form->date($name, $value, $options));
+        static::assertEquals($expected, $this->form->date($name, $value, $options));
     }
 
     /**
@@ -502,7 +546,7 @@ class FormBuilderTest extends TestCase
      */
     public function it_can_make_datetime_input($expected, $name, $value, $options)
     {
-        $this->assertEquals(
+        static::assertEquals(
             $expected,
             $this->form->datetime($name, $value, $options)->toHtml()
         );
@@ -546,7 +590,7 @@ class FormBuilderTest extends TestCase
      */
     public function it_can_make_datetime_locale_input($expected, $name, $value, $options)
     {
-        $this->assertEquals($expected, $this->form->datetimeLocal($name, $value, $options));
+        static::assertEquals($expected, $this->form->datetimeLocal($name, $value, $options));
     }
 
     /**
@@ -585,7 +629,7 @@ class FormBuilderTest extends TestCase
      */
     public function it_can_make_color_input($expected, $name, $value, $options)
     {
-        $this->assertEquals($expected, $this->form->color($name, $value, $options));
+        static::assertEquals($expected, $this->form->color($name, $value, $options));
     }
 
     /**
@@ -621,7 +665,7 @@ class FormBuilderTest extends TestCase
      */
     public function it_can_make_time_inputs($expected, $name, $value, $options)
     {
-        $this->assertEquals($expected, $this->form->time($name, $value, $options));
+        static::assertEquals($expected, $this->form->time($name, $value, $options));
     }
 
     /**
@@ -643,7 +687,7 @@ class FormBuilderTest extends TestCase
      */
     public function it_can_make_url_inputs($expected, $name, $options)
     {
-        $this->assertEquals($expected, $this->form->url($name, null, $options));
+        static::assertEquals($expected, $this->form->url($name, null, $options));
     }
 
     /**
@@ -675,7 +719,7 @@ class FormBuilderTest extends TestCase
      */
     public function it_can_make_files_inputs($expected, $name, $options)
     {
-        $this->assertEquals($expected, $this->form->file($name, $options));
+        static::assertEquals($expected, $this->form->file($name, $options));
     }
 
     /**
@@ -708,7 +752,7 @@ class FormBuilderTest extends TestCase
      */
     public function it_can_make_textarea_inputs($expected, $name, $value, $options)
     {
-        $this->assertEquals($expected, $this->form->textarea($name, $value, $options)->toHtml());
+        static::assertEquals($expected, $this->form->textarea($name, $value, $options)->toHtml());
     }
 
     /**
@@ -752,7 +796,7 @@ class FormBuilderTest extends TestCase
      */
     public function it_can_make_select_inputs($expected, $name, $list, $selected, array $options)
     {
-        $this->assertEquals(
+        static::assertEquals(
             $expected,
             $this->form->select($name, $list, $selected, $options)->toHtml()
         );
@@ -823,12 +867,12 @@ class FormBuilderTest extends TestCase
     /** @test */
     public function it_can_make_select_input_with_label()
     {
-        $this->assertEquals(
+        static::assertEquals(
             '<label for="select-name-id">Select-name-id</label>',
             $this->form->label('select-name-id')
         );
 
-        $this->assertEquals(
+        static::assertEquals(
             '<select name="select-name" id="select-name-id"></select>',
             $this->form->select(
                 'select-name-id',
@@ -859,7 +903,7 @@ class FormBuilderTest extends TestCase
             ->shouldBeCalledTimes(2)
             ->willReturn('M');
 
-        $this->assertEquals(
+        static::assertEquals(
             implode('', [
                 '<select name="size">',
                     '<option value="L">Large</option>',
@@ -874,7 +918,7 @@ class FormBuilderTest extends TestCase
             ->shouldBeCalledTimes(2)
             ->willReturn(['L', 'S']);
 
-        $this->assertEquals(
+        static::assertEquals(
             implode('', [
                 '<select multiple="multiple" name="size[multi][]">',
                     '<option value="L" selected="selected">Large</option>',
@@ -889,7 +933,7 @@ class FormBuilderTest extends TestCase
             ->shouldBeCalled()
             ->willReturn(null);
 
-        $this->assertEquals(
+        static::assertEquals(
             implode('', [
                 '<select name="size[key]">',
                     '<option value="L">Large</option>',
@@ -904,7 +948,7 @@ class FormBuilderTest extends TestCase
     /** @test */
     public function it_can_make_select_options_with_attributes()
     {
-        $this->assertEquals(
+        static::assertEquals(
             '<select name="size">'.
                 '<option value="L" data-foo="bar" disabled="disabled">Large</option>'.
                 '<option value="S">Small</option>'.
@@ -926,7 +970,7 @@ class FormBuilderTest extends TestCase
         $list    = ['L' => 'Large', 'S' => 'Small'];
         $options = ['placeholder' => 'Select One...'];
 
-        $this->assertEquals(
+        static::assertEquals(
             implode('', [
                 '<select name="size">',
                     '<option selected="selected" value="">Select One...</option>',
@@ -937,7 +981,7 @@ class FormBuilderTest extends TestCase
             $this->form->select('size', $list, null, $options)->toHtml()
         );
 
-        $this->assertEquals(
+        static::assertEquals(
             implode('', [
                 '<select name="size">',
                 '<option value="">Select One...</option>',
@@ -952,7 +996,7 @@ class FormBuilderTest extends TestCase
     /** @test */
     public function it_can_make_select_year_inputs()
     {
-        $this->assertStringStartsWith(
+        static::assertStringStartsWith(
             implode('', [
                 '<select name="year">',
                     '<option value="2000">2000</option>',
@@ -962,7 +1006,7 @@ class FormBuilderTest extends TestCase
             $this->form->selectYear('year', 2000, 2020)->toHtml()
         );
 
-        $this->assertStringStartsWith(
+        static::assertStringStartsWith(
             implode('', [
                 '<select id="foo" name="year">',
                     '<option value="2000">2000</option>',
@@ -972,7 +1016,7 @@ class FormBuilderTest extends TestCase
             $this->form->selectYear('year', 2000, 2020, null, ['id' => 'foo'])->toHtml()
         );
 
-        $this->assertStringStartsWith(
+        static::assertStringStartsWith(
             implode('', [
                 '<select name="year">',
                     '<option value="2000" selected="selected">2000</option>',
@@ -988,15 +1032,15 @@ class FormBuilderTest extends TestCase
     {
         $range = $this->form->selectRange('dob', 1900, 2013, 2000)->toHtml();
 
-        $this->assertStringStartsWith('<select name="dob"><option value="1900">1900</option>', $range);
-        $this->assertContains('<option value="2000" selected="selected">2000</option>', $range);
-        $this->assertContains('<option value="2013">2013</option>', $range);
+        static::assertStringStartsWith('<select name="dob"><option value="1900">1900</option>', $range);
+        static::assertContains('<option value="2000" selected="selected">2000</option>', $range);
+        static::assertContains('<option value="2013">2013</option>', $range);
     }
 
     /** @test */
     public function it_can_make_select_month_inputs()
     {
-        $this->assertStringStartsWith(
+        static::assertStringStartsWith(
             implode('', [
                 '<select name="month">',
                     '<option value="1">January</option>',
@@ -1006,7 +1050,7 @@ class FormBuilderTest extends TestCase
             $this->form->selectMonth('month')->toHtml()
         );
 
-        $this->assertStringStartsWith(
+        static::assertStringStartsWith(
             implode('', [
                 '<select name="month">',
                     '<option value="1" selected="selected">January</option>',
@@ -1016,7 +1060,7 @@ class FormBuilderTest extends TestCase
             $this->form->selectMonth('month', '1')->toHtml()
         );
 
-        $this->assertStringStartsWith(
+        static::assertStringStartsWith(
             implode('', [
                 '<select id="foo" name="month">',
                     '<option value="1">January</option>',
@@ -1041,7 +1085,7 @@ class FormBuilderTest extends TestCase
             ],
         ];
 
-        $this->assertEquals(
+        static::assertEquals(
             '<select name="countries">'.
                 '<optgroup label="country-1">'.
                     '<option value="city-1">City 1</option>'.
@@ -1067,7 +1111,7 @@ class FormBuilderTest extends TestCase
             'S' => 'Small',
         ];
 
-        $this->assertEquals(
+        static::assertEquals(
             '<select class="class-name" id="select-id" name="size">'.
                 '<optgroup label="Large sizes">'.
                     '<option value="L">Large</option>'.
@@ -1087,22 +1131,22 @@ class FormBuilderTest extends TestCase
         $session->getOldInput()->willReturn([]);
         $session->getOldInput('foo')->willReturn(null);
 
-        $this->assertEquals(
+        static::assertEquals(
             '<input name="foo" type="checkbox">',
             $this->form->input('checkbox', 'foo')
         );
 
-        $this->assertEquals(
+        static::assertEquals(
             '<input name="foo" type="checkbox" value="1">',
             $this->form->checkbox('foo')
         );
 
-        $this->assertEquals(
+        static::assertEquals(
             '<input checked="checked" name="foo" type="checkbox" value="foobar">',
             $this->form->checkbox('foo', 'foobar', true)
         );
 
-        $this->assertEquals(
+        static::assertEquals(
             '<input class="span2" name="foo" type="checkbox" value="foobar">',
             $this->form->checkbox('foo', 'foobar', false, ['class' => 'span2'])
         );
@@ -1116,31 +1160,31 @@ class FormBuilderTest extends TestCase
         $session->getOldInput()->willReturn([1]);
         $session->getOldInput('check')->willReturn(null);
 
-        $this->assertEquals(
+        static::assertEquals(
             '<input name="check" type="checkbox" value="1">',
             $this->form->checkbox('check', 1, true)
         );
 
         $session->getOldInput('check.key')->willReturn('yes');
 
-        $this->assertEquals(
+        static::assertEquals(
             '<input checked="checked" name="check[key]" type="checkbox" value="yes">',
             $this->form->checkbox('check[key]', 'yes')
         );
 
         $session->getOldInput('multicheck')->willReturn([1, 3]);
 
-        $this->assertEquals(
+        static::assertEquals(
             '<input checked="checked" name="multicheck[]" type="checkbox" value="1">',
             $this->form->checkbox('multicheck[]', 1)
         );
 
-        $this->assertEquals(
+        static::assertEquals(
             '<input name="multicheck[]" type="checkbox" value="2">',
             $this->form->checkbox('multicheck[]', 2, true)
         );
 
-        $this->assertEquals(
+        static::assertEquals(
             '<input checked="checked" name="multicheck[]" type="checkbox" value="3">',
             $this->form->checkbox('multicheck[]', 3)
         );
@@ -1149,12 +1193,12 @@ class FormBuilderTest extends TestCase
     /** @test */
     public function it_can_make_checkbox_inputs_without_session()
     {
-        $this->assertEquals(
+        static::assertEquals(
             '<input name="foo" type="checkbox" value="1">',
             $this->form->checkbox('foo')
         );
 
-        $this->assertEquals(
+        static::assertEquals(
             '<input checked="checked" name="foo" type="checkbox" value="foobar">',
             $this->form->checkbox('foo', 'foobar', true)
         );
@@ -1179,22 +1223,22 @@ class FormBuilderTest extends TestCase
             'items' => new Collection($models)
         ]);
 
-        $this->assertEquals(
+        static::assertEquals(
             '<input name="items[]" type="checkbox" value="1">',
             $this->form->checkbox('items[]', 1)
         );
 
-        $this->assertEquals(
+        static::assertEquals(
             '<input checked="checked" name="items[]" type="checkbox" value="2">',
             $this->form->checkbox('items[]', 2)
         );
 
-        $this->assertEquals(
+        static::assertEquals(
             '<input name="items[]" type="checkbox" value="3">',
             $this->form->checkbox('items[]', 3, false)
         );
 
-        $this->assertEquals(
+        static::assertEquals(
             '<input checked="checked" name="items[]" type="checkbox" value="4">',
             $this->form->checkbox('items[]', 4, true)
         );
@@ -1207,7 +1251,7 @@ class FormBuilderTest extends TestCase
         $reflector->setAccessible(true);
 
         $result = $reflector->invokeArgs($this->form, ['checkable', 'checkable', 1, true, []]);
-        $this->assertEquals(
+        static::assertEquals(
             '<input name="checkable" type="checkable" value="1">',
             $result
         );
@@ -1216,22 +1260,22 @@ class FormBuilderTest extends TestCase
     /** @test */
     public function it_can_make_radio_inputs()
     {
-        $this->assertEquals(
+        static::assertEquals(
             '<input name="foo" type="radio">',
             $this->form->input('radio', 'foo')
         );
 
-        $this->assertEquals(
+        static::assertEquals(
             '<input name="foo" type="radio" value="foo">',
             $this->form->radio('foo')
         );
 
-        $this->assertEquals(
+        static::assertEquals(
             '<input checked="checked" name="foo" type="radio" value="foobar">',
             $this->form->radio('foo', 'foobar', true)
         );
 
-        $this->assertEquals(
+        static::assertEquals(
             '<input class="span2" name="foo" type="radio" value="foobar">',
             $this->form->radio('foo', 'foobar', false, ['class' => 'span2'])
         );
@@ -1244,12 +1288,12 @@ class FormBuilderTest extends TestCase
         $session->getOldInput('radio')
             ->willReturn(1);
 
-        $this->assertEquals(
+        static::assertEquals(
             '<input checked="checked" name="radio" type="radio" value="1">',
             $this->form->radio('radio', 1)
         );
 
-        $this->assertEquals(
+        static::assertEquals(
             '<input name="radio" type="radio" value="2">',
             $this->form->radio('radio', 2, true)
         );
@@ -1258,12 +1302,12 @@ class FormBuilderTest extends TestCase
     /** @test */
     public function it_can_make_submit_inputs()
     {
-        $this->assertEquals(
+        static::assertEquals(
             '<input type="submit" value="foo">',
             $this->form->submit('foo')
         );
 
-        $this->assertEquals(
+        static::assertEquals(
             '<input class="span2" type="submit" value="foo">',
             $this->form->submit('foo', ['class' => 'span2'])
         );
@@ -1272,17 +1316,17 @@ class FormBuilderTest extends TestCase
     /** @test */
     public function it_can_make_buttons()
     {
-        $this->assertEquals(
+        static::assertEquals(
             '<button type="button">foo</button>',
             $this->form->button('foo')
         );
 
-        $this->assertEquals(
+        static::assertEquals(
             '<button class="btn" type="button">foo</button>',
             $this->form->button('foo', ['class' => 'btn'])
         );
 
-        $this->assertEquals(
+        static::assertEquals(
             '<button class="btn" type="submit">foo</button>',
             $this->form->button('foo', ['class' => 'btn', 'type' => 'submit'])
         );
@@ -1291,7 +1335,7 @@ class FormBuilderTest extends TestCase
     /** @test */
     public function it_can_make_reset_inputs()
     {
-        $this->assertEquals(
+        static::assertEquals(
             '<input type="reset" value="foo">',
             $this->form->reset('foo')
         );
@@ -1302,7 +1346,7 @@ class FormBuilderTest extends TestCase
     {
         $url   = 'http://laravel.com/';
 
-        $this->assertEquals(
+        static::assertEquals(
             '<input src="'. $url .'" type="image">',
             $this->form->image($url)
         );
@@ -1318,7 +1362,7 @@ class FormBuilderTest extends TestCase
 
         $this->form->component('bsText', $view, ['name', 'value', 'attributes']);
 
-        $this->assertEquals(
+        static::assertEquals(
             view($view, compact('name', 'value', 'attributes'))->render(),
             $this->form->bsText($name, $value, $attributes)->toHtml()
         );
@@ -1410,6 +1454,10 @@ class FormBuilderTest extends TestCase
      */
     protected function setModel(array $data, $object = true)
     {
-        $this->form->model($object ? new FormBuilderModelStub($data) : $data, ['method' => 'GET']);
+        $object = $object ? new FormBuilderModelStub($data) : $data;
+
+        $this->form->model($object, ['method' => 'GET']);
+
+        static::assertEquals($object, $this->form->getModel());
     }
 }

@@ -72,7 +72,7 @@ trait Componentable
         $data      = $this->getComponentData($component['signature'], $arguments);
 
         return new HtmlString(
-            view($component['view'], $data)->render()
+            view()->make($component['view'], $data)->render()
         );
     }
 

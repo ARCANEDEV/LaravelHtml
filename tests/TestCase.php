@@ -58,7 +58,6 @@ abstract class TestCase extends BaseTestCase
     protected function getPackageProviders($app)
     {
         return [
-            \Orchestra\Database\ConsoleServiceProvider::class,
             \Arcanedev\LaravelHtml\HtmlServiceProvider::class,
         ];
     }
@@ -88,16 +87,8 @@ abstract class TestCase extends BaseTestCase
         /** @var  \Illuminate\Contracts\Config\Repository  $config */
         $config = $app['config'];
 
-        // Setup default database to use sqlite :memory:
-        $config->set('database.default', 'testbench');
-        $config->set('database.connections.testbench', [
-            'driver'   => 'sqlite',
-            'database' => ':memory:',
-            'prefix'   => '',
-        ]);
-
         $viewPaths   = $config->get('view.paths');
-        $viewPaths[] = __DIR__ . '/fixtures/views';
+        $viewPaths[] = __DIR__.'/fixtures/views';
 
         $config->set('view.paths', array_map('realpath', $viewPaths));
     }
@@ -112,10 +103,7 @@ abstract class TestCase extends BaseTestCase
      */
     protected function migrate()
     {
-        $this->artisan('migrate', [
-            '--database' => 'testbench',
-            '--realpath' => realpath(__DIR__ . '/fixtures/migrations'),
-        ]);
+        $this->loadMigrationsFrom(__DIR__.'/fixtures/migrations');
     }
 
     /**

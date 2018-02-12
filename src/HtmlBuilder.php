@@ -65,7 +65,7 @@ class HtmlBuilder extends Builder implements HtmlBuilderContract
      */
     public function escape($value)
     {
-        return e($value);
+        return e($value, false);
     }
 
     /**
