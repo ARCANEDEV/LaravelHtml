@@ -424,7 +424,7 @@ class HtmlBuilderTest extends TestCase
     public function it_can_make_attributes()
     {
         static::assertEquals(
-            ' class="strong" required="required"',
+            ' class="strong" required',
             $this->html->attributes(['class' => 'strong', 'required'])
         );
     }
@@ -461,7 +461,7 @@ class HtmlBuilderTest extends TestCase
      * @test
      *
      * @expectedException         \BadMethodCallException
-     * @expectedExceptionMessage  Method btnSuccess does not exist.
+     * @expectedExceptionMessage  Method Arcanedev\LaravelHtml\HtmlBuilder::btnSuccess does not exist.
      */
     public function it_must_throw_bad_method_call_exception_on_component()
     {

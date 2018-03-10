@@ -3,6 +3,7 @@
 use Arcanedev\LaravelHtml\FormBuilder;
 use Arcanedev\LaravelHtml\Tests\Stubs\FormBuilderModelStub;
 use Carbon\Carbon;
+use Illuminate\Session\Store;
 use Illuminate\Support\Collection;
 use StdClass;
 
@@ -950,7 +951,7 @@ class FormBuilderTest extends TestCase
     {
         static::assertEquals(
             '<select name="size">'.
-                '<option value="L" data-foo="bar" disabled="disabled">Large</option>'.
+                '<option value="L" data-foo="bar" disabled>Large</option>'.
                 '<option value="S">Small</option>'.
             '</select>',
             $this->form->select(
@@ -1120,6 +1121,82 @@ class FormBuilderTest extends TestCase
                 '<option value="S">Small</option>'.
             '</select>',
             $this->form->select('size', $list, null,['class' => 'class-name', 'id' => 'select-id'])
+        );
+
+        $list = [
+            'Large sizes' => [
+                'L'  => 'Large',
+                'XL' => 'Extra Large',
+            ],
+            'M'           => 'Medium',
+            'Small sizes' => [
+                'S'  => 'Small',
+                'XS' => 'Extra Small',
+            ],
+        ];
+        $optionsAttributes = [
+            'Large sizes' => [
+                'L' => ['disabled']
+            ],
+            'M' => ['disabled'],
+        ];
+        $optgroupAttributes = [
+            'Small sizes' => ['disabled'],
+        ];
+
+        $this->assertEquals(
+            '<select name="size">'.
+                '<optgroup label="Large sizes">'.
+                    '<option value="L" disabled>Large</option>'.
+                    '<option value="XL">Extra Large</option>'.
+                '</optgroup>'.
+                '<option value="M" disabled>Medium</option>'.
+                '<optgroup label="Small sizes" disabled>'.
+                    '<option value="S">Small</option>'.
+                    '<option value="XS">Extra Small</option>'.
+                '</optgroup>'.
+            '</select>',
+            $this->form->select('size', $list, null, [], $optionsAttributes, $optgroupAttributes)->toHtml()
+        );
+
+        $this->assertEquals(
+            '<select name="encoded_html">'.
+                '<option value="no_break_space">&nbsp;</option>'.
+                '<option value="ampersand">&amp;</option>'.
+                '<option value="lower_than">&lt;</option>'.
+            '</select>',
+            $this->form->select('encoded_html', ['no_break_space' => '&nbsp;', 'ampersand' => '&amp;', 'lower_than' => '&lt;'])
+        );
+
+        $list              = ['L' => 'Large', 'S' => 'Small'];
+        $optionsAttributes = ['L' => ['data-foo' => 'bar', 'disabled']];
+
+        $this->assertEquals(
+            '<select name="size">'.
+                '<option value="L" data-foo="bar" disabled>Large</option>'.
+                '<option value="S">Small</option>'.
+            '</select>',
+            $this->form->select('size', $list, null, [], $optionsAttributes)
+        );
+
+        $this->form->setSessionStore(
+            tap(new Store('name', new \SessionHandler()), function (Store $store) {
+                $store->put('_old_input', ['countries' => ['1']]);
+            })
+        );
+
+        $this->assertEquals(
+            '<select name="countries"><option value="1" selected="selected">L</option><option value="2">M</option></select>',
+            $this->form->select('countries', [1 => 'L', 2 => 'M'])
+        );
+
+        $this->assertEquals(
+            '<select name="avc">'.
+                '<option value="">Select</option>'.
+                '<option value="1" selected>Yes</option>'.
+                '<option value="0">No</option>'.
+            '</select>',
+            $this->form->select('avc', [1 => 'Yes', 0 => 'No'], true, ['placeholder' => 'Select'])->toHtml()
         );
     }
 
