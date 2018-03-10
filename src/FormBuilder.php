@@ -45,7 +45,7 @@ class FormBuilder extends Builder implements FormBuilderContract
     /**
     * The session store implementation.
     *
-    * @var \Illuminate\Contracts\Session\Session
+    * @var \Illuminate\Contracts\Session\Session|\Illuminate\Session\Store
     */
     protected $session;
 
@@ -214,9 +214,8 @@ class FormBuilder extends Builder implements FormBuilderContract
      */
     private function getModelValueAttribute($name, $model = null)
     {
-        if (is_null($model)) {
+        if (is_null($model))
             $model = $this->model;
-        }
 
         $key = $this->transformKey($name);
 
@@ -308,9 +307,8 @@ class FormBuilder extends Builder implements FormBuilderContract
             'accept-charset' => 'UTF-8',
         ];
 
-        if (isset($options['files']) && $options['files']) {
+        if (isset($options['files']) && $options['files'])
             $options['enctype'] = 'multipart/form-data';
-        }
 
         // Finally we're ready to create the final form HTML field. We will attribute
         // format the array of attributes. We will also add on the appendage which
@@ -367,11 +365,10 @@ class FormBuilder extends Builder implements FormBuilderContract
      */
     public function token()
     {
-        $token = ! empty($this->csrfToken)
-            ? $this->csrfToken
-            : $this->session->token();
-
-        return $this->hidden('_token', $token);
+        return $this->hidden(
+            '_token',
+            empty($this->csrfToken) ? $this->session->token() : $this->csrfToken
+        );
     }
 
     /**
@@ -405,18 +402,16 @@ class FormBuilder extends Builder implements FormBuilderContract
      */
     public function input($type, $name, $value = null, array $options = [])
     {
-        if ( ! isset($options['name'])) {
+        if ( ! isset($options['name']))
             $options['name'] = $name;
-        }
 
         // We will get the appropriate value for the given field. We will look for the
         // value in the session for the value in the old input data then we'll look
         // in the model instance if one is set. Otherwise we will just use empty.
         $id = $this->getIdAttribute($name, $options);
 
-        if ( ! in_array($type, $this->skipValueTypes)) {
+        if ( ! in_array($type, $this->skipValueTypes))
             $value = $this->getValueAttribute($name, $value);
-        }
 
         // Once we have the type, value, and ID we can merge them into the rest of the
         // attributes array so we can convert them into their HTML attribute format
@@ -520,9 +515,8 @@ class FormBuilder extends Builder implements FormBuilderContract
      */
     public function date($name, $value = null, array $options = [])
     {
-        if ($value instanceof DateTime) {
+        if ($value instanceof DateTime)
             $value = $value->format('Y-m-d');
-        }
 
         return $this->input('date', $name, $value, $options);
     }
@@ -538,9 +532,8 @@ class FormBuilder extends Builder implements FormBuilderContract
      */
     public function datetime($name, $value = null, array $options = [])
     {
-        if ($value instanceof DateTime) {
+        if ($value instanceof DateTime)
             $value = $value->format(DateTime::RFC3339);
-        }
 
         return $this->input('datetime', $name, $value, $options);
     }
@@ -556,9 +549,8 @@ class FormBuilder extends Builder implements FormBuilderContract
      */
     public function datetimeLocal($name, $value = null, array $options = [])
     {
-        if ($value instanceof DateTime) {
+        if ($value instanceof DateTime)
             $value = $value->format('Y-m-d\TH:i');
-        }
 
         return $this->input('datetime-local', $name, $value, $options);
     }
@@ -615,9 +607,8 @@ class FormBuilder extends Builder implements FormBuilderContract
      */
     public function textarea($name, $value = null, array $options = [])
     {
-        if ( ! isset($options['name'])) {
+        if ( ! isset($options['name']))
             $options['name'] = $name;
-        }
 
         // Next we will look for the rows and cols attributes, as each of these are put
         // on the textarea element definition. If they are not present, we will just
@@ -645,9 +636,8 @@ class FormBuilder extends Builder implements FormBuilderContract
      */
     private function setTextAreaSize(array $options)
     {
-        if (isset($options['size'])) {
+        if (isset($options['size']))
             return $this->setQuickTextAreaSize($options);
-        }
 
         // If the "size" attribute was not specified, we will just look for the regular
         // columns and rows attributes, using sane defaults if these do not exist on
@@ -698,15 +688,13 @@ class FormBuilder extends Builder implements FormBuilderContract
         $selected = $this->getValueAttribute($name, $selected);
 
         // Transform to array if it is a collection
-        if ($selected instanceof Collection) {
+        if ($selected instanceof Collection)
             $selected = $selected->all();
-        }
 
         $attributes['id'] = $this->getIdAttribute($name, $attributes);
 
-        if ( ! isset($attributes['name'])) {
+        if ( ! isset($attributes['name']))
             $attributes['name'] = $name;
-        }
 
         // We will simply loop through the options and build an HTML value for each of
         // them until we have an array of HTML declarations. Then we will join them
@@ -920,9 +908,7 @@ class FormBuilder extends Builder implements FormBuilderContract
      */
     public function radio($name, $value = null, $checked = null, array $options = [])
     {
-        $value = $value ?? $name;
-
-        return $this->checkable('radio', $name, $value, $checked, $options);
+        return $this->checkable('radio', $name, $value ?? $name, $checked, $options);
     }
 
     /**
@@ -940,9 +926,8 @@ class FormBuilder extends Builder implements FormBuilderContract
     {
         $checked = $this->getCheckedState($type, $name, $value, $checked);
 
-        if ( ! is_null($checked) && $checked) {
+        if ( ! is_null($checked) && $checked)
             $options['checked'] = 'checked';
-        }
 
         return $this->input($type, $name, $value, $options);
     }
@@ -982,23 +967,23 @@ class FormBuilder extends Builder implements FormBuilderContract
      */
     private function getCheckboxCheckedState($name, $value, $checked)
     {
-        if (isset($this->session) && ! $this->oldInputIsEmpty() && is_null($this->old($name))) {
+        if (
+            isset($this->session) &&
+            ! $this->oldInputIsEmpty() &&
+            is_null($this->old($name))
+        )
             return false;
-        }
 
-        if ($this->missingOldAndModel($name)) {
+        if ($this->missingOldAndModel($name))
             return $checked;
-        }
 
         $posted = $this->getValueAttribute($name, $checked);
 
-        if (is_array($posted)) {
+        if (is_array($posted))
             return in_array($value, $posted);
-        }
 
-        if ($posted instanceof Collection) {
+        if ($posted instanceof Collection)
             return $posted->contains('id', $value);
-        }
 
         return (bool) $posted;
     }
@@ -1055,9 +1040,9 @@ class FormBuilder extends Builder implements FormBuilderContract
     */
     public function image($url, $name = null, array $attributes = [])
     {
-        $attributes['src'] = $this->url->asset($url);
-
-        return $this->input('image', $name, null, $attributes);
+        return $this->input('image', $name, null, array_merge($attributes, [
+            'src' => $this->url->asset($url),
+        ]));
     }
 
     /**
@@ -1083,9 +1068,8 @@ class FormBuilder extends Builder implements FormBuilderContract
      */
     public function button($value = null, array $options = [])
     {
-        if ( ! array_key_exists('type', $options)) {
+        if ( ! array_key_exists('type', $options))
             $options['type'] = 'button';
-        }
 
         return $this->toHtmlString(
             '<button'.$this->html->attributes($options).'>'.$value.'</button>'
@@ -1123,18 +1107,17 @@ class FormBuilder extends Builder implements FormBuilderContract
         // We will also check for a "route" or "action" parameter on the array so that
         // developers can easily specify a route or controller action when creating
         // a form providing a convenient interface for creating the form actions.
-        if (isset($options['url'])) {
+        if (isset($options['url']))
             return $this->getUrlAction($options['url']);
-        }
-        elseif (isset($options['route'])) {
+
+        if (isset($options['route']))
             return $this->getRouteAction($options['route']);
-        }
-        elseif (isset($options['action'])) {
+
+        if (isset($options['action']))
             // If an action is available, we are attempting to open a form to a controller
             // action route. So, we will use the URL generator to get the path to these
             // actions and return them from the method. Otherwise, we'll use current.
             return $this->getControllerAction($options['action']);
-        }
 
         return $this->url->current();
     }
@@ -1195,16 +1178,14 @@ class FormBuilder extends Builder implements FormBuilderContract
         // If the HTTP method is in this list of spoofed methods, we will attach the
         // method spoofer hidden input to the form. This allows us to use regular
         // form to initiate PUT and DELETE requests in addition to the typical.
-        if (in_array($method, $this->spoofedMethods)) {
+        if (in_array($method, $this->spoofedMethods))
             $appendage .= $this->hidden('_method', $method);
-        }
 
         // If the method is something other than GET we will go ahead and attach the
         // CSRF token to the form, as this can't hurt and is convenient to simply
         // always have available on every form the developers creates for them.
-        if ($method !== 'GET') {
+        if ($method !== 'GET')
             $appendage .= $this->token();
-        }
 
         return $appendage;
     }
