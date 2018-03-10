@@ -677,14 +677,21 @@ class FormBuilder extends Builder implements FormBuilderContract
      *
      * @param  string                                $name
      * @param  array|\Illuminate\Support\Collection  $list
-     * @param  string                                $selected
+     * @param  string|bool                           $selected
      * @param  array                                 $attributes
-     * @param  array                                 $options
+     * @param  array                                 $optionsAttributes
+     * @param  array                                 $optgroupsAttributes
      *
      * @return \Illuminate\Support\HtmlString
      */
-    public function select($name, $list = [], $selected = null, array $attributes = [], array $options = [])
-    {
+    public function select(
+        $name,
+        $list = [],
+        $selected = null,
+        array $attributes = [],
+        array $optionsAttributes = [],
+        array $optgroupsAttributes = []
+    ) {
         // When building a select box the "value" attribute is really the selected one
         // so we will use that when checking the model or session for a value which
         // should provide a convenient method of re-populating the forms on post.
@@ -712,9 +719,10 @@ class FormBuilder extends Builder implements FormBuilderContract
         }
 
         foreach($list as $value => $display) {
-            $html[] = $this->getSelectOption(
-                $display, $value, $selected, isset($options[$value]) ? $options[$value] : []
-            );
+            $optionAttributes = $optionsAttributes[$value] ?? [];
+            $optgroupAttributes = $optgroupsAttributes[$value] ?? [];
+
+            $html[] = $this->getSelectOption($display, $value, $selected, $optionAttributes, $optgroupAttributes);
         }
 
         // Once we have all of this HTML, we can join this into a single element after
@@ -790,13 +798,14 @@ class FormBuilder extends Builder implements FormBuilderContract
      * @param  string  $value
      * @param  string  $selected
      * @param  array   $attributes
+     * @param  array   $optgroupAttributes
      *
      * @return string
      */
-    private function getSelectOption($display, $value, $selected, array $attributes = [])
+    private function getSelectOption($display, $value, $selected, array $attributes = [], array $optgroupAttributes = [])
     {
         return is_array($display)
-            ? $this->optionGroup($display, $value, $selected, $attributes)
+            ? $this->optionGroup($display, $value, $selected, $optgroupAttributes, $attributes)
             : $this->option($display, $value, $selected, $attributes);
     }
 
@@ -807,18 +816,25 @@ class FormBuilder extends Builder implements FormBuilderContract
      * @param  string  $label
      * @param  string  $selected
      * @param  array   $attributes
+     * @param  array   $optionsAttributes
+     * @param  int     $level
      *
      * @return string
      */
-    private function optionGroup(array $list, $label, $selected, array $attributes = [])
+    private function optionGroup(array $list, $label, $selected, array $attributes = [], array $optionsAttributes = [], $level = 0)
     {
-        $html = [];
+        $html  = [];
+        $space = str_repeat("&nbsp;", $level);
 
         foreach($list as $value => $display) {
-            $html[] = $this->option($display, $value, $selected, $attributes);
+            $optionAttributes = $optionsAttributes[$value] ?? [];
+
+            $html[] = is_array($display)
+                ? $this->optionGroup($display, $value, $selected, $attributes, $optionAttributes, $level + 5)
+                : $this->option($space.$display, $value, $selected, $optionAttributes);
         }
 
-        return '<optgroup label="'.$this->html->escape($label).'">'.implode('', $html).'</optgroup>';
+        return '<optgroup label="'.$this->html->escape($label).'"'.$this->html->attributes($attributes).'>'.implode('', $html).'</optgroup>';
     }
 
     /**
@@ -865,9 +881,14 @@ class FormBuilder extends Builder implements FormBuilderContract
      */
     private function getSelectedValue($value, $selected)
     {
-        if (is_array($selected)) {
-            return in_array($value, $selected) ? 'selected' : null;
-        }
+        if (is_array($selected))
+            return (in_array($value, $selected, true) || in_array((string) $value, $selected, true)) ? 'selected' : null;
+
+        if ($selected instanceof Collection)
+            return $selected->contains($value) ? 'selected' : null;
+
+        if (is_int($value) && is_bool($selected))
+            return (bool) $value === $selected;
 
         return ((string) $value === (string) $selected) ? 'selected' : null;
     }

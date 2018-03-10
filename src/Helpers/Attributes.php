@@ -27,12 +27,11 @@ class Attributes
         foreach ((array) $attributes as $key => $value) {
             $element = static::makeAttributeElement($key, $value);
 
-            if ( ! is_null($element)) {
+            if ( ! is_null($element))
                 $html[] = $element;
-            }
         }
 
-        return (count($html) > 0) ? ' ' . implode(' ', $html) : '';
+        return (count($html) > 0) ? ' '.implode(' ', array_filter($html)) : '';
     }
 
     /* -----------------------------------------------------------------
@@ -57,7 +56,10 @@ class Attributes
         // as this will convert HTML attributes such as "required" to a correct
         // form like required="required" instead of using incorrect numerics.
         if (is_numeric($key))
-            $key = $value;
+            return $value;
+
+        if (is_bool($value) && $key !== 'value')
+            return $value ? $key : '';
 
         return $key.'="'.e($value).'"';
     }
