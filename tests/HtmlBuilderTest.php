@@ -424,7 +424,7 @@ class HtmlBuilderTest extends TestCase
     public function it_can_make_attributes()
     {
         $this->assertEquals(
-            ' class="strong" required="required"',
+            ' class="strong" required',
             $this->html->attributes(['class' => 'strong', 'required'])
         );
     }
