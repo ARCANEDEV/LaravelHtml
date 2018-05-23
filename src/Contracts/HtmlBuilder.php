@@ -17,10 +17,11 @@ interface HtmlBuilder
      * Convert an HTML string to entities.
      *
      * @param  string  $value
+     * @param  bool    $doubleEncode
      *
      * @return string
      */
-    public function entities($value);
+    public function entities($value, $doubleEncode = false);
 
     /**
      * Convert all applicable characters to HTML entities.

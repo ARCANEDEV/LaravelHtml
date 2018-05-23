@@ -48,12 +48,13 @@ class HtmlBuilder extends Builder implements HtmlBuilderContract
      * Convert an HTML string to entities.
      *
      * @param  string  $value
+     * @param  bool    $doubleEncode
      *
      * @return string
      */
-    public function entities($value)
+    public function entities($value, $doubleEncode = false)
     {
-        return e($value);
+        return e($value, $doubleEncode);
     }
 
     /**
