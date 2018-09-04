@@ -19,7 +19,7 @@ This package is inspired/based on [illuminate/html](https://github.com/illuminat
   * Easy setup &amp; configuration.
   * Well documented &amp; IDE Friendly.
   * Well tested with maximum code quality.
-  * Laravel `5.1 | 5.2 | 5.3 | 5.4 | 5.5 | 5.6` are supported.
+  * Laravel `5.1` to `5.7` are supported.
   * Made with :heart: &amp; :coffee:.
   
 ## Table of contents
@@ -46,7 +46,7 @@ If you discover any security related issues, please email arcanedev.maroc@gmail.
 - [LaravelCollective](https://github.com/LaravelCollective/html)
 - [All Contributors][link-contributors]
 
-[badge_laravel]:      https://img.shields.io/badge/Laravel-5.1%20to%205.6-orange.svg?style=flat-square
+[badge_laravel]:      https://img.shields.io/badge/Laravel-5.1%20to%205.7-orange.svg?style=flat-square
 [badge_license]:      https://img.shields.io/packagist/l/arcanedev/laravel-html.svg?style=flat-square
 [badge_build]:        https://img.shields.io/travis/ARCANEDEV/LaravelHtml.svg?style=flat-square
 [badge_coverage]:     https://img.shields.io/scrutinizer/coverage/g/ARCANEDEV/LaravelHtml.svg?style=flat-square
