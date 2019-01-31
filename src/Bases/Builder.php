@@ -34,7 +34,7 @@ abstract class Builder
      * @param  string  $method
      * @param  array   $parameters
      *
-     * @return \Illuminate\Contracts\View\View|mixed
+     * @return mixed
      *
      * @throws \BadMethodCallException
      */
@@ -48,22 +48,5 @@ abstract class Builder
         }
 
         return $this->macroCall($method, $parameters);
-    }
-
-    /* -----------------------------------------------------------------
-     |  Other Methods
-     | -----------------------------------------------------------------
-     */
-
-    /**
-     * Transform the string to an Html serializable object
-     *
-     * @param  string  $html
-     *
-     * @return \Illuminate\Support\HtmlString
-     */
-    protected function toHtmlString($html)
-    {
-        return new HtmlString($html);
     }
 }

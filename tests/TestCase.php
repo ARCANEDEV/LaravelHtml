@@ -1,6 +1,7 @@
 <?php namespace Arcanedev\LaravelHtml\Tests;
 
 use Arcanedev\LaravelHtml\HtmlBuilder;
+use Arcanedev\LaravelHtml\Tests\Concerns\AssertsHtmlStrings;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Router;
 use Illuminate\Routing\UrlGenerator;
@@ -14,6 +15,13 @@ use Orchestra\Testbench\TestCase as BaseTestCase;
  */
 abstract class TestCase extends BaseTestCase
 {
+    /* -----------------------------------------------------------------
+     |  Traits
+     | -----------------------------------------------------------------
+     */
+
+    use AssertsHtmlStrings;
+
     /* -----------------------------------------------------------------
      |  Properties
      | -----------------------------------------------------------------
@@ -154,17 +162,17 @@ abstract class TestCase extends BaseTestCase
     {
         return array_merge([
             [
-                '<input name="foo" type="' . $type . '">',
+                '<input type="'.$type.'" name="foo">',
                 'foo',
                 null,
                 []
             ],[
-                '<input name="foo" type="' . $type . '" value="' . $value . '">',
+                '<input type="'.$type.'" name="foo" value="'.$value.'">',
                 'foo',
                 $value,
                 []
             ],[
-                '<input class="form-control" name="foo" type="' . $type . '">',
+                '<input type="'.$type.'" name="foo" class="form-control">',
                 'foo',
                 null,
                 ['class' => 'form-control']

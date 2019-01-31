@@ -58,7 +58,7 @@ class HtmlBuilderTest extends TestCase
         $url = $this->urlTo($file = 'bootstrap.min.css');
 
         static::assertEquals(
-            '<link media="all" type="text/css" rel="stylesheet" href="'.$url.'">',
+            '<link rel="stylesheet" href="'.$url.'">',
             $this->html->style($file)
         );
     }
@@ -79,9 +79,9 @@ class HtmlBuilderTest extends TestCase
     {
         $url = $this->urlTo('bar.ico');
 
-        static::assertEquals(
-            '<link rel="shortcut icon" type="image/x-icon" href="'.$url.'">',
-            $this->html->favicon($url)
+        static::assertHtmlStringEqualsHtmlString(
+            '<link href="'.$url.'" rel="shortcut icon" type="image/x-icon">',
+            $this->html->favicon($url)->toHtml()
         );
     }
 
@@ -92,7 +92,7 @@ class HtmlBuilderTest extends TestCase
 
         static::assertEquals(
             '<a href="'.$url.'">'.$url.'</a>',
-            $this->html->link($url, null)
+            $this->html->link($url)
         );
 
         static::assertEquals(
@@ -263,7 +263,7 @@ class HtmlBuilderTest extends TestCase
             'class' => 'example',
         ];
 
-        static::assertEquals(
+        static::assertHtmlStringEqualsHtmlString(
             '<ol class="example">' .
                 '<li>bar</li>' .
                 '<li>baz</li>' .
@@ -272,7 +272,8 @@ class HtmlBuilderTest extends TestCase
         );
 
         // Empty list
-        static::assertEmpty(
+        static::assertHtmlStringEqualsHtmlString(
+            '<ol></ol>',
             $this->html->ol([])->toHtml()
         );
     }
@@ -289,7 +290,7 @@ class HtmlBuilderTest extends TestCase
             'class' => 'example',
         ];
 
-        static::assertEquals(
+        static::assertHtmlStringEqualsHtmlString(
             '<ul class="example">' .
                 '<li>bar</li>' .
                 '<li>baz</li>' .
@@ -298,7 +299,8 @@ class HtmlBuilderTest extends TestCase
         );
 
         // Empty list
-        static::assertEmpty(
+        static::assertHtmlStringEqualsHtmlString(
+            '<ul></ul>',
             $this->html->ul([])->toHtml()
         );
     }
@@ -331,7 +333,7 @@ class HtmlBuilderTest extends TestCase
             ]
         ];
 
-        static::assertEquals(
+        static::assertHtmlStringEqualsHtmlString(
             '<dl class="example">' .
                 '<dt>foo</dt><dd>bar</dd>' .
                 '<dt>bing</dt><dd>baz</dd>' .
@@ -351,20 +353,20 @@ class HtmlBuilderTest extends TestCase
     public function it_can_make_nested_listing()
     {
         $list = [
-            'foo'    => 'bar',
-            'bing'   => 'baz',
-            'nested' => [
+            'bar',
+            'baz',
+            [
                 'child-1',
                 'child-2',
                 'child-3',
             ],
         ];
 
-        static::assertEquals(
+        static::assertHtmlStringEqualsHtmlString(
             '<ul>'.
                 '<li>bar</li>' .
                 '<li>baz</li>' .
-                '<li>nested' .
+                '<li>' .
                     '<ul>' .
                         '<li>child-1</li>' .
                         '<li>child-2</li>' .
@@ -375,11 +377,11 @@ class HtmlBuilderTest extends TestCase
             $this->html->ul($list)
         );
 
-        static::assertEquals(
+        static::assertHtmlStringEqualsHtmlString(
             '<ol>'.
                 '<li>bar</li>' .
                 '<li>baz</li>' .
-                '<li>nested' .
+                '<li>' .
                     '<ol>' .
                         '<li>child-1</li>' .
                         '<li>child-2</li>' .
@@ -389,29 +391,6 @@ class HtmlBuilderTest extends TestCase
             '</ol>',
             $this->html->ol($list)
         );
-    }
-
-    /**
-     * @test
-     *
-     * @expectedException         \Exception
-     * @expectedExceptionMessage  Array to string conversion
-     */
-    public function it_must_throw_an_error_on_dl_nest_list()
-    {
-        $list = [
-            'foo'    => 'bar',
-            'bing'   => 'baz',
-            'nested' => [
-                'child-1',
-                'child-2',
-                'child-3' => [
-                    'hello', 'world'
-                ],
-            ],
-        ];
-
-        $this->html->dl($list);
     }
 
     /** @test */
@@ -424,7 +403,7 @@ class HtmlBuilderTest extends TestCase
     public function it_can_make_attributes()
     {
         static::assertEquals(
-            ' class="strong" required',
+            'class="strong" required',
             $this->html->attributes(['class' => 'strong', 'required'])
         );
     }

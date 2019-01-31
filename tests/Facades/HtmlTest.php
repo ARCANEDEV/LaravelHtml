@@ -52,7 +52,7 @@ class HtmlTest extends TestCase
         $url = $this->urlTo($file = 'bootstrap.min.css');
 
         static::assertEquals(
-            '<link media="all" type="text/css" rel="stylesheet" href="'.$url.'">',
+            '<link rel="stylesheet" href="'.$url.'">',
             Html::style($file)
         );
     }
@@ -65,7 +65,7 @@ class HtmlTest extends TestCase
 
         static::assertEquals(
             '<img src="'.$url.'">',
-            Html::image($file)
+            Html::image($file)->toHtml()
         );
     }
 
@@ -74,8 +74,8 @@ class HtmlTest extends TestCase
     {
         $url = $this->urlTo('bar.ico');
 
-        static::assertEquals(
-            '<link rel="shortcut icon" type="image/x-icon" href="'.$url.'">',
+        static::assertHtmlStringEqualsHtmlString(
+            '<link href="'.$url.'" rel="shortcut icon" type="image/x-icon">',
             Html::favicon($url)
         );
     }

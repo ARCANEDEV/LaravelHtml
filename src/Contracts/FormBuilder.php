@@ -127,57 +127,57 @@ interface FormBuilder
     /**
      * Create a form input field.
      *
-     * @param  string  $type
-     * @param  string  $name
-     * @param  string  $value
-     * @param  array   $options
+     * @param  string        $type
+     * @param  string        $name
+     * @param  string|mixed  $value
+     * @param  array         $attributes
      *
      * @return \Illuminate\Support\HtmlString
      */
-    public function input($type, $name, $value = null, array $options = []);
+    public function input($type, $name, $value = null, array $attributes = []);
 
     /**
      * Create a text input field.
      *
-     * @param  string  $name
-     * @param  string  $value
-     * @param  array   $options
+     * @param  string        $name
+     * @param  string|mixed  $value
+     * @param  array         $attributes
      *
      * @return \Illuminate\Support\HtmlString
      */
-    public function text($name, $value = null, array $options = []);
+    public function text($name, $value = null, array $attributes = []);
 
     /**
      * Create a password input field.
      *
      * @param  string  $name
-     * @param  array   $options
+     * @param  array   $attributes
      *
      * @return \Illuminate\Support\HtmlString
      */
-    public function password($name, array $options = []);
+    public function password($name, array $attributes = []);
 
     /**
      * Create a hidden input field.
      *
      * @param  string  $name
      * @param  string  $value
-     * @param  array   $options
+     * @param  array   $attributes
      *
      * @return \Illuminate\Support\HtmlString
      */
-    public function hidden($name, $value = null, array $options = []);
+    public function hidden($name, $value = null, array $attributes = []);
 
     /**
      * Create an e-mail input field.
      *
      * @param  string  $name
      * @param  string  $value
-     * @param  array   $options
+     * @param  array   $attributes
      *
      * @return \Illuminate\Support\HtmlString
      */
-    public function email($name, $value = null, array $options = []);
+    public function email($name, $value = null, array $attributes = []);
 
     /**
      * Create a tel input field.
@@ -351,9 +351,9 @@ interface FormBuilder
     /**
      * Create a HTML image input element.
      *
-     * @param  string  $url
-     * @param  string  $name
-     * @param  array   $attributes
+     * @param  string       $url
+     * @param  string|null  $name
+     * @param  array        $attributes
      *
      * @return \Illuminate\Support\HtmlString
      */

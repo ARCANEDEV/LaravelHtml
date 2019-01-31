@@ -28,7 +28,7 @@ class Obfuscater
             if (ord($letter) > 128)
                 return $letter;
 
-            static::makeSafer($letter, $safe);
+            self::makeSafer($safe, $letter);
         }
 
         return $safe;
@@ -45,7 +45,7 @@ class Obfuscater
      * @param  string  $letter
      * @param  string  $safe
      */
-    private static function makeSafer($letter, &$safe)
+    private static function makeSafer(&$safe, $letter)
     {
         // To properly obfuscate the value, we will randomly convert each letter to
         // its entity or hexadecimal representation, keeping a bot from sniffing

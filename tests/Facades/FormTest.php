@@ -26,13 +26,16 @@ class FormTest extends TestCase
      */
     public function it_can_open_form($expected, $options)
     {
-        static::assertEquals($expected, Form::open($options));
+        static::assertEquals(
+            $expected,
+            Form::open($options)->toHtml()
+        );
     }
 
     /** @test */
     public function it_can_close_form()
     {
-        static::assertEquals('</form>', Form::close());
+        static::assertEquals('</form>', Form::close()->toHtml());
     }
 
     /* -----------------------------------------------------------------
@@ -47,26 +50,27 @@ class FormTest extends TestCase
      */
     public function provideOpeningForms()
     {
-        $url = $this->baseUrl . '/foo';
+        $url = $this->baseUrl.'/foo';
 
         return [
             [
-                '<form method="GET" action="' . $url . '" accept-charset="UTF-8">',
-                ['url' => $url, 'method' => 'GET']
+                '<form method="GET" action="'.$url.'" accept-charset="UTF-8">',
+                ['url' => $url, 'method' => 'GET'],
+            ],
+            [
+                '<form method="POST" action="'.$url.'" accept-charset="UTF-8" class="form" id="id-form"><input type="hidden" name="_token">',
+                ['url' => $url, 'method' => 'POST', 'class' => 'form', 'id' => 'id-form'],
+            ],
+            [
+                '<form method="GET" action="'.$url.'" accept-charset="UTF-16">',
+                ['url' => $url, 'method' => 'GET', 'accept-charset' => 'UTF-16'],
             ],[
-                '<form method="POST" action="' . $url . '" accept-charset="UTF-8" class="form" id="id-form">'.
-                '<input name="_token" type="hidden">',
-                ['url' => $url, 'method' => 'POST', 'class' => 'form', 'id' => 'id-form']
-            ],[
-                '<form method="GET" action="' . $url . '" accept-charset="UTF-16">',
-                ['url' => $url, 'method' => 'GET', 'accept-charset' => 'UTF-16']
-            ],[
-                '<form method="GET" action="' . $url . '" accept-charset="UTF-16" enctype="multipart/form-data">',
-                ['url' => $url, 'method' => 'GET', 'accept-charset' => 'UTF-16', 'files' => true]
-            ],[
-                '<form method="POST" action="' . $url . '" accept-charset="UTF-8"><input name="_method" type="hidden" value="PUT">'.
-                '<input name="_token" type="hidden">',
-                ['url' => $url, 'method' => 'PUT']
+                '<form method="GET" action="'.$url.'" accept-charset="UTF-16" enctype="multipart/form-data">',
+                ['url' => $url, 'method' => 'GET', 'accept-charset' => 'UTF-16', 'files' => true],
+            ],
+            [
+                '<form method="POST" action="' . $url . '" accept-charset="UTF-8"><input type="hidden" name="_method" value="PUT"><input type="hidden" name="_token">',
+                ['url' => $url, 'method' => 'PUT'],
             ]
         ];
     }
