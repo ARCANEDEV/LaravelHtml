@@ -50,7 +50,7 @@ interface HtmlBuilder
      *
      * @return \Illuminate\Support\HtmlString
      */
-    public function script($url, $attributes = [], $secure = null);
+    public function script($url, array $attributes = [], $secure = null);
 
     /**
      * Generate a link to a CSS file.
@@ -61,7 +61,7 @@ interface HtmlBuilder
      *
      * @return \Illuminate\Support\HtmlString
      */
-    public function style($url, $attributes = [], $secure = null);
+    public function style($url, array $attributes = [], $secure = null);
 
     /**
      * Generate an HTML image element.
@@ -84,7 +84,7 @@ interface HtmlBuilder
      *
      * @return \Illuminate\Support\HtmlString
      */
-    public function favicon($url, $attributes = [], $secure = null);
+    public function favicon($url, array $attributes = [], $secure = null);
 
     /**
      * Generate a HTML link.
@@ -97,7 +97,7 @@ interface HtmlBuilder
      *
      * @return \Illuminate\Support\HtmlString
      */
-    public function link($url, $title = null, $attributes = [], $secure = null, $escaped = true);
+    public function link($url, $title = null, array $attributes = [], $secure = null, $escaped = true);
 
     /**
      * Generate a HTTPS HTML link.
@@ -109,68 +109,68 @@ interface HtmlBuilder
      *
      * @return \Illuminate\Support\HtmlString
      */
-    public function secureLink($url, $title = null, $attributes = [], $escaped = true);
+    public function secureLink($url, $title = null, array $attributes = [], $escaped = true);
 
     /**
      * Generate a HTML link to an asset.
      *
-     * @param  string  $url
-     * @param  string  $title
-     * @param  array   $attributes
-     * @param  bool    $secure
+     * @param  string       $url
+     * @param  string|null  $title
+     * @param  array        $attributes
+     * @param  bool         $secure
      *
      * @return \Illuminate\Support\HtmlString
      */
-    public function linkAsset($url, $title = null, $attributes = [], $secure = null);
+    public function linkAsset($url, $title = null, array $attributes = [], $secure = null);
 
     /**
      * Generate a HTTPS HTML link to an asset.
      *
-     * @param  string  $url
-     * @param  string  $title
-     * @param  array   $attributes
+     * @param  string       $url
+     * @param  string|null  $title
+     * @param  array        $attributes
      *
      * @return \Illuminate\Support\HtmlString
      */
-    public function linkSecureAsset($url, $title = null, $attributes = []);
+    public function linkSecureAsset($url, $title = null, array $attributes = []);
 
     /**
      * Generate a HTML link to a named route.
      *
-     * @param  string  $name
-     * @param  string  $title
-     * @param  array   $parameters
-     * @param  array   $attributes
-     * @param  bool    $escaped
+     * @param  string       $name
+     * @param  string|null  $title
+     * @param  array|mixed  $parameters
+     * @param  array        $attributes
+     * @param  bool         $escaped
      *
      * @return \Illuminate\Support\HtmlString
      */
-    public function linkRoute($name, $title = null, $parameters = [], $attributes = [], $escaped = true);
+    public function linkRoute($name, $title = null, $parameters = [], array $attributes = [], $escaped = true);
 
     /**
      * Generate a HTML link to a controller action.
      *
-     * @param  string  $action
-     * @param  string  $title
-     * @param  array   $parameters
-     * @param  array   $attributes
-     * @param  bool    $escaped
+     * @param  string       $action
+     * @param  string       $title
+     * @param  array|mixed  $parameters
+     * @param  array        $attributes
+     * @param  bool         $escaped
      *
      * @return \Illuminate\Support\HtmlString
      */
-    public function linkAction($action, $title = null, $parameters = [], $attributes = [], $escaped = true);
+    public function linkAction($action, $title = null, $parameters = [], array $attributes = [], $escaped = true);
 
     /**
      * Generate a HTML link to an email address.
      *
-     * @param  string  $email
-     * @param  string  $title
-     * @param  array   $attributes
-     * @param  bool    $escaped
+     * @param  string       $email
+     * @param  string|null  $title
+     * @param  array        $attributes
+     * @param  bool         $escaped
      *
      * @return \Illuminate\Support\HtmlString
      */
-    public function mailto($email, $title = null, $attributes = [], $escaped = true);
+    public function mailto($email, $title = null, array $attributes = [], $escaped = true);
 
     /**
      * Obfuscate an e-mail address to prevent spam-bots from sniffing it.

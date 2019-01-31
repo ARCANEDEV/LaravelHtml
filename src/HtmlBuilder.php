@@ -1,5 +1,7 @@
 <?php namespace Arcanedev\LaravelHtml;
 
+use Arcanedev\Html\Elements;
+use Arcanedev\Html\Entities\Attributes;
 use Arcanedev\LaravelHtml\Bases\Builder;
 use Arcanedev\LaravelHtml\Contracts\HtmlBuilder as HtmlBuilderContract;
 use Illuminate\Contracts\Routing\UrlGenerator;
@@ -90,11 +92,12 @@ class HtmlBuilder extends Builder implements HtmlBuilderContract
      *
      * @return \Illuminate\Support\HtmlString
      */
-    public function script($url, $attributes = [], $secure = null)
+    public function script($url, array $attributes = [], $secure = null)
     {
-        $attributes['src'] = $this->url->asset($url, $secure);
-
-        return $this->toHtmlString('<script'.$this->attributes($attributes).'></script>');
+        return Elements\Element::withTag('script')
+            ->attribute('src', $this->url->asset($url, $secure))
+            ->attributes($attributes)
+            ->render();
     }
 
     /**
@@ -106,35 +109,35 @@ class HtmlBuilder extends Builder implements HtmlBuilderContract
      *
      * @return \Illuminate\Support\HtmlString
      */
-    public function style($url, $attributes = [], $secure = null)
+    public function style($url, array $attributes = [], $secure = null)
     {
         $attributes = array_merge($attributes, [
-            'media' => 'all',
-            'type'  => 'text/css',
-            'rel'   => 'stylesheet',
-            'href'  => $this->url->asset($url, $secure),
+            'rel'  => 'stylesheet',
+            'href' => $this->url->asset($url, $secure),
         ]);
 
-        return $this->toHtmlString('<link'.$this->attributes($attributes).'>');
+        return Elements\Element::withTag('link')
+            ->attributes($attributes)
+            ->render();
     }
 
     /**
      * Generate an HTML image element.
      *
-     * @param  string  $url
-     * @param  string  $alt
-     * @param  array   $attributes
-     * @param  bool    $secure
+     * @param  string       $url
+     * @param  string|null  $alt
+     * @param  array        $attributes
+     * @param  bool         $secure
      *
      * @return \Illuminate\Support\HtmlString
      */
     public function image($url, $alt = null, $attributes = [], $secure = null)
     {
-        $attributes['alt'] = $alt;
-
-        return $this->toHtmlString(
-            '<img src="'.$this->url->asset($url, $secure).'"'.$this->attributes($attributes).'>'
-        );
+        return Elements\Img::make()
+            ->src($this->url->asset($url, $secure))
+            ->attributeUnless(is_null($alt), 'alt', $alt)
+            ->attributes($attributes)
+            ->render();
     }
 
     /**
@@ -146,53 +149,55 @@ class HtmlBuilder extends Builder implements HtmlBuilderContract
      *
      * @return \Illuminate\Support\HtmlString
      */
-    public function favicon($url, $attributes = [], $secure = null)
+    public function favicon($url, array $attributes = [], $secure = null)
     {
-        $attributes = array_merge($attributes, [
+        $attributes = array_merge([
             'rel'  => 'shortcut icon',
             'type' => 'image/x-icon',
-            'href' => $this->url->asset($url, $secure)
-        ]);
+        ], $attributes);
 
-        return $this->toHtmlString('<link'.$this->attributes($attributes).'>');
+        return Elements\Element::withTag('link')
+            ->attribute('href', $this->url->asset($url, $secure))
+            ->attributes($attributes)
+            ->render();
     }
 
     /**
      * Generate a HTML link.
      *
-     * @param  string  $url
-     * @param  string  $title
-     * @param  array   $attributes
-     * @param  bool    $secure
-     * @param  bool    $escaped
+     * @param  string       $url
+     * @param  string|null  $title
+     * @param  array        $attributes
+     * @param  bool         $secure
+     * @param  bool         $escaped
      *
      * @return \Illuminate\Support\HtmlString
      */
-    public function link($url, $title = null, $attributes = [], $secure = null, $escaped = true)
+    public function link($url, $title = null, array $attributes = [], $secure = null, $escaped = true)
     {
         $url = $this->url->to($url, [], $secure);
 
         if (is_null($title) || $title === false)
             $title = $url;
 
-        return $this->toHtmlString(
-            '<a href="'.$this->entities($url).'"'.$this->attributes($attributes).'>'.
-                ($escaped ? $this->entities($title) : $title).
-            '</a>'
-        );
+        return Elements\A::make()
+            ->href($this->entities($url))
+            ->attributes($attributes)
+            ->html($escaped ? $this->entities($title) : $title)
+            ->render();
     }
 
     /**
      * Generate a HTTPS HTML link.
      *
-     * @param  string  $url
-     * @param  string  $title
-     * @param  array   $attributes
-     * @param  bool    $escaped
+     * @param  string       $url
+     * @param  string|null  $title
+     * @param  array        $attributes
+     * @param  bool         $escaped
      *
      * @return \Illuminate\Support\HtmlString
      */
-    public function secureLink($url, $title = null, $attributes = [], $escaped = true)
+    public function secureLink($url, $title = null, array $attributes = [], $escaped = true)
     {
         return $this->link($url, $title, $attributes, true, $escaped);
     }
@@ -207,7 +212,7 @@ class HtmlBuilder extends Builder implements HtmlBuilderContract
      *
      * @return \Illuminate\Support\HtmlString
      */
-    public function linkAsset($url, $title = null, $attributes = [], $secure = null)
+    public function linkAsset($url, $title = null, array $attributes = [], $secure = null)
     {
         $url = $this->url->asset($url, $secure);
 
@@ -217,13 +222,13 @@ class HtmlBuilder extends Builder implements HtmlBuilderContract
     /**
      * Generate a HTTPS HTML link to an asset.
      *
-     * @param  string  $url
-     * @param  string  $title
-     * @param  array   $attributes
+     * @param  string       $url
+     * @param  string|null  $title
+     * @param  array        $attributes
      *
      * @return \Illuminate\Support\HtmlString
      */
-    public function linkSecureAsset($url, $title = null, $attributes = [])
+    public function linkSecureAsset($url, $title = null, array $attributes = [])
     {
         return $this->linkAsset($url, $title, $attributes, true);
     }
@@ -231,15 +236,15 @@ class HtmlBuilder extends Builder implements HtmlBuilderContract
     /**
      * Generate a HTML link to a named route.
      *
-     * @param  string  $name
-     * @param  string  $title
-     * @param  array   $parameters
-     * @param  array   $attributes
-     * @param  bool    $escaped
+     * @param  string       $name
+     * @param  string|null  $title
+     * @param  array|mixed  $parameters
+     * @param  array        $attributes
+     * @param  bool         $escaped
      *
      * @return \Illuminate\Support\HtmlString
      */
-    public function linkRoute($name, $title = null, $parameters = [], $attributes = [], $escaped = true)
+    public function linkRoute($name, $title = null, $parameters = [], array $attributes = [], $escaped = true)
     {
         $url = $this->url->route($name, $parameters);
 
@@ -249,15 +254,15 @@ class HtmlBuilder extends Builder implements HtmlBuilderContract
     /**
      * Generate a HTML link to a controller action.
      *
-     * @param  string  $action
-     * @param  string  $title
-     * @param  array   $parameters
-     * @param  array   $attributes
-     * @param  bool    $escaped
+     * @param  string       $action
+     * @param  string       $title
+     * @param  array|mixed  $parameters
+     * @param  array        $attributes
+     * @param  bool         $escaped
      *
      * @return \Illuminate\Support\HtmlString
      */
-    public function linkAction($action, $title = null, $parameters = [], $attributes = [], $escaped = true)
+    public function linkAction($action, $title = null, $parameters = [], array $attributes = [], $escaped = true)
     {
         $url = $this->url->action($action, $parameters);
 
@@ -267,24 +272,23 @@ class HtmlBuilder extends Builder implements HtmlBuilderContract
     /**
      * Generate a HTML link to an email address.
      *
-     * @param  string  $email
-     * @param  string  $title
-     * @param  array   $attributes
-     * @param  bool    $escaped
+     * @param  string       $email
+     * @param  string|null  $title
+     * @param  array        $attributes
+     * @param  bool         $escaped
      *
      * @return \Illuminate\Support\HtmlString
      */
-    public function mailto($email, $title = null, $attributes = [], $escaped = true)
+    public function mailto($email, $title = null, array $attributes = [], $escaped = true)
     {
         $email = $this->email($email);
         $title = $title ?: $email;
-        $email = $this->obfuscate('mailto:') . $email;
 
-        return $this->toHtmlString(
-            '<a href="'.$email.'"'.$this->attributes($attributes).'>'.
-                ($escaped ? $this->entities($title) : $title).
-            '</a>'
-        );
+        return Elements\A::make()
+            ->href($this->obfuscate('mailto:').$email)
+            ->attributes($attributes)
+            ->html(($escaped ? $this->entities($title) : $title))
+            ->render();
     }
 
     /**
@@ -302,46 +306,49 @@ class HtmlBuilder extends Builder implements HtmlBuilderContract
     /**
      * Generate an ordered list of items.
      *
-     * @param  array  $list
+     * @param  array  $items
      * @param  array  $attributes
      *
      * @return \Illuminate\Support\HtmlString
      */
-    public function ol(array $list, array $attributes = [])
+    public function ol(array $items, array $attributes = [])
     {
-        return $this->toHtmlString(
-            Helpers\Lister::ol($list, $attributes)
-        );
+        return Elements\Ol::make()
+            ->items($items)
+            ->attributes($attributes)
+            ->render();
     }
 
     /**
      * Generate an un-ordered list of items.
      *
-     * @param  array  $list
+     * @param  array  $items
      * @param  array  $attributes
      *
      * @return \Illuminate\Support\HtmlString
      */
-    public function ul(array $list, array $attributes = [])
+    public function ul(array $items, array $attributes = [])
     {
-        return $this->toHtmlString(
-            Helpers\Lister::ul($list, $attributes)
-        );
+        return Elements\Ul::make()
+            ->items($items)
+            ->attributes($attributes)
+            ->render();
     }
 
     /**
      * Generate a description list of items.
      *
-     * @param  array  $list
+     * @param  array  $items
      * @param  array  $attributes
      *
      * @return \Illuminate\Support\HtmlString
      */
-    public function dl(array $list, array $attributes = [])
+    public function dl(array $items, array $attributes = [])
     {
-        return $this->toHtmlString(
-            Helpers\Lister::dl($list, $attributes)
-        );
+        return Elements\Dl::make()
+            ->items($items)
+            ->attributes($attributes)
+            ->render();
     }
 
     /**
@@ -365,7 +372,7 @@ class HtmlBuilder extends Builder implements HtmlBuilderContract
      */
     public function attributes(array $attributes)
     {
-        return Helpers\Attributes::make($attributes);
+        return Attributes::make($attributes)->render();
     }
 
     /**
@@ -391,9 +398,11 @@ class HtmlBuilder extends Builder implements HtmlBuilderContract
      */
     public function meta($name, $content, array $attributes = [])
     {
-        return $this->toHtmlString(
-            Helpers\Meta::make($name, $content, $attributes)
-        );
+        return Elements\Meta::make()
+            ->attributeUnless(is_null($name), 'name', $name)
+            ->attributeUnless(is_null($content), 'content', $content)
+            ->attributes($attributes)
+            ->render();
     }
 
     /**
@@ -410,10 +419,10 @@ class HtmlBuilder extends Builder implements HtmlBuilderContract
     {
         $title = $title ?: $phone;
 
-        return $this->toHtmlString(
-            '<a href="tel:'.$phone.'"'.$this->attributes($attributes).'>'.
-                ($escaped ? $this->entities($title):$title).
-            '</a>'
-        );
+        return Elements\A::make()
+            ->href("tel:{$phone}")
+            ->attributes($attributes)
+            ->html($escaped ? $this->entities($title) : $title)
+            ->render();
     }
 }
