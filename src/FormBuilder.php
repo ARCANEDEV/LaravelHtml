@@ -1,14 +1,16 @@
 <?php namespace Arcanedev\LaravelHtml;
 
-use Arcanedev\Html\Elements;
+use Arcanedev\Html\Elements\{
+    Button, File, Form, Input, Label, Select, Textarea
+};
 use Arcanedev\LaravelHtml\Bases\Builder;
 use Arcanedev\LaravelHtml\Contracts\FormBuilder as FormBuilderContract;
 use DateTime;
 use Illuminate\Contracts\Routing\UrlGenerator;
 use Illuminate\Contracts\Session\Session;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Collection;
-use Illuminate\Support\Str;
+use Illuminate\Support\{
+    Arr, Collection, Str
+};
 
 /**
  * Class     FormBuilder
@@ -213,7 +215,7 @@ class FormBuilder extends Builder implements FormBuilderContract
     {
         $model = $model ?: $this->getModel();
 
-        $key = $this->transformKey($name);
+        $key = self::transformKey($name);
 
         if (strpos($key, '.') !== false) {
             $keys = explode('.', $key, 2);
@@ -239,7 +241,7 @@ class FormBuilder extends Builder implements FormBuilderContract
     public function old($name)
     {
         return ! is_null($this->session)
-            ? $this->session->getOldInput($this->transformKey($name))
+            ? $this->session->getOldInput(self::transformKey($name))
             : null;
     }
 
@@ -250,7 +252,7 @@ class FormBuilder extends Builder implements FormBuilderContract
      *
      * @return string
      */
-    private function transformKey($key)
+    private static function transformKey($key)
     {
         return str_replace(
             ['.', '[]', '[', ']'],
@@ -286,24 +288,23 @@ class FormBuilder extends Builder implements FormBuilderContract
     {
         $method = strtoupper(Arr::pull($attributes, 'method', 'POST'));
 
-        $form = Elements\Form::make()
+        return Form::make()
             ->method($method !== 'GET' ? 'POST' : $method)
             ->action($this->getAction($attributes))
             ->attributes(array_merge(
                 ['accept-charset' => 'UTF-8'],
                 Arr::except($attributes, $this->reserved)
-            ));
-
-        if (Arr::pull($attributes, 'files', false))
-            $form = $form->acceptsFiles();
-
-        if (in_array($method, $this->spoofedMethods))
-            $form = $form->addChild($this->hidden('_method', $method));
-
-        if ($method !== 'GET')
-            $form = $form->addChild($this->token());
-
-        return $form->open();
+            ))
+            ->if(Arr::pull($attributes, 'files', false), function (Form $form) {
+                return $form->acceptsFiles();
+            })
+            ->if(in_array($method, $this->spoofedMethods), function (Form $form) use ($method) {
+                return $form->addChild($this->hidden('_method', $method));
+            })
+            ->if($method !== 'GET', function (Form $form) {
+                return $form->addChild($this->token());
+            })
+            ->open();
     }
 
     /**
@@ -316,8 +317,7 @@ class FormBuilder extends Builder implements FormBuilderContract
      */
     public function model($model, array $attributes = [])
     {
-        return $this->setModel($model)
-                    ->open($attributes);
+        return $this->setModel($model)->open($attributes);
     }
 
     /**
@@ -330,7 +330,7 @@ class FormBuilder extends Builder implements FormBuilderContract
         $this->labels = [];
         $this->setModel(null);
 
-        return Elements\Form::make()->close();
+        return Form::make()->close();
     }
 
     /**
@@ -362,7 +362,7 @@ class FormBuilder extends Builder implements FormBuilderContract
 
         $value = $value ?: Str::title(str_replace(['_', '-'], ' ', $name));
 
-        return Elements\Label::make()
+        return Label::make()
             ->for($name)
             ->attributes($attributes)
             ->html($escaped ? e($value) : $value)
@@ -381,15 +381,13 @@ class FormBuilder extends Builder implements FormBuilderContract
      */
     public function input($type, $name, $value = null, array $attributes = [])
     {
-        $id = $this->getIdAttribute($name, $attributes);
-
         if ( ! in_array($type, $this->skipValueTypes))
             $value = $this->getValueAttribute($name, $value);
 
-        return Elements\Input::make()
+        return Input::make()
             ->type($type)
             ->attributeUnless(is_null($name), 'name', $name)
-            ->attributeUnless(is_null($id), 'id', $id)
+            ->attributeUnless(is_null($id = $this->getIdAttribute($name, $attributes)), 'id', $id)
             ->attributeUnless(is_null($value) || empty($value), 'value', $value)
             ->attributes($attributes)
             ->render();
@@ -534,13 +532,13 @@ class FormBuilder extends Builder implements FormBuilderContract
      *
      * @param  string        $name
      * @param  string|mixed  $value
-     * @param  array         $options
+     * @param  array         $attributes
      *
      * @return \Illuminate\Support\HtmlString
      */
-    public function time($name, $value = null, array $options = [])
+    public function time($name, $value = null, array $attributes = [])
     {
-        return $this->input('time', $name, $value, $options);
+        return $this->input('time', $name, $value, $attributes);
     }
 
     /**
@@ -548,26 +546,26 @@ class FormBuilder extends Builder implements FormBuilderContract
      *
      * @param  string  $name
      * @param  string  $value
-     * @param  array   $options
+     * @param  array   $attributes
      *
      * @return \Illuminate\Support\HtmlString
      */
-    public function url($name, $value = null, array $options = [])
+    public function url($name, $value = null, array $attributes = [])
     {
-        return $this->input('url', $name, $value, $options);
+        return $this->input('url', $name, $value, $attributes);
     }
 
     /**
      * Create a file input field.
      *
      * @param  string  $name
-     * @param  array   $options
+     * @param  array   $attributes
      *
      * @return \Illuminate\Support\HtmlString
      */
-    public function file($name, array $options = [])
+    public function file($name, array $attributes = [])
     {
-        return $this->input('file', $name, null, $options);
+        return File::make()->name($name)->attributes($attributes)->render();
     }
 
     /**
@@ -581,56 +579,19 @@ class FormBuilder extends Builder implements FormBuilderContract
      */
     public function textarea($name, $value = null, array $attributes = [])
     {
-        // Next we will look for the rows and cols attributes, as each of these are put
-        // on the textarea element definition. If they are not present, we will just
-        // assume some sane default values for these attributes for the developer.
-        $attributes = $this->setTextAreaSize($attributes);
-        $id      = $this->getIdAttribute($name, $attributes);
-        $value   = (string) $this->getValueAttribute($name, $value);
+        $id    = $this->getIdAttribute($name, $attributes);
+        $size  = Arr::pull($attributes, 'size');
+        $value = (string) $this->getValueAttribute($name, $value);
 
-        unset($attributes['size']);
-
-        return Elements\Textarea::make()
+        return Textarea::make()
             ->name($name)
             ->attributeUnless(is_null($id), 'id', $id)
+            ->unless(is_null($size), function (Textarea $elt) use ($size) {
+                return $elt->size($size);
+            })
             ->attributes($attributes)
             ->html($this->html->escape($value))
             ->render();
-    }
-
-    /**
-     * Set the text area size on the attributes.
-     *
-     * @param  array  $attributes
-     *
-     * @return array
-     */
-    private function setTextAreaSize(array $attributes)
-    {
-        if (isset($attributes['size']))
-            return $this->setQuickTextAreaSize($attributes);
-
-        // If the "size" attribute was not specified, we will just look for the regular
-        // columns and rows attributes, using sane defaults if these do not exist on
-        // the attributes array. We'll then return this entire options array back.
-        $cols = Arr::get($attributes, 'cols', 50);
-        $rows = Arr::get($attributes, 'rows', 10);
-
-        return array_merge($attributes, compact('cols', 'rows'));
-    }
-
-    /**
-     * Set the text area size using the quick "size" attribute.
-     *
-     * @param  array  $attributes
-     *
-     * @return array
-     */
-    protected function setQuickTextAreaSize(array $attributes)
-    {
-        list($cols, $rows) = explode('x', $attributes['size']);
-
-        return array_merge($attributes, compact('cols', 'rows'));
     }
 
     /**
@@ -653,20 +614,12 @@ class FormBuilder extends Builder implements FormBuilderContract
         array $optionsAttributes = [],
         array $optgroupsAttributes = []
     ) {
-
-        $select = Elements\Select::make()->name($name);
-
-        // When building a select box the "value" attribute is really the selected one
-        // so we will use that when checking the model or session for a value which
-        // should provide a convenient method of re-populating the forms on post.
-        $selected = $this->getValueAttribute($name, $selected);
-        $id       = $this->getIdAttribute($name, $attributes);
-
-        return $select
+        return Select::make()
+            ->name($name)
             ->options($list, $optionsAttributes, $optgroupsAttributes)
             ->attributes($attributes)
-            ->attributeUnless(is_null($id), 'id', $id)
-            ->value($selected)
+            ->attributeUnless(is_null($id = $this->getIdAttribute($name, $attributes)), 'id', $id)
+            ->value($this->getValueAttribute($name, $selected))
             ->render();
     }
 
@@ -746,13 +699,13 @@ class FormBuilder extends Builder implements FormBuilderContract
      * @param  string  $name
      * @param  mixed   $value
      * @param  bool    $checked
-     * @param  array   $options
+     * @param  array   $attributes
      *
      * @return \Illuminate\Support\HtmlString
      */
-    public function radio($name, $value = null, $checked = null, array $options = [])
+    public function radio($name, $value = null, $checked = null, array $attributes = [])
     {
-        return $this->checkable('radio', $name, $value ?: $name, $checked, $options);
+        return $this->checkable('radio', $name, $value ?: $name, $checked, $attributes);
     }
 
     /**
@@ -794,7 +747,7 @@ class FormBuilder extends Builder implements FormBuilderContract
      */
     public function submit($value = null, array $attributes = [])
     {
-        return $this->input('submit', null, $value, $attributes);
+        return Button::make()->type('submit')->html($value)->attributes($attributes)->render();
     }
 
     /**
@@ -807,7 +760,7 @@ class FormBuilder extends Builder implements FormBuilderContract
      */
     public function button($value = null, array $attributes = [])
     {
-        return Elements\Button::make()
+        return Button::make()
             ->type(Arr::pull($attributes, 'type', 'button'))
             ->attributes($attributes)
             ->html($value)

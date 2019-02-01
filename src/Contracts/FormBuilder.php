@@ -82,21 +82,21 @@ interface FormBuilder
     /**
      * Open up a new HTML form.
      *
-     * @param  array  $options
+     * @param  array  $attributes
      *
      * @return \Illuminate\Support\HtmlString
      */
-    public function open(array $options = []);
+    public function open(array $attributes = []);
 
     /**
      * Create a new model based form builder.
      *
      * @param  mixed  $model
-     * @param  array  $options
+     * @param  array  $attributes
      *
      * @return \Illuminate\Support\HtmlString
      */
-    public function model($model, array $options = []);
+    public function model($model, array $attributes = []);
 
     /**
      * Close the current form.
@@ -117,12 +117,12 @@ interface FormBuilder
      *
      * @param  string  $name
      * @param  string  $value
-     * @param  array   $options
+     * @param  array   $attributes
      * @param  bool    $escaped
      *
      * @return \Illuminate\Support\HtmlString
      */
-    public function label($name, $value = null, array $options = [], $escaped = true);
+    public function label($name, $value = null, array $attributes = [], $escaped = true);
 
     /**
      * Create a form input field.
@@ -184,76 +184,76 @@ interface FormBuilder
      *
      * @param  string  $name
      * @param  string  $value
-     * @param  array   $options
+     * @param  array   $attributes
      *
      * @return \Illuminate\Support\HtmlString
      */
-    public function tel($name, $value = null, array $options = []);
+    public function tel($name, $value = null, array $attributes = []);
 
     /**
      * Create a number input field.
      *
      * @param  string  $name
      * @param  string  $value
-     * @param  array   $options
+     * @param  array   $attributes
      *
      * @return \Illuminate\Support\HtmlString
      */
-    public function number($name, $value = null, array $options = []);
+    public function number($name, $value = null, array $attributes = []);
 
     /**
      * Create a date input field.
      *
      * @param  string  $name
      * @param  string  $value
-     * @param  array   $options
+     * @param  array   $attributes
      *
      * @return \Illuminate\Support\HtmlString
      */
-    public function date($name, $value = null, array $options = []);
+    public function date($name, $value = null, array $attributes = []);
 
     /**
      * Create a time input field.
      *
      * @param  string  $name
      * @param  string  $value
-     * @param  array   $options
+     * @param  array   $attributes
      *
      * @return \Illuminate\Support\HtmlString
      */
-    public function time($name, $value = null, array $options = []);
+    public function time($name, $value = null, array $attributes = []);
 
     /**
      * Create a url input field.
      *
      * @param  string  $name
      * @param  string  $value
-     * @param  array   $options
+     * @param  array   $attributes
      *
      * @return \Illuminate\Support\HtmlString
      */
-    public function url($name, $value = null, array $options = []);
+    public function url($name, $value = null, array $attributes = []);
 
     /**
      * Create a file input field.
      *
      * @param  string  $name
-     * @param  array   $options
+     * @param  array   $attributes
      *
      * @return \Illuminate\Support\HtmlString
      */
-    public function file($name, array $options = []);
+    public function file($name, array $attributes = []);
 
     /**
      * Create a textarea input field.
      *
      * @param  string  $name
      * @param  string  $value
-     * @param  array   $options
+     * @param  array   $attributes
      *
      * @return \Illuminate\Support\HtmlString
      */
-    public function textarea($name, $value = null, array $options = []);
+    public function textarea($name, $value = null, array $attributes = []);
 
     /**
      * Create a select box field.
@@ -283,11 +283,11 @@ interface FormBuilder
      * @param  string  $begin
      * @param  string  $end
      * @param  string  $selected
-     * @param  array   $options
+     * @param  array   $attributes
      *
      * @return \Illuminate\Support\HtmlString
      */
-    public function selectRange($name, $begin, $end, $selected = null, array $options = []);
+    public function selectRange($name, $begin, $end, $selected = null, array $attributes = []);
 
     /**
      * Create a select year field.
@@ -296,23 +296,23 @@ interface FormBuilder
      * @param  string  $begin
      * @param  string  $end
      * @param  string  $selected
-     * @param  array   $options
+     * @param  array   $attributes
      *
      * @return \Illuminate\Support\HtmlString
      */
-    public function selectYear($name, $begin, $end, $selected = null, array $options = []);
+    public function selectYear($name, $begin, $end, $selected = null, array $attributes = []);
 
     /**
      * Create a select month field.
      *
      * @param  string  $name
      * @param  string  $selected
-     * @param  array   $options
+     * @param  array   $attributes
      * @param  string  $format
      *
      * @return \Illuminate\Support\HtmlString
      */
-    public function selectMonth($name, $selected = null, array $options = [], $format = '%B');
+    public function selectMonth($name, $selected = null, array $attributes = [], $format = '%B');
 
     /**
      * Create a checkbox input field.
@@ -320,11 +320,11 @@ interface FormBuilder
      * @param  string     $name
      * @param  mixed      $value
      * @param  bool|null  $checked
-     * @param  array      $options
+     * @param  array      $attributes
      *
      * @return \Illuminate\Support\HtmlString
      */
-    public function checkbox($name, $value = 1, $checked = null, array $options = []);
+    public function checkbox($name, $value = 1, $checked = null, array $attributes = []);
 
     /**
      * Create a radio button input field.
@@ -332,11 +332,11 @@ interface FormBuilder
      * @param  string  $name
      * @param  mixed   $value
      * @param  bool    $checked
-     * @param  array   $options
+     * @param  array   $attributes
      *
      * @return \Illuminate\Support\HtmlString
      */
-    public function radio($name, $value = null, $checked = null, array $options = []);
+    public function radio($name, $value = null, $checked = null, array $attributes = []);
 
     /**
      * Create a HTML reset input element.
@@ -363,32 +363,32 @@ interface FormBuilder
      * Create a submit button element.
      *
      * @param  string  $value
-     * @param  array   $options
+     * @param  array   $attributes
      *
      * @return \Illuminate\Support\HtmlString
      */
-    public function submit($value = null, array $options = []);
+    public function submit($value = null, array $attributes = []);
 
     /**
      * Create a button element.
      *
      * @param  string  $value
-     * @param  array   $options
+     * @param  array   $attributes
      *
      * @return \Illuminate\Support\HtmlString
      */
-    public function button($value = null, array $options = []);
+    public function button($value = null, array $attributes = []);
 
     /**
      * Create a color input field.
      *
      * @param  string  $name
      * @param  string  $value
-     * @param  array   $options
+     * @param  array   $attributes
      *
      * @return \Illuminate\Support\HtmlString
      */
-    public function color($name, $value = null, array $options = []);
+    public function color($name, $value = null, array $attributes = []);
 
     /**
      * Get a value from the session's old input.

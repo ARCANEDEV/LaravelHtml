@@ -806,13 +806,13 @@ class FormBuilderTest extends TestCase
     {
         return [
             [
-                '<textarea name="foo" cols="50" rows="10"></textarea>',
+                '<textarea name="foo"></textarea>',
                 'foo', null, []
             ],[
                 '<textarea name="foo" cols="50" rows="10">foobar</textarea>',
-                'foo', 'foobar', []
+                'foo', 'foobar', ['cols' => 50, 'rows' => 10]
             ],[
-                '<textarea name="foo" class="form-control" cols="50" rows="10"></textarea>',
+                '<textarea name="foo" class="form-control"></textarea>',
                 'foo', null, ['class' => 'form-control']
             ],[
                 '<textarea name="foo" cols="60" rows="15"></textarea>',
@@ -1413,12 +1413,12 @@ class FormBuilderTest extends TestCase
     public function it_can_make_submit_inputs()
     {
         static::assertEquals(
-            '<input type="submit" value="foo">',
+            '<button type="submit">foo</button>',
             $this->form->submit('foo')->toHtml()
         );
 
         static::assertEquals(
-            '<input type="submit" value="foo" class="form-control">',
+            '<button type="submit" class="form-control">foo</button>',
             $this->form->submit('foo', ['class' => 'form-control'])->toHtml()
         );
     }
