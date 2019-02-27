@@ -23,15 +23,16 @@ class HtmlServiceProviderTest extends TestCase
      | -----------------------------------------------------------------
      */
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
         $this->app->loadDeferredProviders();
+
         $this->provider = $this->app->getProvider(HtmlServiceProvider::class);
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         unset($this->provider);
 
