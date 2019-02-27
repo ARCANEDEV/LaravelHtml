@@ -1445,8 +1445,8 @@ class FormBuilderTest extends TestCase
     /** @test */
     public function it_can_make_reset_inputs()
     {
-        static::assertEquals(
-            '<input type="reset" value="foo">',
+        static::assertHtmlStringEqualsHtmlString(
+            '<button type="reset">foo</button>',
             $this->form->reset('foo')->toHtml()
         );
     }
@@ -1456,7 +1456,7 @@ class FormBuilderTest extends TestCase
     {
         $url = 'http://laravel.com/';
 
-        static::assertEquals(
+        static::assertHtmlStringEqualsHtmlString(
             '<input type="image" src="'. $url .'">',
             $this->form->image($url)->toHtml()
         );

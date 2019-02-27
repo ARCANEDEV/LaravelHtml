@@ -286,7 +286,7 @@ class FormBuilder extends Builder implements FormBuilderContract
      */
     public function open(array $attributes = [])
     {
-        $method = strtoupper(Arr::pull($attributes, 'method', 'POST'));
+        $method = Str::upper(Arr::pull($attributes, 'method', 'POST'));
 
         return Form::make()
             ->method($method !== 'GET' ? 'POST' : $method)
@@ -336,7 +336,7 @@ class FormBuilder extends Builder implements FormBuilderContract
     /**
      * Generate a hidden field with the current CSRF token.
      *
-     * @return \Illuminate\Support\HtmlString
+     * @return \Arcanedev\Html\Elements\Input
      */
     public function token()
     {
@@ -354,7 +354,7 @@ class FormBuilder extends Builder implements FormBuilderContract
      * @param  array         $attributes
      * @param  bool          $escaped
      *
-     * @return \Illuminate\Support\HtmlString
+     * @return \Arcanedev\Html\Elements\Label
      */
     public function label($name, $value = null, array $attributes = [], $escaped = true)
     {
@@ -365,8 +365,7 @@ class FormBuilder extends Builder implements FormBuilderContract
         return Label::make()
             ->for($name)
             ->attributes($attributes)
-            ->html($escaped ? e($value) : $value)
-            ->render();
+            ->html($escaped ? e($value) : $value);
     }
 
     /**
@@ -377,7 +376,7 @@ class FormBuilder extends Builder implements FormBuilderContract
      * @param  string|mixed  $value
      * @param  array         $attributes
      *
-     * @return \Illuminate\Support\HtmlString
+     * @return \Arcanedev\Html\Elements\Input
      */
     public function input($type, $name, $value = null, array $attributes = [])
     {
@@ -389,8 +388,7 @@ class FormBuilder extends Builder implements FormBuilderContract
             ->attributeUnless(is_null($name), 'name', $name)
             ->attributeUnless(is_null($id = $this->getIdAttribute($name, $attributes)), 'id', $id)
             ->attributeUnless(is_null($value) || empty($value), 'value', $value)
-            ->attributes($attributes)
-            ->render();
+            ->attributes($attributes);
     }
 
     /**
@@ -400,7 +398,7 @@ class FormBuilder extends Builder implements FormBuilderContract
      * @param  string|mixed  $value
      * @param  array         $attributes
      *
-     * @return \Illuminate\Support\HtmlString
+     * @return \Arcanedev\Html\Elements\Input
      */
     public function text($name, $value = null, array $attributes = [])
     {
@@ -413,7 +411,7 @@ class FormBuilder extends Builder implements FormBuilderContract
      * @param  string  $name
      * @param  array   $attributes
      *
-     * @return \Illuminate\Support\HtmlString
+     * @return \Arcanedev\Html\Elements\Input
      */
     public function password($name, array $attributes = [])
     {
@@ -427,7 +425,7 @@ class FormBuilder extends Builder implements FormBuilderContract
      * @param  string|mixed  $value
      * @param  array         $attributes
      *
-     * @return \Illuminate\Support\HtmlString
+     * @return \Arcanedev\Html\Elements\Input
      */
     public function hidden($name, $value = null, array $attributes = [])
     {
@@ -441,7 +439,7 @@ class FormBuilder extends Builder implements FormBuilderContract
      * @param  string|mixed  $value
      * @param  array         $attributes
      *
-     * @return \Illuminate\Support\HtmlString
+     * @return \Arcanedev\Html\Elements\Input
      */
     public function email($name, $value = null, array $attributes = [])
     {
@@ -455,7 +453,7 @@ class FormBuilder extends Builder implements FormBuilderContract
      * @param  string|mixed  $value
      * @param  array         $attributes
      *
-     * @return \Illuminate\Support\HtmlString
+     * @return \Arcanedev\Html\Elements\Input
      */
     public function tel($name, $value = null, array $attributes = [])
     {
@@ -469,7 +467,7 @@ class FormBuilder extends Builder implements FormBuilderContract
      * @param  string|mixed  $value
      * @param  array         $attributes
      *
-     * @return \Illuminate\Support\HtmlString
+     * @return \Arcanedev\Html\Elements\Input
      */
     public function number($name, $value = null, array $attributes = [])
     {
@@ -483,7 +481,7 @@ class FormBuilder extends Builder implements FormBuilderContract
      * @param  string  $value
      * @param  array   $attributes
      *
-     * @return \Illuminate\Support\HtmlString
+     * @return \Arcanedev\Html\Elements\Input
      */
     public function date($name, $value = null, array $attributes = [])
     {
@@ -500,7 +498,7 @@ class FormBuilder extends Builder implements FormBuilderContract
      * @param  string|mixed  $value
      * @param  array         $attributes
      *
-     * @return \Illuminate\Support\HtmlString
+     * @return \Arcanedev\Html\Elements\Input
      */
     public function datetime($name, $value = null, array $attributes = [])
     {
@@ -517,7 +515,7 @@ class FormBuilder extends Builder implements FormBuilderContract
      * @param  string|mixed  $value
      * @param  array         $attributes
      *
-     * @return \Illuminate\Support\HtmlString
+     * @return \Arcanedev\Html\Elements\Input
      */
     public function datetimeLocal($name, $value = null, array $attributes = [])
     {
@@ -534,7 +532,7 @@ class FormBuilder extends Builder implements FormBuilderContract
      * @param  string|mixed  $value
      * @param  array         $attributes
      *
-     * @return \Illuminate\Support\HtmlString
+     * @return \Arcanedev\Html\Elements\Input
      */
     public function time($name, $value = null, array $attributes = [])
     {
@@ -548,7 +546,7 @@ class FormBuilder extends Builder implements FormBuilderContract
      * @param  string  $value
      * @param  array   $attributes
      *
-     * @return \Illuminate\Support\HtmlString
+     * @return \Arcanedev\Html\Elements\Input
      */
     public function url($name, $value = null, array $attributes = [])
     {
@@ -561,11 +559,11 @@ class FormBuilder extends Builder implements FormBuilderContract
      * @param  string  $name
      * @param  array   $attributes
      *
-     * @return \Illuminate\Support\HtmlString
+     * @return \Arcanedev\Html\Elements\File
      */
     public function file($name, array $attributes = [])
     {
-        return File::make()->name($name)->attributes($attributes)->render();
+        return File::make()->name($name)->attributes($attributes);
     }
 
     /**
@@ -575,7 +573,7 @@ class FormBuilder extends Builder implements FormBuilderContract
      * @param  string  $value
      * @param  array   $attributes
      *
-     * @return \Illuminate\Support\HtmlString
+     * @return \Arcanedev\Html\Elements\Textarea
      */
     public function textarea($name, $value = null, array $attributes = [])
     {
@@ -590,8 +588,7 @@ class FormBuilder extends Builder implements FormBuilderContract
                 return $elt->size($size);
             })
             ->attributes($attributes)
-            ->html($this->html->escape($value))
-            ->render();
+            ->html($this->html->escape($value));
     }
 
     /**
@@ -604,7 +601,7 @@ class FormBuilder extends Builder implements FormBuilderContract
      * @param  array                                 $optionsAttributes
      * @param  array                                 $optgroupsAttributes
      *
-     * @return \Illuminate\Support\HtmlString
+     * @return \Arcanedev\Html\Elements\Select
      */
     public function select(
         $name,
@@ -619,8 +616,7 @@ class FormBuilder extends Builder implements FormBuilderContract
             ->options($list, $optionsAttributes, $optgroupsAttributes)
             ->attributes($attributes)
             ->attributeUnless(is_null($id = $this->getIdAttribute($name, $attributes)), 'id', $id)
-            ->value($this->getValueAttribute($name, $selected))
-            ->render();
+            ->value($this->getValueAttribute($name, $selected));
     }
 
     /**
@@ -632,7 +628,7 @@ class FormBuilder extends Builder implements FormBuilderContract
      * @param  string  $selected
      * @param  array   $attributes
      *
-     * @return \Illuminate\Support\HtmlString
+     * @return \Arcanedev\Html\Elements\Select
      */
     public function selectRange($name, $begin, $end, $selected = null, array $attributes = [])
     {
@@ -650,7 +646,7 @@ class FormBuilder extends Builder implements FormBuilderContract
      * @param  string  $selected
      * @param  array   $attributes
      *
-     * @return \Illuminate\Support\HtmlString
+     * @return \Arcanedev\Html\Elements\Select
      */
     public function selectYear($name, $begin, $end, $selected = null, array $attributes = [])
     {
@@ -665,7 +661,7 @@ class FormBuilder extends Builder implements FormBuilderContract
      * @param  array   $attributes
      * @param  string  $format
      *
-     * @return \Illuminate\Support\HtmlString
+     * @return \Arcanedev\Html\Elements\Select
      */
     public function selectMonth($name, $selected = null, array $attributes = [], $format = '%B')
     {
@@ -686,7 +682,7 @@ class FormBuilder extends Builder implements FormBuilderContract
      * @param  bool|null  $checked
      * @param  array      $attributes
      *
-     * @return \Illuminate\Support\HtmlString
+     * @return \Arcanedev\Html\Elements\Input
      */
     public function checkbox($name, $value = 1, $checked = null, array $attributes = [])
     {
@@ -701,7 +697,7 @@ class FormBuilder extends Builder implements FormBuilderContract
      * @param  bool    $checked
      * @param  array   $attributes
      *
-     * @return \Illuminate\Support\HtmlString
+     * @return \Arcanedev\Html\Elements\Input
      */
     public function radio($name, $value = null, $checked = null, array $attributes = [])
     {
@@ -714,11 +710,11 @@ class FormBuilder extends Builder implements FormBuilderContract
      * @param  string|mixed  $value
      * @param  array         $attributes
      *
-     * @return \Illuminate\Support\HtmlString
+     * @return \Arcanedev\Html\Elements\Button
      */
     public function reset($value, array $attributes = [])
     {
-        return $this->input('reset', null, $value, $attributes);
+        return $this->button($value, array_merge(['type' => 'reset'], $attributes));
     }
 
     /**
@@ -728,7 +724,7 @@ class FormBuilder extends Builder implements FormBuilderContract
     * @param  string|null  $name
     * @param  array        $attributes
     *
-     * @return \Illuminate\Support\HtmlString
+     * @return \Arcanedev\Html\Elements\Input
     */
     public function image($url, $name = null, array $attributes = [])
     {
@@ -743,11 +739,11 @@ class FormBuilder extends Builder implements FormBuilderContract
      * @param  string|mixed  $value
      * @param  array         $attributes
      *
-     * @return \Illuminate\Support\HtmlString
+     * @return \Arcanedev\Html\Elements\Button
      */
     public function submit($value = null, array $attributes = [])
     {
-        return Button::make()->type('submit')->html($value)->attributes($attributes)->render();
+        return $this->button($value, array_merge(['type' => 'submit'], $attributes));
     }
 
     /**
@@ -756,15 +752,14 @@ class FormBuilder extends Builder implements FormBuilderContract
      * @param  string|mixed  $value
      * @param  array         $attributes
      *
-     * @return \Illuminate\Support\HtmlString
+     * @return \Arcanedev\Html\Elements\Button
      */
     public function button($value = null, array $attributes = [])
     {
         return Button::make()
             ->type(Arr::pull($attributes, 'type', 'button'))
             ->attributes($attributes)
-            ->html($value)
-            ->render();
+            ->html($value);
     }
 
     /**
@@ -774,7 +769,7 @@ class FormBuilder extends Builder implements FormBuilderContract
      * @param  string|mixed  $value
      * @param  array         $attributes
      *
-     * @return \Illuminate\Support\HtmlString
+     * @return \Arcanedev\Html\Elements\Input
      */
     public function color($name, $value = null, array $attributes = [])
     {
@@ -795,7 +790,7 @@ class FormBuilder extends Builder implements FormBuilderContract
      * @param  bool|null  $checked
      * @param  array      $attributes
      *
-     * @return \Illuminate\Support\HtmlString
+     * @return \Arcanedev\Html\Elements\Input
      */
     protected function checkable($type, $name, $value, $checked, array $attributes)
     {

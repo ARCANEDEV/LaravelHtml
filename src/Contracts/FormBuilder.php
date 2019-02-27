@@ -108,7 +108,7 @@ interface FormBuilder
     /**
      * Generate a hidden field with the current CSRF token.
      *
-     * @return \Illuminate\Support\HtmlString
+     * @return \Arcanedev\Html\Elements\Input
      */
     public function token();
 
@@ -120,7 +120,7 @@ interface FormBuilder
      * @param  array   $attributes
      * @param  bool    $escaped
      *
-     * @return \Illuminate\Support\HtmlString
+     * @return \Arcanedev\Html\Elements\Label
      */
     public function label($name, $value = null, array $attributes = [], $escaped = true);
 
@@ -132,7 +132,7 @@ interface FormBuilder
      * @param  string|mixed  $value
      * @param  array         $attributes
      *
-     * @return \Illuminate\Support\HtmlString
+     * @return \Arcanedev\Html\Elements\Input
      */
     public function input($type, $name, $value = null, array $attributes = []);
 
@@ -143,7 +143,7 @@ interface FormBuilder
      * @param  string|mixed  $value
      * @param  array         $attributes
      *
-     * @return \Illuminate\Support\HtmlString
+     * @return \Arcanedev\Html\Elements\Input
      */
     public function text($name, $value = null, array $attributes = []);
 
@@ -153,7 +153,7 @@ interface FormBuilder
      * @param  string  $name
      * @param  array   $attributes
      *
-     * @return \Illuminate\Support\HtmlString
+     * @return \Arcanedev\Html\Elements\Input
      */
     public function password($name, array $attributes = []);
 
@@ -164,7 +164,7 @@ interface FormBuilder
      * @param  string  $value
      * @param  array   $attributes
      *
-     * @return \Illuminate\Support\HtmlString
+     * @return \Arcanedev\Html\Elements\Input
      */
     public function hidden($name, $value = null, array $attributes = []);
 
@@ -175,7 +175,7 @@ interface FormBuilder
      * @param  string  $value
      * @param  array   $attributes
      *
-     * @return \Illuminate\Support\HtmlString
+     * @return \Arcanedev\Html\Elements\Input
      */
     public function email($name, $value = null, array $attributes = []);
 
@@ -186,7 +186,7 @@ interface FormBuilder
      * @param  string  $value
      * @param  array   $attributes
      *
-     * @return \Illuminate\Support\HtmlString
+     * @return \Arcanedev\Html\Elements\Input
      */
     public function tel($name, $value = null, array $attributes = []);
 
@@ -197,7 +197,7 @@ interface FormBuilder
      * @param  string  $value
      * @param  array   $attributes
      *
-     * @return \Illuminate\Support\HtmlString
+     * @return \Arcanedev\Html\Elements\Input
      */
     public function number($name, $value = null, array $attributes = []);
 
@@ -208,7 +208,7 @@ interface FormBuilder
      * @param  string  $value
      * @param  array   $attributes
      *
-     * @return \Illuminate\Support\HtmlString
+     * @return \Arcanedev\Html\Elements\Input
      */
     public function date($name, $value = null, array $attributes = []);
 
@@ -219,7 +219,7 @@ interface FormBuilder
      * @param  string  $value
      * @param  array   $attributes
      *
-     * @return \Illuminate\Support\HtmlString
+     * @return \Arcanedev\Html\Elements\Input
      */
     public function time($name, $value = null, array $attributes = []);
 
@@ -230,7 +230,7 @@ interface FormBuilder
      * @param  string  $value
      * @param  array   $attributes
      *
-     * @return \Illuminate\Support\HtmlString
+     * @return \Arcanedev\Html\Elements\Input
      */
     public function url($name, $value = null, array $attributes = []);
 
@@ -240,7 +240,7 @@ interface FormBuilder
      * @param  string  $name
      * @param  array   $attributes
      *
-     * @return \Illuminate\Support\HtmlString
+     * @return \Arcanedev\Html\Elements\File
      */
     public function file($name, array $attributes = []);
 
@@ -251,7 +251,7 @@ interface FormBuilder
      * @param  string  $value
      * @param  array   $attributes
      *
-     * @return \Illuminate\Support\HtmlString
+     * @return \Arcanedev\Html\Elements\Textarea
      */
     public function textarea($name, $value = null, array $attributes = []);
 
@@ -265,15 +265,11 @@ interface FormBuilder
      * @param  array                                 $optionsAttributes
      * @param  array                                 $optgroupsAttributes
      *
-     * @return \Illuminate\Support\HtmlString
+     * @return \Arcanedev\Html\Elements\Select
      */
     public function select(
-        $name,
-        $list = [],
-        $selected = null,
-        array $attributes = [],
-        array $optionsAttributes = [],
-        array $optgroupsAttributes = []
+        $name, $list = [], $selected = null,
+        array $attributes = [], array $optionsAttributes = [], array $optgroupsAttributes = []
     );
 
     /**
@@ -285,7 +281,7 @@ interface FormBuilder
      * @param  string  $selected
      * @param  array   $attributes
      *
-     * @return \Illuminate\Support\HtmlString
+     * @return \Arcanedev\Html\Elements\Select
      */
     public function selectRange($name, $begin, $end, $selected = null, array $attributes = []);
 
@@ -298,7 +294,7 @@ interface FormBuilder
      * @param  string  $selected
      * @param  array   $attributes
      *
-     * @return \Illuminate\Support\HtmlString
+     * @return \Arcanedev\Html\Elements\Select
      */
     public function selectYear($name, $begin, $end, $selected = null, array $attributes = []);
 
@@ -310,7 +306,7 @@ interface FormBuilder
      * @param  array   $attributes
      * @param  string  $format
      *
-     * @return \Illuminate\Support\HtmlString
+     * @return \Arcanedev\Html\Elements\Select
      */
     public function selectMonth($name, $selected = null, array $attributes = [], $format = '%B');
 
@@ -322,7 +318,7 @@ interface FormBuilder
      * @param  bool|null  $checked
      * @param  array      $attributes
      *
-     * @return \Illuminate\Support\HtmlString
+     * @return \Arcanedev\Html\Elements\Input
      */
     public function checkbox($name, $value = 1, $checked = null, array $attributes = []);
 
@@ -334,7 +330,7 @@ interface FormBuilder
      * @param  bool    $checked
      * @param  array   $attributes
      *
-     * @return \Illuminate\Support\HtmlString
+     * @return \Arcanedev\Html\Elements\Input
      */
     public function radio($name, $value = null, $checked = null, array $attributes = []);
 
@@ -344,7 +340,7 @@ interface FormBuilder
      * @param  string  $value
      * @param  array   $attributes
      *
-     * @return \Illuminate\Support\HtmlString
+     * @return \Arcanedev\Html\Elements\Button
      */
     public function reset($value, array $attributes = []);
 
@@ -355,7 +351,7 @@ interface FormBuilder
      * @param  string|null  $name
      * @param  array        $attributes
      *
-     * @return \Illuminate\Support\HtmlString
+     * @return \Arcanedev\Html\Elements\Input
      */
     public function image($url, $name = null, array $attributes = []);
 
@@ -365,7 +361,7 @@ interface FormBuilder
      * @param  string  $value
      * @param  array   $attributes
      *
-     * @return \Illuminate\Support\HtmlString
+     * @return \Arcanedev\Html\Elements\Button
      */
     public function submit($value = null, array $attributes = []);
 
@@ -375,7 +371,7 @@ interface FormBuilder
      * @param  string  $value
      * @param  array   $attributes
      *
-     * @return \Illuminate\Support\HtmlString
+     * @return \Arcanedev\Html\Elements\Button
      */
     public function button($value = null, array $attributes = []);
 
@@ -386,7 +382,7 @@ interface FormBuilder
      * @param  string  $value
      * @param  array   $attributes
      *
-     * @return \Illuminate\Support\HtmlString
+     * @return \Arcanedev\Html\Elements\Input
      */
     public function color($name, $value = null, array $attributes = []);
 
