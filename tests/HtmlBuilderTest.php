@@ -29,7 +29,6 @@ class HtmlBuilderTest extends TestCase
         $result = 'Un &#039;apostrophe&#039; en &lt;strong&gt;gras&lt;/strong&gt;';
 
         static::assertEquals($result, $this->html->entities($value));
-
     }
 
     /** @test */
@@ -233,21 +232,21 @@ class HtmlBuilderTest extends TestCase
         $mailto = $this->html->mailto($email)->toHtml();
 
         static::assertStringStartsWith('<a href="', $mailto);
-        static::assertContains('&#', $mailto);
+        static::assertStringContainsString('&#', $mailto);
         static::assertStringEndsWith('</a>', $mailto);
 
         $name   = 'John DOE';
         $mailto = $this->html->mailto($email, $name)->toHtml();
 
         static::assertStringStartsWith('<a href="', $mailto);
-        static::assertContains('&#', $mailto);
+        static::assertStringContainsString('&#', $mailto);
         static::assertStringEndsWith($name . '</a>', $mailto);
 
         $name   = '<span>John DOE</span>';
         $mailto = $this->html->mailto($email, $name, ['class' => 'mailto-link'], false)->toHtml();
 
         static::assertStringStartsWith('<a href="', $mailto);
-        static::assertContains('&#', $mailto);
+        static::assertStringContainsString('&#', $mailto);
         static::assertStringEndsWith($name . '</a>', $mailto);
     }
 
@@ -436,14 +435,12 @@ class HtmlBuilderTest extends TestCase
         static::assertTrue($this->html->hasComponent('tweet'));
     }
 
-    /**
-     * @test
-     *
-     * @expectedException         \BadMethodCallException
-     * @expectedExceptionMessage  Method Arcanedev\LaravelHtml\HtmlBuilder::btnSuccess does not exist.
-     */
+    /** @test */
     public function it_must_throw_bad_method_call_exception_on_component()
     {
+        $this->expectException(\BadMethodCallException::class);
+        $this->expectExceptionMessage('Method Arcanedev\LaravelHtml\HtmlBuilder::btnSuccess does not exist.');
+
         $this->html->btnSuccess('Hello');
     }
 

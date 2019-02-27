@@ -30,7 +30,7 @@ class FormBuilderTest extends TestCase
     /**
      * Setup the test environment.
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -48,7 +48,7 @@ class FormBuilderTest extends TestCase
     /**
      * Destroy the test environment.
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         unset($this->form);
 
@@ -1070,8 +1070,8 @@ class FormBuilderTest extends TestCase
         $range = $this->form->selectRange('dob', 1900, 2013, 2000)->toHtml();
 
         static::assertStringStartsWith('<select name="dob"><option value="1900">1900</option>', $range);
-        static::assertContains('<option value="2000" selected>2000</option>', $range);
-        static::assertContains('<option value="2013">2013</option>', $range);
+        static::assertStringContainsString('<option value="2000" selected>2000</option>', $range);
+        static::assertStringContainsString('<option value="2013">2013</option>', $range);
     }
 
     /** @test */

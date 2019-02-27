@@ -38,7 +38,7 @@ abstract class TestCase extends BaseTestCase
      | -----------------------------------------------------------------
      */
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -48,7 +48,7 @@ abstract class TestCase extends BaseTestCase
         $this->html         = new HtmlBuilder($this->urlGenerator);
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         unset($this->urlGenerator);
         unset($this->html);
