@@ -1,6 +1,7 @@
 <?php namespace Arcanedev\LaravelHtml;
 
-use Arcanedev\Support\ServiceProvider;
+use Arcanedev\Support\Providers\ServiceProvider;
+use Illuminate\Contracts\Support\DeferrableProvider;
 
 /**
  * Class     HtmlServiceProvider
@@ -8,20 +9,8 @@ use Arcanedev\Support\ServiceProvider;
  * @package  Arcanedev\LaravelHtml
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
-class HtmlServiceProvider extends ServiceProvider
+class HtmlServiceProvider extends ServiceProvider implements DeferrableProvider
 {
-    /* -----------------------------------------------------------------
-     |  Properties
-     | -----------------------------------------------------------------
-     */
-
-    /**
-     * Indicates if loading of the provider is deferred.
-     *
-     * @var bool
-     */
-    protected $defer = true;
-
     /* -----------------------------------------------------------------
      |  Main Methods
      | -----------------------------------------------------------------
@@ -30,12 +19,12 @@ class HtmlServiceProvider extends ServiceProvider
     /**
      * Register the service provider.
      */
-    public function register()
+    public function register(): void
     {
         parent::register();
 
-        $this->registerHtmlBuilder();
-        $this->registerFormBuilder();
+        $this->singleton(Contracts\HtmlBuilder::class, HtmlBuilder::class);
+        $this->singleton(Contracts\FormBuilder::class, FormBuilder::class);
     }
 
     /**
@@ -43,34 +32,11 @@ class HtmlServiceProvider extends ServiceProvider
      *
      * @return array
      */
-    public function provides()
+    public function provides(): array
     {
         return [
-            HtmlBuilder::class,
             Contracts\HtmlBuilder::class,
-            FormBuilder::class,
             Contracts\FormBuilder::class,
         ];
-    }
-
-    /* -----------------------------------------------------------------
-     |  Other Methods
-     | -----------------------------------------------------------------
-     */
-
-    /**
-     * Register the HTML builder.
-     */
-    protected function registerHtmlBuilder()
-    {
-        $this->singleton(Contracts\HtmlBuilder::class, HtmlBuilder::class);
-    }
-
-    /**
-     * Register the form builder.
-     */
-    protected function registerFormBuilder()
-    {
-        $this->singleton(Contracts\FormBuilder::class, FormBuilder::class);
     }
 }

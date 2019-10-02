@@ -49,7 +49,7 @@ class HtmlServiceProviderTest extends TestCase
     {
         $expectations = [
             \Illuminate\Support\ServiceProvider::class,
-            \Arcanedev\Support\ServiceProvider::class,
+            \Arcanedev\Support\Providers\ServiceProvider::class,
             HtmlServiceProvider::class,
         ];
 
@@ -62,9 +62,7 @@ class HtmlServiceProviderTest extends TestCase
     public function it_can_get_provides()
     {
         $expected = [
-            \Arcanedev\LaravelHtml\HtmlBuilder::class,
             \Arcanedev\LaravelHtml\Contracts\HtmlBuilder::class,
-            \Arcanedev\LaravelHtml\FormBuilder::class,
             \Arcanedev\LaravelHtml\Contracts\FormBuilder::class,
         ];
 
