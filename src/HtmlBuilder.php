@@ -2,7 +2,6 @@
 
 use Arcanedev\Html\Elements;
 use Arcanedev\Html\Entities\Attributes;
-use Arcanedev\LaravelHtml\Bases\Builder;
 use Arcanedev\LaravelHtml\Contracts\HtmlBuilder as HtmlBuilderContract;
 use Illuminate\Contracts\Routing\UrlGenerator;
 
@@ -12,7 +11,7 @@ use Illuminate\Contracts\Routing\UrlGenerator;
  * @package  Arcanedev\LaravelHtml
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
-class HtmlBuilder extends Builder implements HtmlBuilderContract
+class HtmlBuilder extends AbstractBuilder implements HtmlBuilderContract
 {
     /* -----------------------------------------------------------------
      |  Properties

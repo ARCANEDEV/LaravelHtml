@@ -1,17 +1,16 @@
-<?php namespace Arcanedev\LaravelHtml\Bases;
+<?php namespace Arcanedev\LaravelHtml;
 
 use Arcanedev\LaravelHtml\Traits\Componentable;
 use BadMethodCallException;
-use Illuminate\Support\HtmlString;
 use Illuminate\Support\Traits\Macroable;
 
 /**
- * Class     Builder
+ * Class     AbstractBuilder
  *
- * @package  Arcanedev\LaravelHtml\Bases
+ * @package  Arcanedev\LaravelHtml
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
-abstract class Builder
+abstract class AbstractBuilder
 {
     /* -----------------------------------------------------------------
      |  Traits
