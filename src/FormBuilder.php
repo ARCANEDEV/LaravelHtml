@@ -3,7 +3,6 @@
 use Arcanedev\Html\Elements\{
     Button, File, Form, Input, Label, Select, Textarea
 };
-use Arcanedev\LaravelHtml\Bases\Builder;
 use Arcanedev\LaravelHtml\Contracts\FormBuilder as FormBuilderContract;
 use DateTime;
 use Illuminate\Contracts\Routing\UrlGenerator;
@@ -18,7 +17,7 @@ use Illuminate\Support\{
  * @package  Arcanedev\LaravelHtml
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
-class FormBuilder extends Builder implements FormBuilderContract
+class FormBuilder extends AbstractBuilder implements FormBuilderContract
 {
     /* -----------------------------------------------------------------
      |  Properties
