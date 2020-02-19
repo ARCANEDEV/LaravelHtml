@@ -1,4 +1,8 @@
-<?php namespace Arcanedev\LaravelHtml\Traits;
+<?php
+
+declare(strict_types=1);
+
+namespace Arcanedev\LaravelHtml\Traits;
 
 use Illuminate\Support\Str;
 use ReflectionClass;
@@ -36,7 +40,7 @@ trait FormAccessible
      *
      * @return mixed
      */
-    public function getFormValue($key)
+    public function getFormValue(string $key)
     {
         $value = $this->getAttributeFromArray($key);
 
@@ -90,7 +94,7 @@ trait FormAccessible
      *
      * @return bool
      */
-    protected function hasFormMutator($key)
+    protected function hasFormMutator(string $key): bool
     {
         $methods  = $this->getReflection()->getMethods(ReflectionMethod::IS_PUBLIC);
 
@@ -107,7 +111,7 @@ trait FormAccessible
      *
      * @return mixed
      */
-    private function mutateFormAttribute($key, $value)
+    private function mutateFormAttribute(string $key, $value)
     {
         return $this->{$this->getMutateFromMethodName($key)}($value);
     }
@@ -119,7 +123,7 @@ trait FormAccessible
      *
      * @return string
      */
-    private function getMutateFromMethodName($key)
+    private function getMutateFromMethodName(string $key): string
     {
         return 'form'.Str::studly($key).'Attribute';
     }
@@ -128,10 +132,8 @@ trait FormAccessible
      * Get a ReflectionClass Instance.
      *
      * @return \ReflectionClass
-     *
-     * @throws \ReflectionException
      */
-    protected function getReflection()
+    protected function getReflection(): ReflectionClass
     {
         if (is_null($this->reflection)) {
             $this->reflection = new ReflectionClass($this);

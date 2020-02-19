@@ -1,4 +1,8 @@
-<?php namespace Arcanedev\LaravelHtml\Helpers;
+<?php
+
+declare(strict_types=1);
+
+namespace Arcanedev\LaravelHtml\Helpers;
 
 /**
  * Class     Obfuscater
@@ -20,7 +24,7 @@ class Obfuscater
      *
      * @return string
      */
-    public static function make($value)
+    public static function make(string $value): string
     {
         $safe = '';
 
@@ -45,7 +49,7 @@ class Obfuscater
      * @param  string  $letter
      * @param  string  $safe
      */
-    private static function makeSafer(&$safe, $letter)
+    private static function makeSafer(string &$safe, string $letter)
     {
         // To properly obfuscate the value, we will randomly convert each letter to
         // its entity or hexadecimal representation, keeping a bot from sniffing

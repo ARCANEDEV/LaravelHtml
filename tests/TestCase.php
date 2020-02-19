@@ -1,10 +1,15 @@
-<?php namespace Arcanedev\LaravelHtml\Tests;
+<?php
 
+declare(strict_types=1);
+
+namespace Arcanedev\LaravelHtml\Tests;
+
+use Arcanedev\LaravelHtml\Contracts\FormBuilder as FormBuilderContract;
+use Arcanedev\LaravelHtml\FormBuilder;
 use Arcanedev\LaravelHtml\HtmlBuilder;
 use Arcanedev\LaravelHtml\Tests\Concerns\AssertsHtmlStrings;
 use Illuminate\Http\Request;
-use Illuminate\Routing\Router;
-use Illuminate\Routing\UrlGenerator;
+use Illuminate\Routing\{Router, UrlGenerator};
 use Orchestra\Testbench\TestCase as BaseTestCase;
 
 /**
@@ -43,6 +48,7 @@ abstract class TestCase extends BaseTestCase
         parent::setUp();
 
         $this->app->loadDeferredProviders();
+
         $router             = $this->registerRoutes();
         $this->urlGenerator = new UrlGenerator($router->getRoutes(), Request::create('/foo', 'GET'));
         $this->html         = new HtmlBuilder($this->urlGenerator);
@@ -63,25 +69,10 @@ abstract class TestCase extends BaseTestCase
      *
      * @return array
      */
-    protected function getPackageProviders($app)
+    protected function getPackageProviders($app): array
     {
         return [
             \Arcanedev\LaravelHtml\HtmlServiceProvider::class,
-        ];
-    }
-
-    /**
-     * Get package aliases.
-     *
-     * @param  \Illuminate\Foundation\Application  $app
-     *
-     * @return array
-     */
-    protected function getPackageAliases($app)
-    {
-        return [
-            'Form'  => \Arcanedev\LaravelHtml\Facades\Form::class,
-            'Html'  => \Arcanedev\LaravelHtml\Facades\Html::class,
         ];
     }
 
@@ -109,9 +100,26 @@ abstract class TestCase extends BaseTestCase
     /**
      * Migrate the database.
      */
-    protected function migrate()
+    protected function migrate(): void
     {
         $this->loadMigrationsFrom(__DIR__.'/fixtures/migrations');
+    }
+
+    /**
+     * Get the form builder.
+     *
+     * @return \Arcanedev\LaravelHtml\Contracts\FormBuilder
+     */
+    protected function getFormBuilder(): FormBuilderContract
+    {
+        return new FormBuilder(
+            $this->html,
+            $this->urlGenerator,
+            tap($this->app['session.store'], function ($session) {
+                /** @var  \Illuminate\Contracts\Session\Session   $session */
+                $session->put('_token', 'abc');
+            })
+        );
     }
 
     /**
@@ -158,7 +166,7 @@ abstract class TestCase extends BaseTestCase
      *
      * @return array
      */
-    protected function getInputData($type, $value = 'bar', array $merge = [])
+    protected function getInputData(string $type, $value = 'bar', array $merge = [])
     {
         return array_merge([
             [

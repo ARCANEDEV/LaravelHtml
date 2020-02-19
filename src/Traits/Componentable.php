@@ -1,4 +1,8 @@
-<?php namespace Arcanedev\LaravelHtml\Traits;
+<?php
+
+declare(strict_types=1);
+
+namespace Arcanedev\LaravelHtml\Traits;
 
 use BadMethodCallException;
 use Illuminate\Support\Arr;
@@ -36,7 +40,7 @@ trait Componentable
      * @param  string  $view
      * @param  array   $signature
      */
-    public static function component($name, $view, array $signature)
+    public static function component(string $name, string $view, array $signature)
     {
         static::$components[$name] = compact('view', 'signature');
     }
@@ -48,7 +52,7 @@ trait Componentable
      *
      * @return bool
      */
-    public static function hasComponent($name)
+    public static function hasComponent(string $name): bool
     {
         return isset(static::$components[$name]);
     }
@@ -66,7 +70,7 @@ trait Componentable
      *
      * @return \Illuminate\Support\HtmlString
      */
-    protected function renderComponent($name, array $arguments)
+    protected function renderComponent(string $name, array $arguments): HtmlString
     {
         $component = static::$components[$name];
         $data      = $this->getComponentData($component['signature'], $arguments);
@@ -84,7 +88,7 @@ trait Componentable
      *
      * @return array
      */
-    protected function getComponentData(array $signature, array $arguments)
+    protected function getComponentData(array $signature, array $arguments): array
     {
         $data = [];
         $i    = 0;

@@ -1,7 +1,9 @@
 <?php
 
-use Arcanedev\LaravelHtml\Contracts\FormBuilder;
-use Arcanedev\LaravelHtml\Contracts\HtmlBuilder;
+declare(strict_types=1);
+
+use Arcanedev\LaravelHtml\Contracts\{FormBuilder, HtmlBuilder};
+use Illuminate\Support\HtmlString;
 
 if ( ! function_exists('form')) {
     /**
@@ -9,8 +11,7 @@ if ( ! function_exists('form')) {
      *
      * @return \Arcanedev\LaravelHtml\Contracts\FormBuilder
      */
-    function form()
-    {
+    function form(): FormBuilder {
         return app(FormBuilder::class);
     }
 }
@@ -21,8 +22,7 @@ if ( ! function_exists('html')) {
      *
      * @return \Arcanedev\LaravelHtml\Contracts\HtmlBuilder
      */
-    function html()
-    {
+    function html(): HtmlBuilder {
         return app(HtmlBuilder::class);
     }
 }
@@ -43,8 +43,7 @@ if ( ! function_exists('link_to')) {
      *
      * @return \Illuminate\Support\HtmlString
      */
-    function link_to($url, $title = null, $attributes = [], $secure = null, $escaped = true)
-    {
+    function link_to(string $url, $title = null, array $attributes = [], $secure = null, $escaped = true): HtmlString {
         return html()->link($url, $title, $attributes, $secure, $escaped);
     }
 }
@@ -60,8 +59,7 @@ if ( ! function_exists('link_to_asset')) {
      *
      * @return \Illuminate\Support\HtmlString
      */
-    function link_to_asset($url, $title = null, $attributes = [], $secure = null)
-    {
+    function link_to_asset(string $url, $title = null, array $attributes = [], $secure = null): HtmlString {
         return html()->linkAsset($url, $title, $attributes, $secure);
     }
 }
@@ -78,8 +76,7 @@ if ( ! function_exists('link_to_route')) {
      *
      * @return \Illuminate\Support\HtmlString
      */
-    function link_to_route($name, $title = null, $params = [], $attributes = [], $escaped = true)
-    {
+    function link_to_route(string $name, $title = null, array $params = [], array $attributes = [], $escaped = true): HtmlString {
         return html()->linkRoute($name, $title, $params, $attributes, $escaped);
     }
 }
@@ -96,8 +93,7 @@ if ( ! function_exists('link_to_action')) {
      *
      * @return \Illuminate\Support\HtmlString
      */
-    function link_to_action($action, $title = null, $params = [], $attributes = [], $escaped = true)
-    {
+    function link_to_action(string $action, $title = null, array $params = [], array $attributes = [], $escaped = true): HtmlString {
         return html()->linkAction($action, $title, $params, $attributes, $escaped);
     }
 }

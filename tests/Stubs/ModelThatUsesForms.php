@@ -1,4 +1,8 @@
-<?php namespace Arcanedev\LaravelHtml\Tests\Stubs;
+<?php
+
+declare(strict_types=1);
+
+namespace Arcanedev\LaravelHtml\Tests\Stubs;
 
 use Arcanedev\LaravelHtml\Traits\FormAccessible;
 use Carbon\Carbon;

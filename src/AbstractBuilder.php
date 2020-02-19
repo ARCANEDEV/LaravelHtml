@@ -1,4 +1,8 @@
-<?php namespace Arcanedev\LaravelHtml;
+<?php
+
+declare(strict_types=1);
+
+namespace Arcanedev\LaravelHtml;
 
 use Arcanedev\LaravelHtml\Traits\Componentable;
 use BadMethodCallException;
@@ -43,9 +47,7 @@ abstract class AbstractBuilder
             return $this->componentCall($method, $parameters);
         }
         catch (BadMethodCallException $e) {
-            // Continue
+            return $this->macroCall($method, $parameters);
         }
-
-        return $this->macroCall($method, $parameters);
     }
 }

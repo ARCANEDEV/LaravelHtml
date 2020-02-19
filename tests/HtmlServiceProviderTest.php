@@ -1,5 +1,10 @@
-<?php namespace Arcanedev\LaravelHtml\Tests;
+<?php
 
+declare(strict_types=1);
+
+namespace Arcanedev\LaravelHtml\Tests;
+
+use Arcanedev\LaravelHtml\Contracts\{FormBuilder, HtmlBuilder};
 use Arcanedev\LaravelHtml\HtmlServiceProvider;
 
 /**
@@ -45,7 +50,7 @@ class HtmlServiceProviderTest extends TestCase
      */
 
     /** @test */
-    public function it_can_be_instantiated()
+    public function it_can_be_instantiated(): void
     {
         $expectations = [
             \Illuminate\Support\ServiceProvider::class,
@@ -59,11 +64,11 @@ class HtmlServiceProviderTest extends TestCase
     }
 
     /** @test */
-    public function it_can_get_provides()
+    public function it_can_get_provides(): void
     {
         $expected = [
-            \Arcanedev\LaravelHtml\Contracts\HtmlBuilder::class,
-            \Arcanedev\LaravelHtml\Contracts\FormBuilder::class,
+            HtmlBuilder::class,
+            FormBuilder::class,
         ];
 
         static::assertEquals($expected, $this->provider->provides());

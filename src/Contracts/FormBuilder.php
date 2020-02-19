@@ -1,6 +1,12 @@
-<?php namespace Arcanedev\LaravelHtml\Contracts;
+<?php
 
+declare(strict_types=1);
+
+namespace Arcanedev\LaravelHtml\Contracts;
+
+use Arcanedev\Html\Elements\{Button, File, Input, Label, Select, Textarea};
 use Illuminate\Contracts\Session\Session;
+use Illuminate\Support\HtmlString;
 
 /**
  * Interface  FormBuilder
@@ -18,44 +24,44 @@ interface FormBuilder
     /**
      * Get the session store implementation.
      *
-     * @return \Illuminate\Contracts\Session\Session
+     * @return \Illuminate\Contracts\Session\Session|null
      */
-    public function getSessionStore();
+    public function getSessionStore(): ?Session;
 
     /**
      * Set the session store implementation.
      *
      * @param  \Illuminate\Contracts\Session\Session  $session
      *
-     * @return self
+     * @return $this
      */
     public function setSessionStore(Session $session);
 
     /**
      * Set the model instance on the form builder.
      *
-     * @param  mixed  $model
+     * @param  \Illuminate\Database\Eloquent\Model|mixed  $model
      *
-     * @return self
+     * @return $this
      */
     public function setModel($model);
 
     /**
      * Get the model instance on the form builder.
      *
-     * @return \Illuminate\Database\Eloquent\Model
+     * @return \Illuminate\Database\Eloquent\Model|mixed|null
      */
     public function getModel();
 
     /**
      * Get the ID attribute for a field name.
      *
-     * @param  string  $name
-     * @param  array   $attributes
+     * @param  string|null  $name
+     * @param  array        $attributes
      *
-     * @return string
+     * @return string|null
      */
-    public function getIdAttribute($name, array $attributes);
+    public function getIdAttribute($name, array $attributes): ?string;
 
     /**
      * Get the value that should be assigned to the field.
@@ -86,7 +92,7 @@ interface FormBuilder
      *
      * @return \Illuminate\Support\HtmlString
      */
-    public function open(array $attributes = []);
+    public function open(array $attributes = []): HtmlString;
 
     /**
      * Create a new model based form builder.
@@ -96,21 +102,21 @@ interface FormBuilder
      *
      * @return \Illuminate\Support\HtmlString
      */
-    public function model($model, array $attributes = []);
+    public function model($model, array $attributes = []): HtmlString;
 
     /**
      * Close the current form.
      *
      * @return \Illuminate\Support\HtmlString
      */
-    public function close();
+    public function close(): HtmlString;
 
     /**
      * Generate a hidden field with the current CSRF token.
      *
      * @return \Arcanedev\Html\Elements\Input
      */
-    public function token();
+    public function token(): Input;
 
     /**
      * Create a form label element.
@@ -122,19 +128,19 @@ interface FormBuilder
      *
      * @return \Arcanedev\Html\Elements\Label
      */
-    public function label($name, $value = null, array $attributes = [], $escaped = true);
+    public function label(string $name, $value = null, array $attributes = [], $escaped = true): Label;
 
     /**
      * Create a form input field.
      *
      * @param  string        $type
-     * @param  string        $name
+     * @param  string|null   $name
      * @param  string|mixed  $value
      * @param  array         $attributes
      *
      * @return \Arcanedev\Html\Elements\Input
      */
-    public function input($type, $name, $value = null, array $attributes = []);
+    public function input(string $type, string $name, $value = null, array $attributes = []): Input;
 
     /**
      * Create a text input field.
@@ -145,7 +151,7 @@ interface FormBuilder
      *
      * @return \Arcanedev\Html\Elements\Input
      */
-    public function text($name, $value = null, array $attributes = []);
+    public function text(string $name, $value = null, array $attributes = []): Input;
 
     /**
      * Create a password input field.
@@ -155,7 +161,7 @@ interface FormBuilder
      *
      * @return \Arcanedev\Html\Elements\Input
      */
-    public function password($name, array $attributes = []);
+    public function password(string $name, array $attributes = []): Input;
 
     /**
      * Create a hidden input field.
@@ -166,7 +172,7 @@ interface FormBuilder
      *
      * @return \Arcanedev\Html\Elements\Input
      */
-    public function hidden($name, $value = null, array $attributes = []);
+    public function hidden(string $name, $value = null, array $attributes = []): Input;
 
     /**
      * Create an e-mail input field.
@@ -177,7 +183,7 @@ interface FormBuilder
      *
      * @return \Arcanedev\Html\Elements\Input
      */
-    public function email($name, $value = null, array $attributes = []);
+    public function email(string $name, $value = null, array $attributes = []): Input;
 
     /**
      * Create a tel input field.
@@ -188,7 +194,7 @@ interface FormBuilder
      *
      * @return \Arcanedev\Html\Elements\Input
      */
-    public function tel($name, $value = null, array $attributes = []);
+    public function tel(string $name, $value = null, array $attributes = []): Input;
 
     /**
      * Create a number input field.
@@ -199,7 +205,7 @@ interface FormBuilder
      *
      * @return \Arcanedev\Html\Elements\Input
      */
-    public function number($name, $value = null, array $attributes = []);
+    public function number(string $name, $value = null, array $attributes = []): Input;
 
     /**
      * Create a date input field.
@@ -210,7 +216,7 @@ interface FormBuilder
      *
      * @return \Arcanedev\Html\Elements\Input
      */
-    public function date($name, $value = null, array $attributes = []);
+    public function date(string $name, $value = null, array $attributes = []): Input;
 
     /**
      * Create a time input field.
@@ -221,7 +227,7 @@ interface FormBuilder
      *
      * @return \Arcanedev\Html\Elements\Input
      */
-    public function time($name, $value = null, array $attributes = []);
+    public function time(string $name, $value = null, array $attributes = []): Input;
 
     /**
      * Create a url input field.
@@ -232,7 +238,7 @@ interface FormBuilder
      *
      * @return \Arcanedev\Html\Elements\Input
      */
-    public function url($name, $value = null, array $attributes = []);
+    public function url(string $name, $value = null, array $attributes = []): Input;
 
     /**
      * Create a file input field.
@@ -242,7 +248,7 @@ interface FormBuilder
      *
      * @return \Arcanedev\Html\Elements\File
      */
-    public function file($name, array $attributes = []);
+    public function file(string $name, array $attributes = []): File;
 
     /**
      * Create a textarea input field.
@@ -253,24 +259,24 @@ interface FormBuilder
      *
      * @return \Arcanedev\Html\Elements\Textarea
      */
-    public function textarea($name, $value = null, array $attributes = []);
+    public function textarea(string $name, $value = null, array $attributes = []): Textarea;
 
     /**
      * Create a select box field.
      *
-     * @param  string                                $name
-     * @param  array|\Illuminate\Support\Collection  $list
-     * @param  string|bool                           $selected
-     * @param  array                                 $attributes
-     * @param  array                                 $optionsAttributes
-     * @param  array                                 $optgroupsAttributes
+     * @param  string                                         $name
+     * @param  array|\Illuminate\Support\Collection|iterable  $list
+     * @param  string|bool                                    $selected
+     * @param  array                                          $attributes
+     * @param  array                                          $optionsAttributes
+     * @param  array                                          $optgroupsAttributes
      *
      * @return \Arcanedev\Html\Elements\Select
      */
     public function select(
-        $name, $list = [], $selected = null,
+        string $name, iterable $list = [], $selected = null,
         array $attributes = [], array $optionsAttributes = [], array $optgroupsAttributes = []
-    );
+    ): Select;
 
     /**
      * Create a select range field.
@@ -283,7 +289,7 @@ interface FormBuilder
      *
      * @return \Arcanedev\Html\Elements\Select
      */
-    public function selectRange($name, $begin, $end, $selected = null, array $attributes = []);
+    public function selectRange(string $name, $begin, $end, $selected = null, array $attributes = []): Select;
 
     /**
      * Create a select year field.
@@ -296,7 +302,7 @@ interface FormBuilder
      *
      * @return \Arcanedev\Html\Elements\Select
      */
-    public function selectYear($name, $begin, $end, $selected = null, array $attributes = []);
+    public function selectYear(string $name, $begin, $end, $selected = null, array $attributes = []): Select;
 
     /**
      * Create a select month field.
@@ -308,7 +314,7 @@ interface FormBuilder
      *
      * @return \Arcanedev\Html\Elements\Select
      */
-    public function selectMonth($name, $selected = null, array $attributes = [], $format = '%B');
+    public function selectMonth(string $name, $selected = null, array $attributes = [], $format = '%B'): Select;
 
     /**
      * Create a checkbox input field.
@@ -320,7 +326,7 @@ interface FormBuilder
      *
      * @return \Arcanedev\Html\Elements\Input
      */
-    public function checkbox($name, $value = 1, $checked = null, array $attributes = []);
+    public function checkbox(string $name, $value = 1, $checked = null, array $attributes = []): Input;
 
     /**
      * Create a radio button input field.
@@ -332,7 +338,7 @@ interface FormBuilder
      *
      * @return \Arcanedev\Html\Elements\Input
      */
-    public function radio($name, $value = null, $checked = null, array $attributes = []);
+    public function radio(string $name, $value = null, $checked = null, array $attributes = []): Input;
 
     /**
      * Create a HTML reset input element.
@@ -342,7 +348,7 @@ interface FormBuilder
      *
      * @return \Arcanedev\Html\Elements\Button
      */
-    public function reset($value, array $attributes = []);
+    public function reset($value, array $attributes = []): Button;
 
     /**
      * Create a HTML image input element.
@@ -353,7 +359,7 @@ interface FormBuilder
      *
      * @return \Arcanedev\Html\Elements\Input
      */
-    public function image($url, $name = null, array $attributes = []);
+    public function image(string $url, $name = null, array $attributes = []): Input;
 
     /**
      * Create a submit button element.
@@ -363,7 +369,7 @@ interface FormBuilder
      *
      * @return \Arcanedev\Html\Elements\Button
      */
-    public function submit($value = null, array $attributes = []);
+    public function submit($value = null, array $attributes = []): Button;
 
     /**
      * Create a button element.
@@ -373,7 +379,7 @@ interface FormBuilder
      *
      * @return \Arcanedev\Html\Elements\Button
      */
-    public function button($value = null, array $attributes = []);
+    public function button($value = null, array $attributes = []): Button;
 
     /**
      * Create a color input field.
@@ -384,7 +390,7 @@ interface FormBuilder
      *
      * @return \Arcanedev\Html\Elements\Input
      */
-    public function color($name, $value = null, array $attributes = []);
+    public function color(string $name, $value = null, array $attributes = []): Input;
 
     /**
      * Get a value from the session's old input.
@@ -393,5 +399,5 @@ interface FormBuilder
      *
      * @return mixed
      */
-    public function old($name);
+    public function old(string $name);
 }
