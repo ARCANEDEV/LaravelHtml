@@ -1,15 +1,15 @@
-<?php namespace Arcanedev\LaravelHtml;
+<?php
 
-use Arcanedev\Html\Elements\{
-    Button, File, Form, Input, Label, Select, Textarea
-};
+declare(strict_types=1);
+
+namespace Arcanedev\LaravelHtml;
+
+use Arcanedev\Html\Elements\{Button, File, Form, Input, Label, Select, Textarea};
 use Arcanedev\LaravelHtml\Contracts\FormBuilder as FormBuilderContract;
 use DateTime;
 use Illuminate\Contracts\Routing\UrlGenerator;
 use Illuminate\Contracts\Session\Session;
-use Illuminate\Support\{
-    Arr, Collection, Str
-};
+use Illuminate\Support\{Arr, Collection, HtmlString, Str};
 
 /**
  * Class     FormBuilder
@@ -116,9 +116,9 @@ class FormBuilder extends AbstractBuilder implements FormBuilderContract
     /**
      * Get the session store implementation.
      *
-     * @return  \Illuminate\Contracts\Session\Session
+     * @return  \Illuminate\Contracts\Session\Session|null
      */
-    public function getSessionStore()
+    public function getSessionStore(): ?Session
     {
         return $this->session;
     }
@@ -128,7 +128,7 @@ class FormBuilder extends AbstractBuilder implements FormBuilderContract
      *
      * @param  \Illuminate\Contracts\Session\Session  $session
      *
-     * @return self
+     * @return $this
      */
     public function setSessionStore(Session $session)
     {
@@ -140,9 +140,9 @@ class FormBuilder extends AbstractBuilder implements FormBuilderContract
     /**
      * Set the model instance on the form builder.
      *
-     * @param  \Illuminate\Database\Eloquent\Model|null  $model
+     * @param  \Illuminate\Database\Eloquent\Model|mixed|null  $model
      *
-     * @return self
+     * @return $this
      */
     public function setModel($model)
     {
@@ -154,7 +154,7 @@ class FormBuilder extends AbstractBuilder implements FormBuilderContract
     /**
      * Get the model instance on the form builder.
      *
-     * @return \Illuminate\Database\Eloquent\Model
+     * @return \Illuminate\Database\Eloquent\Model|mixed|null
      */
     public function getModel()
     {
@@ -164,17 +164,17 @@ class FormBuilder extends AbstractBuilder implements FormBuilderContract
     /**
      * Get the ID attribute for a field name.
      *
-     * @param  string  $name
-     * @param  array   $attributes
+     * @param  string|null  $name
+     * @param  array        $attributes
      *
-     * @return string
+     * @return string|null
      */
-    public function getIdAttribute($name, array $attributes)
+    public function getIdAttribute($name, array $attributes): ?string
     {
         if (array_key_exists('id', $attributes))
             return $attributes['id'];
 
-        if (in_array($name, $this->labels))
+        if ( ! is_null($name) && in_array($name, $this->labels))
             return $name;
 
         return null;
@@ -205,16 +205,16 @@ class FormBuilder extends AbstractBuilder implements FormBuilderContract
     /**
      * Get the model value that should be assigned to the field.
      *
-     * @param  string                               $name
-     * @param  \Illuminate\Database\Eloquent\Model  $model
+     * @param  string                                          $name
+     * @param  \Illuminate\Database\Eloquent\Model|mixed|null  $model
      *
      * @return mixed
      */
-    private function getModelValueAttribute($name, $model = null)
+    private function getModelValueAttribute(string $name, $model = null)
     {
         $model = $model ?: $this->getModel();
 
-        $key = self::transformKey($name);
+        $key = static::transformKey($name);
 
         if (strpos($key, '.') !== false) {
             $keys = explode('.', $key, 2);
@@ -237,11 +237,11 @@ class FormBuilder extends AbstractBuilder implements FormBuilderContract
      *
      * @return mixed
      */
-    public function old($name)
+    public function old(string $name)
     {
-        return ! is_null($this->session)
-            ? $this->session->getOldInput(self::transformKey($name))
-            : null;
+        $session = $this->getSessionStore();
+
+        return is_null($session) ? null : $session->getOldInput(static::transformKey($name));
     }
 
     /**
@@ -251,7 +251,7 @@ class FormBuilder extends AbstractBuilder implements FormBuilderContract
      *
      * @return string
      */
-    private static function transformKey($key)
+    private static function transformKey(string $key): string
     {
         return str_replace(
             ['.', '[]', '[', ']'],
@@ -265,10 +265,12 @@ class FormBuilder extends AbstractBuilder implements FormBuilderContract
      *
      * @return bool
      */
-    public function oldInputIsEmpty()
+    public function oldInputIsEmpty(): bool
     {
-        return ! is_null($this->session)
-            && (count($this->session->getOldInput()) === 0);
+        $session = $this->getSessionStore();
+
+        return ! is_null($session)
+            && (count($session->getOldInput()) === 0);
     }
 
     /* -----------------------------------------------------------------
@@ -283,7 +285,7 @@ class FormBuilder extends AbstractBuilder implements FormBuilderContract
      *
      * @return \Illuminate\Support\HtmlString
      */
-    public function open(array $attributes = [])
+    public function open(array $attributes = []): HtmlString
     {
         $method = Str::upper(Arr::pull($attributes, 'method', 'POST'));
 
@@ -314,7 +316,7 @@ class FormBuilder extends AbstractBuilder implements FormBuilderContract
      *
      * @return \Illuminate\Support\HtmlString
      */
-    public function model($model, array $attributes = [])
+    public function model($model, array $attributes = []): HtmlString
     {
         return $this->setModel($model)->open($attributes);
     }
@@ -324,7 +326,7 @@ class FormBuilder extends AbstractBuilder implements FormBuilderContract
      *
      * @return \Illuminate\Support\HtmlString
      */
-    public function close()
+    public function close(): HtmlString
     {
         $this->labels = [];
         $this->setModel(null);
@@ -337,12 +339,13 @@ class FormBuilder extends AbstractBuilder implements FormBuilderContract
      *
      * @return \Arcanedev\Html\Elements\Input
      */
-    public function token()
+    public function token(): Input
     {
-        return $this->hidden(
-            '_token',
-            empty($this->csrfToken) ? $this->session->token() : $this->csrfToken
-        );
+        $token = empty($this->csrfToken)
+            ? $this->getSessionStore()->token()
+            : $this->csrfToken;
+
+        return $this->hidden('_token', $token);
     }
 
     /**
@@ -355,7 +358,7 @@ class FormBuilder extends AbstractBuilder implements FormBuilderContract
      *
      * @return \Arcanedev\Html\Elements\Label
      */
-    public function label($name, $value = null, array $attributes = [], $escaped = true)
+    public function label(string $name, $value = null, array $attributes = [], $escaped = true): Label
     {
         $this->labels[] = $name;
 
@@ -371,21 +374,23 @@ class FormBuilder extends AbstractBuilder implements FormBuilderContract
      * Create a form input field.
      *
      * @param  string        $type
-     * @param  string        $name
+     * @param  string|null   $name
      * @param  string|mixed  $value
      * @param  array         $attributes
      *
      * @return \Arcanedev\Html\Elements\Input
      */
-    public function input($type, $name, $value = null, array $attributes = [])
+    public function input(string $type, $name, $value = null, array $attributes = []): Input
     {
         if ( ! in_array($type, $this->skipValueTypes))
             $value = $this->getValueAttribute($name, $value);
 
+        $id = $this->getIdAttribute($name, $attributes);
+
         return Input::make()
             ->type($type)
-            ->attributeUnless(is_null($name), 'name', $name)
-            ->attributeUnless(is_null($id = $this->getIdAttribute($name, $attributes)), 'id', $id)
+            ->attributeIfNotNull($name, 'name', $name)
+            ->attributeIfNotNull($id, 'id', $id)
             ->attributeUnless(is_null($value) || empty($value), 'value', $value)
             ->attributes($attributes);
     }
@@ -399,7 +404,7 @@ class FormBuilder extends AbstractBuilder implements FormBuilderContract
      *
      * @return \Arcanedev\Html\Elements\Input
      */
-    public function text($name, $value = null, array $attributes = [])
+    public function text(string $name, $value = null, array $attributes = []): Input
     {
         return $this->input('text', $name, $value, $attributes);
     }
@@ -412,7 +417,7 @@ class FormBuilder extends AbstractBuilder implements FormBuilderContract
      *
      * @return \Arcanedev\Html\Elements\Input
      */
-    public function password($name, array $attributes = [])
+    public function password(string $name, array $attributes = []): Input
     {
         return $this->input('password', $name, null, $attributes);
     }
@@ -426,7 +431,7 @@ class FormBuilder extends AbstractBuilder implements FormBuilderContract
      *
      * @return \Arcanedev\Html\Elements\Input
      */
-    public function hidden($name, $value = null, array $attributes = [])
+    public function hidden(string $name, $value = null, array $attributes = []): Input
     {
         return $this->input('hidden', $name, $value, $attributes);
     }
@@ -440,7 +445,7 @@ class FormBuilder extends AbstractBuilder implements FormBuilderContract
      *
      * @return \Arcanedev\Html\Elements\Input
      */
-    public function email($name, $value = null, array $attributes = [])
+    public function email(string $name, $value = null, array $attributes = []): Input
     {
         return $this->input('email', $name, $value, $attributes);
     }
@@ -454,7 +459,7 @@ class FormBuilder extends AbstractBuilder implements FormBuilderContract
      *
      * @return \Arcanedev\Html\Elements\Input
      */
-    public function tel($name, $value = null, array $attributes = [])
+    public function tel(string $name, $value = null, array $attributes = []): Input
     {
         return $this->input('tel', $name, $value, $attributes);
     }
@@ -468,7 +473,7 @@ class FormBuilder extends AbstractBuilder implements FormBuilderContract
      *
      * @return \Arcanedev\Html\Elements\Input
      */
-    public function number($name, $value = null, array $attributes = [])
+    public function number(string $name, $value = null, array $attributes = []): Input
     {
         return $this->input('number', $name, $value, $attributes);
     }
@@ -482,7 +487,7 @@ class FormBuilder extends AbstractBuilder implements FormBuilderContract
      *
      * @return \Arcanedev\Html\Elements\Input
      */
-    public function date($name, $value = null, array $attributes = [])
+    public function date(string $name, $value = null, array $attributes = []): Input
     {
         if ($value instanceof DateTime)
             $value = $value->format('Y-m-d');
@@ -499,7 +504,7 @@ class FormBuilder extends AbstractBuilder implements FormBuilderContract
      *
      * @return \Arcanedev\Html\Elements\Input
      */
-    public function datetime($name, $value = null, array $attributes = [])
+    public function datetime(string $name, $value = null, array $attributes = []): Input
     {
         if ($value instanceof DateTime)
             $value = $value->format(DateTime::RFC3339);
@@ -516,7 +521,7 @@ class FormBuilder extends AbstractBuilder implements FormBuilderContract
      *
      * @return \Arcanedev\Html\Elements\Input
      */
-    public function datetimeLocal($name, $value = null, array $attributes = [])
+    public function datetimeLocal(string $name, $value = null, array $attributes = []): Input
     {
         if ($value instanceof DateTime)
             $value = $value->format('Y-m-d\TH:i');
@@ -533,7 +538,7 @@ class FormBuilder extends AbstractBuilder implements FormBuilderContract
      *
      * @return \Arcanedev\Html\Elements\Input
      */
-    public function time($name, $value = null, array $attributes = [])
+    public function time(string $name, $value = null, array $attributes = []): Input
     {
         return $this->input('time', $name, $value, $attributes);
     }
@@ -547,7 +552,7 @@ class FormBuilder extends AbstractBuilder implements FormBuilderContract
      *
      * @return \Arcanedev\Html\Elements\Input
      */
-    public function url($name, $value = null, array $attributes = [])
+    public function url(string $name, $value = null, array $attributes = []): Input
     {
         return $this->input('url', $name, $value, $attributes);
     }
@@ -560,7 +565,7 @@ class FormBuilder extends AbstractBuilder implements FormBuilderContract
      *
      * @return \Arcanedev\Html\Elements\File
      */
-    public function file($name, array $attributes = [])
+    public function file(string $name, array $attributes = []): File
     {
         return File::make()->name($name)->attributes($attributes);
     }
@@ -574,7 +579,7 @@ class FormBuilder extends AbstractBuilder implements FormBuilderContract
      *
      * @return \Arcanedev\Html\Elements\Textarea
      */
-    public function textarea($name, $value = null, array $attributes = [])
+    public function textarea(string $name, $value = null, array $attributes = []): Textarea
     {
         $id    = $this->getIdAttribute($name, $attributes);
         $size  = Arr::pull($attributes, 'size');
@@ -593,23 +598,23 @@ class FormBuilder extends AbstractBuilder implements FormBuilderContract
     /**
      * Create a select box field.
      *
-     * @param  string                                $name
-     * @param  array|\Illuminate\Support\Collection  $list
-     * @param  string|bool                           $selected
-     * @param  array                                 $attributes
-     * @param  array                                 $optionsAttributes
-     * @param  array                                 $optgroupsAttributes
+     * @param  string                                         $name
+     * @param  array|\Illuminate\Support\Collection|iterable  $list
+     * @param  string|bool                                    $selected
+     * @param  array                                          $attributes
+     * @param  array                                          $optionsAttributes
+     * @param  array                                          $optgroupsAttributes
      *
      * @return \Arcanedev\Html\Elements\Select
      */
     public function select(
-        $name,
-        $list = [],
+        string $name,
+        iterable $list = [],
         $selected = null,
         array $attributes = [],
         array $optionsAttributes = [],
         array $optgroupsAttributes = []
-    ) {
+    ): Select {
         return Select::make()
             ->name($name)
             ->options($list, $optionsAttributes, $optgroupsAttributes)
@@ -629,7 +634,7 @@ class FormBuilder extends AbstractBuilder implements FormBuilderContract
      *
      * @return \Arcanedev\Html\Elements\Select
      */
-    public function selectRange($name, $begin, $end, $selected = null, array $attributes = [])
+    public function selectRange(string $name, $begin, $end, $selected = null, array $attributes = []): Select
     {
         $range = array_combine($range = range($begin, $end), $range);
 
@@ -647,7 +652,7 @@ class FormBuilder extends AbstractBuilder implements FormBuilderContract
      *
      * @return \Arcanedev\Html\Elements\Select
      */
-    public function selectYear($name, $begin, $end, $selected = null, array $attributes = [])
+    public function selectYear(string $name, $begin, $end, $selected = null, array $attributes = []): Select
     {
         return $this->selectRange($name, $begin, $end, $selected, $attributes);
     }
@@ -662,7 +667,7 @@ class FormBuilder extends AbstractBuilder implements FormBuilderContract
      *
      * @return \Arcanedev\Html\Elements\Select
      */
-    public function selectMonth($name, $selected = null, array $attributes = [], $format = '%B')
+    public function selectMonth(string $name, $selected = null, array $attributes = [], $format = '%B'): Select
     {
         $months = [];
 
@@ -683,7 +688,7 @@ class FormBuilder extends AbstractBuilder implements FormBuilderContract
      *
      * @return \Arcanedev\Html\Elements\Input
      */
-    public function checkbox($name, $value = 1, $checked = null, array $attributes = [])
+    public function checkbox(string $name, $value = 1, $checked = null, array $attributes = []): Input
     {
         return $this->checkable('checkbox', $name, $value, $checked, $attributes);
     }
@@ -698,7 +703,7 @@ class FormBuilder extends AbstractBuilder implements FormBuilderContract
      *
      * @return \Arcanedev\Html\Elements\Input
      */
-    public function radio($name, $value = null, $checked = null, array $attributes = [])
+    public function radio(string $name, $value = null, $checked = null, array $attributes = []): Input
     {
         return $this->checkable('radio', $name, $value ?: $name, $checked, $attributes);
     }
@@ -711,7 +716,7 @@ class FormBuilder extends AbstractBuilder implements FormBuilderContract
      *
      * @return \Arcanedev\Html\Elements\Button
      */
-    public function reset($value, array $attributes = [])
+    public function reset($value, array $attributes = []): Button
     {
         return $this->button($value, array_merge(['type' => 'reset'], $attributes));
     }
@@ -725,7 +730,7 @@ class FormBuilder extends AbstractBuilder implements FormBuilderContract
     *
      * @return \Arcanedev\Html\Elements\Input
     */
-    public function image($url, $name = null, array $attributes = [])
+    public function image(string $url, $name = null, array $attributes = []): Input
     {
         return $this->input('image', $name, null, array_merge($attributes, [
             'src' => $this->url->asset($url),
@@ -740,7 +745,7 @@ class FormBuilder extends AbstractBuilder implements FormBuilderContract
      *
      * @return \Arcanedev\Html\Elements\Button
      */
-    public function submit($value = null, array $attributes = [])
+    public function submit($value = null, array $attributes = []): Button
     {
         return $this->button($value, array_merge(['type' => 'submit'], $attributes));
     }
@@ -753,7 +758,7 @@ class FormBuilder extends AbstractBuilder implements FormBuilderContract
      *
      * @return \Arcanedev\Html\Elements\Button
      */
-    public function button($value = null, array $attributes = [])
+    public function button($value = null, array $attributes = []): Button
     {
         return Button::make()
             ->type(Arr::pull($attributes, 'type', 'button'))
@@ -770,7 +775,7 @@ class FormBuilder extends AbstractBuilder implements FormBuilderContract
      *
      * @return \Arcanedev\Html\Elements\Input
      */
-    public function color($name, $value = null, array $attributes = [])
+    public function color(string $name, $value = null, array $attributes = []): Input
     {
         return $this->input('color', $name, $value, $attributes);
     }
@@ -791,7 +796,7 @@ class FormBuilder extends AbstractBuilder implements FormBuilderContract
      *
      * @return \Arcanedev\Html\Elements\Input
      */
-    protected function checkable($type, $name, $value, $checked, array $attributes)
+    protected function checkable(string $type, string $name, $value, $checked, array $attributes): Input
     {
         $checked = $this->getCheckedState($type, $name, $value, $checked);
 
@@ -811,7 +816,7 @@ class FormBuilder extends AbstractBuilder implements FormBuilderContract
      *
      * @return bool
      */
-    private function getCheckedState($type, $name, $value, $checked)
+    private function getCheckedState(string $type, string $name, $value, $checked): bool
     {
         switch($type) {
             case 'checkbox':
@@ -834,25 +839,29 @@ class FormBuilder extends AbstractBuilder implements FormBuilderContract
      *
      * @return bool
      */
-    private function getCheckboxCheckedState($name, $value, $checked)
+    private function getCheckboxCheckedState(string $name, $value, $checked): bool
     {
         if (
             isset($this->session) &&
             ! $this->oldInputIsEmpty() &&
             is_null($this->old($name))
-        )
+        ) {
             return false;
+        }
 
-        if ($this->missingOldAndModel($name))
-            return $checked;
+        if ($this->missingOldAndModel($name)) {
+            return (bool) $checked;
+        }
 
         $posted = $this->getValueAttribute($name, $checked);
 
-        if (is_array($posted))
+        if (is_array($posted)) {
             return in_array($value, $posted);
+        }
 
-        if ($posted instanceof Collection)
+        if ($posted instanceof Collection) {
             return $posted->contains('id', $value);
+        }
 
         return (bool) $posted;
     }
@@ -866,11 +875,13 @@ class FormBuilder extends AbstractBuilder implements FormBuilderContract
      *
      * @return bool
      */
-    private function getRadioCheckedState($name, $value, $checked)
+    private function getRadioCheckedState(string $name, $value, $checked): bool
     {
-        return $this->missingOldAndModel($name)
-            ? $checked
-            : $this->getValueAttribute($name) === $value;
+        if ($this->missingOldAndModel($name)) {
+            return (bool) $checked;
+        }
+
+        return $this->getValueAttribute($name) === $value;
     }
 
     /**
@@ -880,7 +891,7 @@ class FormBuilder extends AbstractBuilder implements FormBuilderContract
      *
      * @return bool
      */
-    private function missingOldAndModel($name)
+    private function missingOldAndModel(string $name): bool
     {
         return is_null($this->old($name))
             && is_null($this->getModelValueAttribute($name));
@@ -893,7 +904,7 @@ class FormBuilder extends AbstractBuilder implements FormBuilderContract
      *
      * @return string
      */
-    private function getAction(array $attributes)
+    private function getAction(array $attributes): string
     {
         if (isset($attributes['url']))
             return $this->getUrlAction($attributes['url']);
@@ -914,7 +925,7 @@ class FormBuilder extends AbstractBuilder implements FormBuilderContract
      *
      * @return string
      */
-    private function getUrlAction($attribute)
+    private function getUrlAction($attribute): string
     {
         return is_array($attribute)
             ? $this->url->to($attribute[0], array_slice($attribute, 1))
@@ -928,7 +939,7 @@ class FormBuilder extends AbstractBuilder implements FormBuilderContract
      *
      * @return string
      */
-    private function getRouteAction($attribute)
+    private function getRouteAction($attribute): string
     {
         return is_array($attribute)
             ? $this->url->route($attribute[0], array_slice($attribute, 1))
@@ -942,7 +953,7 @@ class FormBuilder extends AbstractBuilder implements FormBuilderContract
      *
      * @return string
      */
-    private function getControllerAction($attribute)
+    private function getControllerAction($attribute): string
     {
         return is_array($attribute)
             ? $this->url->action($attribute[0], array_slice($attribute, 1))

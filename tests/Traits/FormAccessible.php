@@ -1,8 +1,11 @@
-<?php namespace Arcanedev\LaravelHtml\Tests\Traits;
+<?php
+
+declare(strict_types=1);
+
+namespace Arcanedev\LaravelHtml\Tests\Traits;
 
 use Arcanedev\LaravelHtml\FormBuilder;
-use Arcanedev\LaravelHtml\Tests\Stubs\ModelThatDoesntUseForms;
-use Arcanedev\LaravelHtml\Tests\Stubs\ModelThatUsesForms;
+use Arcanedev\LaravelHtml\Tests\Stubs\{ModelThatDoesntUseForms, ModelThatUsesForms};
 use Arcanedev\LaravelHtml\Tests\TestCase;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
@@ -65,11 +68,7 @@ class FormAccessible extends TestCase
             'updated_at' => $this->now,
         ];
 
-        /** @var \Illuminate\Contracts\Session\Session  $session */
-        $session = $this->app['session.store'];
-        $session->put('_token', 'abc');
-
-        $this->form = new FormBuilder($this->html, $this->urlGenerator, $session);
+        $this->form = $this->getFormBuilder();
     }
 
     /* -----------------------------------------------------------------
@@ -78,9 +77,10 @@ class FormAccessible extends TestCase
      */
 
     /** @test */
-    public function it_can_mutate_values_for_forms()
+    public function it_can_mutate_values_for_forms(): void
     {
         $model = new ModelThatUsesForms($this->modelData);
+
         $this->form->setModel($model);
 
         static::assertSame('ponmlkjihgfedcba', $model->getFormValue('string'));
@@ -88,9 +88,10 @@ class FormAccessible extends TestCase
     }
 
     /** @test */
-    public function it_can_still_mutate_values_for_views()
+    public function it_can_still_mutate_values_for_views(): void
     {
         $model = new ModelThatUsesForms($this->modelData);
+
         $this->form->setModel($model);
 
         static::assertSame('ABCDEFGHIJKLMNOP', $model->string);
@@ -98,9 +99,10 @@ class FormAccessible extends TestCase
     }
 
     /** @test */
-    public function it_does_not_require_the_use_of_this_feature()
+    public function it_does_not_require_the_use_of_this_feature(): void
     {
         $model = new ModelThatDoesntUseForms($this->modelData);
+
         $this->form->setModel($model);
 
         static::assertSame('ABCDEFGHIJKLMNOP', $model->string);
@@ -108,22 +110,24 @@ class FormAccessible extends TestCase
     }
 
     /** @test */
-    public function it_can_get_related_value_for_forms()
+    public function it_can_get_related_value_for_forms(): void
     {
         $model = new ModelThatUsesForms($this->modelData);
+
         $this->form->setModel($model);
 
         static::assertSame('abcde st', $model->getFormValue('address.street'));
     }
 
     /** @test */
-    public function it_can_mutate_related_values_for_forms()
+    public function it_can_mutate_related_values_for_forms(): void
     {
         $model = new ModelThatUsesForms($this->modelData);
         $model->setRelation(
             'related',
             new ModelThatUsesForms($this->modelData)
         );
+
         $this->form->setModel($model);
 
         static::assertSame($this->form->getValueAttribute('related[string]'), 'ponmlkjihgfedcba');

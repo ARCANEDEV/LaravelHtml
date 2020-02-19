@@ -1,4 +1,10 @@
-<?php namespace Arcanedev\LaravelHtml\Contracts;
+<?php
+
+declare(strict_types=1);
+
+namespace Arcanedev\LaravelHtml\Contracts;
+
+use Illuminate\Support\HtmlString;
 
 /**
  * Interface  HtmlBuilder
@@ -21,7 +27,7 @@ interface HtmlBuilder
      *
      * @return string
      */
-    public function entities($value, $doubleEncode = false);
+    public function entities(string $value, bool $doubleEncode = false): string;
 
     /**
      * Convert all applicable characters to HTML entities.
@@ -30,7 +36,7 @@ interface HtmlBuilder
      *
      * @return string
      */
-    public function escape($value);
+    public function escape(string $value): string;
 
     /**
      * Convert entities to HTML characters.
@@ -39,65 +45,65 @@ interface HtmlBuilder
      *
      * @return string
      */
-    public function decode($value);
+    public function decode(string $value): string;
 
     /**
      * Generate a link to a JavaScript file.
      *
-     * @param  string  $url
-     * @param  array   $attributes
-     * @param  bool    $secure
+     * @param  string     $url
+     * @param  array      $attributes
+     * @param  bool|null  $secure
      *
      * @return \Illuminate\Support\HtmlString
      */
-    public function script($url, array $attributes = [], $secure = null);
+    public function script(string $url, array $attributes = [], ?bool $secure = null): HtmlString;
 
     /**
      * Generate a link to a CSS file.
      *
-     * @param  string  $url
-     * @param  array   $attributes
-     * @param  bool    $secure
+     * @param  string     $url
+     * @param  array      $attributes
+     * @param  bool|null  $secure
      *
      * @return \Illuminate\Support\HtmlString
      */
-    public function style($url, array $attributes = [], $secure = null);
+    public function style(string $url, array $attributes = [], ?bool $secure = null): HtmlString;
 
     /**
      * Generate an HTML image element.
      *
-     * @param  string  $url
-     * @param  string  $alt
-     * @param  array   $attributes
-     * @param  bool    $secure
+     * @param  string     $url
+     * @param  string     $alt
+     * @param  array      $attributes
+     * @param  bool|null  $secure
      *
      * @return \Illuminate\Support\HtmlString
      */
-    public function image($url, $alt = null, $attributes = [], $secure = null);
+    public function image(string $url, ?string $alt = null, array $attributes = [], ?bool $secure = null): HtmlString;
 
     /**
      * Generate a link to a Favicon file.
      *
-     * @param  string  $url
-     * @param  array   $attributes
-     * @param  bool    $secure
+     * @param  string     $url
+     * @param  array      $attributes
+     * @param  bool|null  $secure
      *
      * @return \Illuminate\Support\HtmlString
      */
-    public function favicon($url, array $attributes = [], $secure = null);
+    public function favicon(string $url, array $attributes = [], ?bool $secure = null): HtmlString;
 
     /**
      * Generate a HTML link.
      *
-     * @param  string  $url
-     * @param  string  $title
-     * @param  array   $attributes
-     * @param  bool    $secure
-     * @param  bool    $escaped
+     * @param  string     $url
+     * @param  string     $title
+     * @param  array      $attributes
+     * @param  bool|null  $secure
+     * @param  bool       $escaped
      *
      * @return \Illuminate\Support\HtmlString
      */
-    public function link($url, $title = null, array $attributes = [], $secure = null, $escaped = true);
+    public function link(string $url, ?string $title = null, array $attributes = [], ?bool $secure = null, bool $escaped = true): HtmlString;
 
     /**
      * Generate a HTTPS HTML link.
@@ -109,7 +115,7 @@ interface HtmlBuilder
      *
      * @return \Illuminate\Support\HtmlString
      */
-    public function secureLink($url, $title = null, array $attributes = [], $escaped = true);
+    public function secureLink(string $url, ?string $title = null, array $attributes = [], bool $escaped = true): HtmlString;
 
     /**
      * Generate a HTML link to an asset.
@@ -121,7 +127,7 @@ interface HtmlBuilder
      *
      * @return \Illuminate\Support\HtmlString
      */
-    public function linkAsset($url, $title = null, array $attributes = [], $secure = null);
+    public function linkAsset(string $url, ?string $title = null, array $attributes = [], ?bool $secure = null): HtmlString;
 
     /**
      * Generate a HTTPS HTML link to an asset.
@@ -132,33 +138,33 @@ interface HtmlBuilder
      *
      * @return \Illuminate\Support\HtmlString
      */
-    public function linkSecureAsset($url, $title = null, array $attributes = []);
+    public function linkSecureAsset(string $url, ?string $title = null, array $attributes = []): HtmlString;
 
     /**
      * Generate a HTML link to a named route.
      *
      * @param  string       $name
      * @param  string|null  $title
-     * @param  array|mixed  $parameters
+     * @param  array        $parameters
      * @param  array        $attributes
      * @param  bool         $escaped
      *
      * @return \Illuminate\Support\HtmlString
      */
-    public function linkRoute($name, $title = null, $parameters = [], array $attributes = [], $escaped = true);
+    public function linkRoute(string $name, ?string $title = null, array $parameters = [], array $attributes = [], bool $escaped = true): HtmlString;
 
     /**
      * Generate a HTML link to a controller action.
      *
      * @param  string       $action
-     * @param  string       $title
-     * @param  array|mixed  $parameters
+     * @param  string|null  $title
+     * @param  array        $parameters
      * @param  array        $attributes
      * @param  bool         $escaped
      *
      * @return \Illuminate\Support\HtmlString
      */
-    public function linkAction($action, $title = null, $parameters = [], array $attributes = [], $escaped = true);
+    public function linkAction(string $action, ?string $title = null, array $parameters = [], array $attributes = [], bool $escaped = true): HtmlString;
 
     /**
      * Generate a HTML link to an email address.
@@ -170,7 +176,7 @@ interface HtmlBuilder
      *
      * @return \Illuminate\Support\HtmlString
      */
-    public function mailto($email, $title = null, array $attributes = [], $escaped = true);
+    public function mailto(string $email, ?string $title = null, array $attributes = [], bool $escaped = true): HtmlString;
 
     /**
      * Obfuscate an e-mail address to prevent spam-bots from sniffing it.
@@ -179,37 +185,37 @@ interface HtmlBuilder
      *
      * @return string
      */
-    public function email($email);
+    public function email(string $email): string;
 
     /**
      * Generate an ordered list of items.
      *
-     * @param  array  $list
-     * @param  array  $attributes
+     * @param  iterable|array  $items
+     * @param  iterable|array  $attributes
      *
      * @return \Illuminate\Support\HtmlString
      */
-    public function ol(array $list, array $attributes = []);
+    public function ol($items, $attributes = []): HtmlString;
 
     /**
      * Generate an un-ordered list of items.
      *
-     * @param  array  $list
-     * @param  array  $attributes
+     * @param  iterable|array  $items
+     * @param  iterable|array  $attributes
      *
      * @return \Illuminate\Support\HtmlString
      */
-    public function ul(array $list, array $attributes = []);
+    public function ul($items, $attributes = []): HtmlString;
 
     /**
      * Generate a description list of items.
      *
-     * @param  array  $list
-     * @param  array  $attributes
+     * @param  iterable|array  $items
+     * @param  iterable|array  $attributes
      *
      * @return \Illuminate\Support\HtmlString
      */
-    public function dl(array $list, array $attributes = []);
+    public function dl($items, $attributes = []): HtmlString;
 
     /**
      * Generates non-breaking space entities based on a supplied multiplier.
@@ -218,7 +224,7 @@ interface HtmlBuilder
      *
      * @return string
      */
-    public function nbsp($multiplier = 1);
+    public function nbsp(int $multiplier = 1): string;
 
     /**
      * Build an HTML attribute string from an array.
@@ -227,7 +233,7 @@ interface HtmlBuilder
      *
      * @return string
      */
-    public function attributes(array $attributes);
+    public function attributes(array $attributes): string;
 
     /**
      * Obfuscate a string to prevent spam-bots from sniffing it.
@@ -236,7 +242,7 @@ interface HtmlBuilder
      *
      * @return string
      */
-    public function obfuscate($value);
+    public function obfuscate(string $value): string;
 
     /**
      * Generate a meta tag.
@@ -247,7 +253,7 @@ interface HtmlBuilder
      *
      * @return \Illuminate\Support\HtmlString
      */
-    public function meta($name, $content, array $attributes = []);
+    public function meta(string $name, string $content, array $attributes = []): HtmlString;
 
     /**
      * Generate a HTML link to an phone number (call).
@@ -256,6 +262,8 @@ interface HtmlBuilder
      * @param  string  $title
      * @param  array   $attributes
      * @param  bool    $escaped
+     *
+     * @return \Illuminate\Support\HtmlString
      */
-    public function tel($phone, $title = null, $attributes = [], $escaped = true);
+    public function tel(string $phone, ?string $title = null, array $attributes = [], bool $escaped = true): HtmlString;
 }

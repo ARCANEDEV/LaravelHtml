@@ -1,5 +1,10 @@
-<?php namespace Arcanedev\LaravelHtml;
+<?php
 
+declare(strict_types=1);
+
+namespace Arcanedev\LaravelHtml;
+
+use Arcanedev\LaravelHtml\Contracts\{FormBuilder as FormBuilderContract, HtmlBuilder as HtmlBuilderContract};
 use Arcanedev\Support\Providers\ServiceProvider;
 use Illuminate\Contracts\Support\DeferrableProvider;
 
@@ -23,8 +28,8 @@ class HtmlServiceProvider extends ServiceProvider implements DeferrableProvider
     {
         parent::register();
 
-        $this->singleton(Contracts\HtmlBuilder::class, HtmlBuilder::class);
-        $this->singleton(Contracts\FormBuilder::class, FormBuilder::class);
+        $this->singleton(HtmlBuilderContract::class, HtmlBuilder::class);
+        $this->singleton(FormBuilderContract::class, FormBuilder::class);
     }
 
     /**
@@ -35,8 +40,8 @@ class HtmlServiceProvider extends ServiceProvider implements DeferrableProvider
     public function provides(): array
     {
         return [
-            Contracts\HtmlBuilder::class,
-            Contracts\FormBuilder::class,
+            HtmlBuilderContract::class,
+            FormBuilderContract::class,
         ];
     }
 }

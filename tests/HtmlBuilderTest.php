@@ -1,4 +1,8 @@
-<?php namespace Arcanedev\LaravelHtml\Tests;
+<?php
+
+declare(strict_types=1);
+
+namespace Arcanedev\LaravelHtml\Tests;
 
 use Arcanedev\LaravelHtml\HtmlBuilder;
 
@@ -16,14 +20,14 @@ class HtmlBuilderTest extends TestCase
      */
 
     /** @test */
-    public function it_can_be_instantiated()
+    public function it_can_be_instantiated(): void
     {
         static::assertInstanceOf(HtmlBuilder::class, $this->html);
         static::assertInstanceOf(HtmlBuilder::class, html());
     }
 
     /** @test */
-    public function it_can_convert_html_string_to_entities()
+    public function it_can_convert_html_string_to_entities(): void
     {
         $value  = 'Un \'apostrophe\' en <strong>gras</strong>';
         $result = 'Un &#039;apostrophe&#039; en &lt;strong&gt;gras&lt;/strong&gt;';
@@ -32,7 +36,7 @@ class HtmlBuilderTest extends TestCase
     }
 
     /** @test */
-    public function it_can_convert_html_entities_to_string()
+    public function it_can_convert_html_entities_to_string(): void
     {
         $value  = 'Un \'apostrophe\' en <strong>gras</strong>';
         $result = 'Un &#039;apostrophe&#039; en &lt;strong&gt;gras&lt;/strong&gt;';
@@ -41,7 +45,7 @@ class HtmlBuilderTest extends TestCase
     }
 
     /** @test */
-    public function it_can_make_script_tags()
+    public function it_can_make_script_tags(): void
     {
         $url = $this->urlTo($file = 'bootstrap.min.js');
 
@@ -52,7 +56,7 @@ class HtmlBuilderTest extends TestCase
     }
 
     /** @test */
-    public function it_can_make_style_tags()
+    public function it_can_make_style_tags(): void
     {
         $url = $this->urlTo($file = 'bootstrap.min.css');
 
@@ -63,7 +67,7 @@ class HtmlBuilderTest extends TestCase
     }
 
     /** @test */
-    public function it_can_make_image_tags()
+    public function it_can_make_image_tags(): void
     {
         $url = $this->urlTo($file = 'avatar.png');
 
@@ -74,7 +78,7 @@ class HtmlBuilderTest extends TestCase
     }
 
     /** @test */
-    public function it_can_make_favicon()
+    public function it_can_make_favicon(): void
     {
         $url = $this->urlTo('bar.ico');
 
@@ -85,7 +89,7 @@ class HtmlBuilderTest extends TestCase
     }
 
     /** @test */
-    public function it_can_make_link_tags()
+    public function it_can_make_link_tags(): void
     {
         $url = $this->urlTo('hello');
 
@@ -112,7 +116,7 @@ class HtmlBuilderTest extends TestCase
     }
 
     /** @test */
-    public function it_can_make_secure_link_tags()
+    public function it_can_make_secure_link_tags(): void
     {
         $title = null;
         $url   = $this->urlTo('hello', [], true);
@@ -136,7 +140,7 @@ class HtmlBuilderTest extends TestCase
     }
 
     /** @test */
-    public function it_must_escape_link_urls()
+    public function it_must_escape_link_urls(): void
     {
         static::assertEquals(
             '<a href="https://localhost/b?id=4&amp;not_id=5">Escaped url</a>',
@@ -145,7 +149,7 @@ class HtmlBuilderTest extends TestCase
     }
 
     /** @test */
-    public function it_can_make_link_tags_for_assets()
+    public function it_can_make_link_tags_for_assets(): void
     {
         $file = 'assets/img/logo.png';
         $url  = "{$this->baseUrl}/{$file}";
@@ -157,7 +161,7 @@ class HtmlBuilderTest extends TestCase
     }
 
     /** @test */
-    public function it_can_make_secure_links_tags_for_assets()
+    public function it_can_make_secure_links_tags_for_assets(): void
     {
         $file = 'assets/img/logo.png';
         $url  = "https://localhost/{$file}";
@@ -169,7 +173,7 @@ class HtmlBuilderTest extends TestCase
     }
 
     /** @test */
-    public function it_can_make_link_from_route()
+    public function it_can_make_link_from_route(): void
     {
         $title = 'Home';
         $route = 'home';
@@ -197,7 +201,7 @@ class HtmlBuilderTest extends TestCase
     }
 
     /** @test */
-    public function it_can_make_link_from_action()
+    public function it_can_make_link_from_action(): void
     {
         $title  = 'Home';
         $action = 'Arcanedev\LaravelHtml\Tests\Stubs\DummyController@index';
@@ -226,7 +230,7 @@ class HtmlBuilderTest extends TestCase
     }
 
     /** @test */
-    public function it_can_make_mailto_link()
+    public function it_can_make_mailto_link(): void
     {
         $email  = 'j.doe@gmail.com';
         $mailto = $this->html->mailto($email)->toHtml();
@@ -251,7 +255,7 @@ class HtmlBuilderTest extends TestCase
     }
 
     /** @test */
-    public function it_can_make_ol_tags()
+    public function it_can_make_ol_tags(): void
     {
         $list = [
             'foo'   => 'bar',
@@ -267,7 +271,7 @@ class HtmlBuilderTest extends TestCase
                 '<li>bar</li>' .
                 '<li>baz</li>' .
             '</ol>',
-            $this->html->ol($list, $attributes)
+            $this->html->ol($list, $attributes)->toHtml()
         );
 
         // Empty list
@@ -278,7 +282,7 @@ class HtmlBuilderTest extends TestCase
     }
 
     /** @test */
-    public function it_can_make_ul_tags()
+    public function it_can_make_ul_tags(): void
     {
         $list = [
             'foo'   => 'bar',
@@ -294,7 +298,7 @@ class HtmlBuilderTest extends TestCase
                 '<li>bar</li>' .
                 '<li>baz</li>' .
             '</ul>',
-            $this->html->ul($list, $attributes)
+            $this->html->ul($list, $attributes)->toHtml()
         );
 
         // Empty list
@@ -305,7 +309,7 @@ class HtmlBuilderTest extends TestCase
     }
 
     /** @test */
-    public function it_can_make_dl_tags()
+    public function it_can_make_dl_tags(): void
     {
         $list = [
             'foo'   => 'bar',
@@ -338,7 +342,7 @@ class HtmlBuilderTest extends TestCase
                 '<dt>bing</dt><dd>baz</dd>' .
                 '<dt>qux</dt><dd>qux-foo</dd><dd>qux-bar</dd><dd>qux-baz</dd>' .
             '</dl>',
-            $this->html->dl($list, $attributes)
+            $this->html->dl($list, $attributes)->toHtml()
         );
 
         // Empty list
@@ -349,7 +353,7 @@ class HtmlBuilderTest extends TestCase
     }
 
     /** @test */
-    public function it_can_make_nested_listing()
+    public function it_can_make_nested_listing(): void
     {
         $list = [
             'bar',
@@ -373,7 +377,7 @@ class HtmlBuilderTest extends TestCase
                     '</ul>' .
                 '</li>' .
             '</ul>',
-            $this->html->ul($list)
+            $this->html->ul($list)->toHtml()
         );
 
         static::assertHtmlStringEqualsHtmlString(
@@ -388,18 +392,18 @@ class HtmlBuilderTest extends TestCase
                     '</ol>' .
                 '</li>' .
             '</ol>',
-            $this->html->ol($list)
+            $this->html->ol($list)->toHtml()
         );
     }
 
     /** @test */
-    public function it_can_obfuscate()
+    public function it_can_obfuscate(): void
     {
         static::assertNotEmpty($this->html->obfuscate('à'));
     }
 
     /** @test */
-    public function it_can_make_attributes()
+    public function it_can_make_attributes(): void
     {
         static::assertEquals(
             'class="strong" required',
@@ -408,7 +412,7 @@ class HtmlBuilderTest extends TestCase
     }
 
     /** @test */
-    public function it_can_make_meta_tags()
+    public function it_can_make_meta_tags(): void
     {
         static::assertEquals(
             '<meta name="description" content="Lorem ipsum dolor sit amet.">',
@@ -417,7 +421,7 @@ class HtmlBuilderTest extends TestCase
     }
 
     /** @test */
-    public function it_can_make_meta_open_graph_tags()
+    public function it_can_make_meta_open_graph_tags(): void
     {
         static::assertEquals(
             '<meta content="website" property="og:type">',
@@ -426,7 +430,7 @@ class HtmlBuilderTest extends TestCase
     }
 
     /** @test */
-    public function it_can_register_a_component()
+    public function it_can_register_a_component(): void
     {
         $this->html->component('tweet', 'components.tweet', [
             'handle', 'body', 'date'
@@ -436,7 +440,7 @@ class HtmlBuilderTest extends TestCase
     }
 
     /** @test */
-    public function it_must_throw_bad_method_call_exception_on_component()
+    public function it_must_throw_bad_method_call_exception_on_component(): void
     {
         $this->expectException(\BadMethodCallException::class);
         $this->expectExceptionMessage('Method Arcanedev\LaravelHtml\HtmlBuilder::btnSuccess does not exist.');
@@ -445,7 +449,7 @@ class HtmlBuilderTest extends TestCase
     }
 
     /** @test */
-    public function it_can_generate_nbsp()
+    public function it_can_generate_nbsp(): void
     {
         $nbsp = '&nbsp;';
 
@@ -454,7 +458,7 @@ class HtmlBuilderTest extends TestCase
     }
 
     /** @test */
-    public function it_can_make_tel_link()
+    public function it_can_make_tel_link(): void
     {
         $phone = '+123-456-789';
 
