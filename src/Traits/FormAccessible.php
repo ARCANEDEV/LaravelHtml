@@ -9,9 +9,8 @@ use ReflectionClass;
 use ReflectionMethod;
 
 /**
- * Class     FormAccessible
+ * Trait     FormAccessible
  *
- * @package  Arcanedev\LaravelHtml\Traits
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 trait FormAccessible

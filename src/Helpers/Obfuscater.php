@@ -7,7 +7,6 @@ namespace Arcanedev\LaravelHtml\Helpers;
 /**
  * Class     Obfuscater
  *
- * @package  Arcanedev\LaravelHtml\Helpers
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 class Obfuscater

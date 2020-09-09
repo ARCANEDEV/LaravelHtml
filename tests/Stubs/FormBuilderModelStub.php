@@ -7,7 +7,6 @@ namespace Arcanedev\LaravelHtml\Tests\Stubs;
 /**
  * Class     FormBuilderModelStub
  *
- * @package  Arcanedev\LaravelHtml\Tests\Stubs
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 class FormBuilderModelStub

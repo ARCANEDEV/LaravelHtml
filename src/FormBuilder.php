@@ -14,7 +14,6 @@ use Illuminate\Support\{Arr, Collection, HtmlString, Str};
 /**
  * Class     FormBuilder
  *
- * @package  Arcanedev\LaravelHtml
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 class FormBuilder extends AbstractBuilder implements FormBuilderContract

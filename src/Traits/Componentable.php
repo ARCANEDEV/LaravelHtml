@@ -5,13 +5,11 @@ declare(strict_types=1);
 namespace Arcanedev\LaravelHtml\Traits;
 
 use BadMethodCallException;
-use Illuminate\Support\Arr;
-use Illuminate\Support\HtmlString;
+use Illuminate\Support\{Arr, HtmlString};
 
 /**
- * Class     Componentable
+ * Trait     Componentable
  *
- * @package  Arcanedev\LaravelHtml\Traits
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 trait Componentable

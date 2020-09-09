@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Arcanedev\LaravelHtml\Tests\Traits;
 
-use Arcanedev\LaravelHtml\FormBuilder;
 use Arcanedev\LaravelHtml\Tests\Stubs\{ModelThatDoesntUseForms, ModelThatUsesForms};
 use Arcanedev\LaravelHtml\Tests\TestCase;
 use Carbon\Carbon;
@@ -13,7 +12,6 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * Class     FormAccessible
  *
- * @package  Arcanedev\LaravelHtml\Tests\Traits
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 class FormAccessible extends TestCase

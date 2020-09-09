@@ -10,7 +10,6 @@ use Arcanedev\LaravelHtml\HtmlServiceProvider;
 /**
  * Class     HtmlServiceProviderTest
  *
- * @package  Arcanedev\LaravelHtml\Tests
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 class HtmlServiceProviderTest extends TestCase

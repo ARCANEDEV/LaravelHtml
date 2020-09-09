@@ -14,7 +14,6 @@ use Illuminate\Support\HtmlString;
 /**
  * Class     HtmlBuilder
  *
- * @package  Arcanedev\LaravelHtml
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 class HtmlBuilder extends AbstractBuilder implements HtmlBuilderContract

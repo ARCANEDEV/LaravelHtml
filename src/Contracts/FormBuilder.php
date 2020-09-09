@@ -11,7 +11,6 @@ use Illuminate\Support\HtmlString;
 /**
  * Interface  FormBuilder
  *
- * @package   Arcanedev\LaravelHtml\Contracts
  * @author    ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 interface FormBuilder

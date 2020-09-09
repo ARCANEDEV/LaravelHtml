@@ -9,7 +9,6 @@ use Arcanedev\LaravelHtml\HtmlBuilder;
 /**
  * Class     HtmlBuilderTest
  *
- * @package  Arcanedev\LaravelHtml\Tests\Builders
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 class HtmlBuilderTest extends TestCase
