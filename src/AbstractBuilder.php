@@ -11,7 +11,6 @@ use Illuminate\Support\Traits\Macroable;
 /**
  * Class     AbstractBuilder
  *
- * @package  Arcanedev\LaravelHtml
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 abstract class AbstractBuilder

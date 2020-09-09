@@ -1,11 +1,14 @@
-<?php namespace Arcanedev\LaravelHtml\Tests\Concerns;
+<?php
+
+declare(strict_types=1);
+
+namespace Arcanedev\LaravelHtml\Tests\Concerns;
 
 use DOMDocument;
 
 /**
  * Trait     AssertsHtmlStrings
  *
- * @package  Arcanedev\LaravelHtml\Tests\Concerns
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 trait AssertsHtmlStrings

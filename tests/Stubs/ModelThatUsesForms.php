@@ -11,7 +11,6 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * Class     ModelThatUsesForms
  *
- * @package  Arcanedev\LaravelHtml\Tests\Stubs
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 class ModelThatUsesForms extends Model

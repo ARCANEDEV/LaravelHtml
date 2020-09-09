@@ -9,7 +9,6 @@ use Illuminate\Support\HtmlString;
 /**
  * Interface  HtmlBuilder
  *
- * @package   Arcanedev\LaravelHtml\Contracts
  * @author    ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 interface HtmlBuilder

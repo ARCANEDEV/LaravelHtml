@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Arcanedev\LaravelHtml;
 
-use Arcanedev\LaravelHtml\Contracts\{FormBuilder as FormBuilderContract, HtmlBuilder as HtmlBuilderContract};
+use Arcanedev\LaravelHtml\Contracts\FormBuilder as FormBuilderContract;
+use Arcanedev\LaravelHtml\Contracts\HtmlBuilder as HtmlBuilderContract;
 use Arcanedev\Support\Providers\ServiceProvider;
 use Illuminate\Contracts\Support\DeferrableProvider;
 
 /**
  * Class     HtmlServiceProvider
  *
- * @package  Arcanedev\LaravelHtml
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 class HtmlServiceProvider extends ServiceProvider implements DeferrableProvider

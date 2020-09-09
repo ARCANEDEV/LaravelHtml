@@ -9,7 +9,6 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * Class     ModelThatDoesntUseForms
  *
- * @package  Arcanedev\LaravelHtml\Tests\Stubs
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 class ModelThatDoesntUseForms extends Model
