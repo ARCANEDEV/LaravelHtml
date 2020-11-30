@@ -224,6 +224,9 @@ class FormBuilder extends AbstractBuilder implements FormBuilderContract
             );
         }
 
+        if (is_null($model) || is_array($model))
+            return data_get($model, $key);
+
         return method_exists($model, 'getFormValue')
             ? $model->getFormValue($key)
             : data_get($model, $key);
